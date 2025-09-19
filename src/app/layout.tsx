@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from 'next/script'
+import { SupabaseDebugExpose } from '@/components/SupabaseDebugExpose'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from '@/components/ui/toast';
@@ -21,15 +21,6 @@ export const metadata: Metadata = {
   description: "Modern environmental data dashboard",
 };
 
-// Simple client-side script injection to expose supabase for debugging
-function DebugExpose() {
-  return (
-    <Script id="supabase-debug-expose" strategy="afterInteractive">
-      {`try { if (typeof window !== 'undefined') { import('@@/lib/api').then(m => { window.supabase = m.supabase; console.log('[DEBUG] supabase client exposed on window'); }); } } catch(e){console.warn('Expose supabase failed', e); }`}
-    </Script>
-  )
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,8 +32,8 @@ export default function RootLayout({
         <ThemeProvider defaultTheme="system" storageKey="envoyou-theme">
           <AuthProvider>
             <ToastProvider>
-            <DebugExpose />
-            {children}
+              <SupabaseDebugExpose />
+              {children}
             </ToastProvider>
           </AuthProvider>
         </ThemeProvider>
