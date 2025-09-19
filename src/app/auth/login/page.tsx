@@ -113,7 +113,7 @@ export default function LoginPage() {
             {/* Divider */}
             <div className="flex items-center gap-3">
               <span className="h-px flex-1 bg-gradient-to-r from-transparent via-border/60 to-transparent" />
-              <span className="px-4 py-1 text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-medium bg-card/90 backdrop-blur-sm border border-border/60 rounded-full shadow-sm">
+              <span className="px-4 py-1 text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-medium backdrop-blur-sm shadow-sm">
                 Or continue with email
               </span>
               <span className="h-px flex-1 bg-gradient-to-r from-transparent via-border/60 to-transparent" />
