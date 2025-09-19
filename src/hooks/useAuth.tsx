@@ -128,50 +128,72 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    // Get initial session
+    let mounted = true
+    const timeout = setTimeout(() => {
+      if (mounted) setLoading(false)
+    }, 6000) // safety fallback
+
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      
-      if (session?.user) {
-        setSupabaseUser(session.user)
-        try {
-          // Verify with backend
-          const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
-          setUser(response.user || null)
-          apiClient.setToken(response.access_token || null)
-        } catch (error) {
-          console.error('Error verifying user:', error)
-        }
-      }
-      
-      setLoading(false)
-    }
-
-    getInitialSession()
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
         if (session?.user) {
           setSupabaseUser(session.user)
           try {
             const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
+            if (!mounted) return
             setUser(response.user || null)
             apiClient.setToken(response.access_token || null)
           } catch (error) {
-            console.error('Error verifying user:', error)
+            console.error('Error verifying user (initial):', error)
+            // Invalidate broken session so middleware will treat as unauth
+            try { await supabase.auth.signOut() } catch {}
+            if (mounted) {
+              setSupabaseUser(null)
+              setUser(null)
+              apiClient.setToken(null)
+            }
+          }
+        }
+      } finally {
+        if (mounted) setLoading(false)
+      }
+    }
+
+    getInitialSession()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (session?.user) {
+          setSupabaseUser(session.user)
+          try {
+            const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
+            if (!mounted) return
+            setUser(response.user || null)
+            apiClient.setToken(response.access_token || null)
+          } catch (error) {
+            console.error('Error verifying user (onAuthStateChange):', error)
+            try { await supabase.auth.signOut() } catch {}
+            if (mounted) {
+              setSupabaseUser(null)
+              setUser(null)
+              apiClient.setToken(null)
+            }
           }
         } else {
           setSupabaseUser(null)
           setUser(null)
           apiClient.setToken(null)
         }
-        setLoading(false)
+        if (mounted) setLoading(false)
       }
     )
 
-    return () => subscription.unsubscribe()
-  }, [supabaseUser])
+    return () => {
+      mounted = false
+      clearTimeout(timeout)
+      subscription.unsubscribe()
+    }
+  }, [])
 
   return (
     <AuthContext.Provider value={{

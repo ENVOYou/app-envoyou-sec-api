@@ -29,7 +29,13 @@ export default function DashboardLayout({
     )
   }
 
-  if (!user) return null
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">
