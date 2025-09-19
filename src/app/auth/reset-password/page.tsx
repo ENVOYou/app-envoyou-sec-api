@@ -1,20 +1,21 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { LoadingIcon, EyeIcon, EyeOffIcon, CheckIcon } from '@/components/icons/index'
+import { AuthError, mapSupabaseError, createAuthError } from '@/lib/authErrors'
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<AuthError | null>(null)
   const [success, setSuccess] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -25,11 +26,10 @@ export default function ResetPasswordPage() {
     const refreshToken = searchParams.get('refresh_token')
     
     if (accessToken && refreshToken) {
-      // Set the session with the tokens
       supabase.auth.setSession({
         access_token: accessToken,
         refresh_token: refreshToken,
-      } as any)
+      })
     }
   }, [searchParams])
 
@@ -53,16 +53,16 @@ export default function ResetPasswordPage() {
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
+    setError(null)
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      setError(createAuthError('PASSWORD_MISMATCH'))
       setLoading(false)
       return
     }
 
     if (!passwordValidation.isValid) {
-      setError('Password does not meet the requirements')
+      setError(createAuthError('PASSWORD_WEAK'))
       setLoading(false)
       return
     }
@@ -80,8 +80,8 @@ export default function ResetPasswordPage() {
       setTimeout(() => {
         router.push('/auth/login?message=Password updated successfully')
       }, 2000)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (err: unknown) {
+      setError(mapSupabaseError(err))
     } finally {
       setLoading(false)
     }
@@ -136,7 +136,7 @@ export default function ResetPasswordPage() {
             <form onSubmit={handleResetPassword} className="space-y-4">
               {error && (
                 <div className="p-3 text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-                  {error}
+                  {error.message}
                 </div>
               )}
 
@@ -243,5 +243,13 @@ export default function ResetPasswordPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
   )
 }

@@ -4,60 +4,43 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/api'
 import { LoadingIcon } from '@/components/icons/index'
+import { AuthError, mapSupabaseError } from '@/lib/authErrors'
 
 export default function AuthCallback() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState('')
+  const [error, setError] = useState<AuthError | null>(null)
   const router = useRouter()
 
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
         const { data, error } = await supabase.auth.getSession()
-        
-        if (error) {
-          throw error
-        }
-
+        if (error) throw error
         if (data.session) {
           setStatus('success')
           setMessage('Authentication successful! Redirecting...')
-          
-          // Redirect to dashboard after a short delay
-          setTimeout(() => {
-            router.push('/dashboard')
-          }, 1500)
+          setTimeout(() => { router.push('/dashboard') }, 1500)
         } else {
-          // Handle email confirmation case
           const { data: { user } } = await supabase.auth.getUser()
-          
           if (user && !user.email_confirmed_at) {
             setStatus('success')
             setMessage('Please check your email and click the confirmation link.')
-            
-            setTimeout(() => {
-              router.push('/auth/login')
-            }, 3000)
+            setTimeout(() => { router.push('/auth/login') }, 3000)
           } else {
             setStatus('error')
             setMessage('Authentication failed. Please try again.')
-            
-            setTimeout(() => {
-              router.push('/auth/login')
-            }, 3000)
+            setTimeout(() => { router.push('/auth/login') }, 3000)
           }
         }
-      } catch (error: any) {
-        console.error('Auth callback error:', error)
+      } catch (err: unknown) {
+        const mapped = mapSupabaseError(err)
+        setError(mapped)
         setStatus('error')
-        setMessage(error.message || 'Authentication failed. Please try again.')
-        
-        setTimeout(() => {
-          router.push('/auth/login')
-        }, 3000)
+        setMessage(mapped.message)
+        setTimeout(() => { router.push('/auth/login') }, 3000)
       }
     }
-
     handleAuthCallback()
   }, [router])
 
@@ -122,7 +105,9 @@ export default function AuthCallback() {
         </div>
         
         <p className="text-muted-foreground">{message}</p>
-        
+        {status === 'error' && error?.details && (
+          <p className="text-xs text-muted-foreground/70">{error.details}</p>
+        )}
         {status === 'error' && (
           <p className="text-sm text-muted-foreground">
             Redirecting to login page...

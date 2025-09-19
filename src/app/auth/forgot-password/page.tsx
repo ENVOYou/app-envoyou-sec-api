@@ -7,28 +7,27 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { LoadingIcon, CheckIcon, ArrowLeftIcon } from '@/components/icons/index'
+import { AuthError, mapSupabaseError } from '@/lib/authErrors'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<AuthError | null>(null)
   const [success, setSuccess] = useState(false)
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
+    setError(null)
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/reset-password`,
       })
-
       if (error) throw error
-
       setSuccess(true)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (err: unknown) {
+      setError(mapSupabaseError(err))
     } finally {
       setLoading(false)
     }
@@ -96,7 +95,7 @@ export default function ForgotPasswordPage() {
             <form onSubmit={handleResetPassword} className="space-y-5">
               {error && (
                 <div className="p-4 text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg">
-                  {error}
+                  {error.message}
                 </div>
               )}
 

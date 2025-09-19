@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { UserProfileUpdate } from '@/types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -57,13 +58,13 @@ class APIClient {
   // User endpoints
   user = {
     getProfile: () => this.request('/v1/user/profile'),
-    updateProfile: (data: any) => 
+    updateProfile: (data: UserProfileUpdate) => 
       this.request('/v1/user/profile', {
         method: 'PUT',
         body: JSON.stringify(data)
       }),
     getAPIKeys: () => this.request('/v1/user/api-keys'),
-    createAPIKey: (data: any) => 
+    createAPIKey: (data: { name: string; permissions?: string[] }) => 
       this.request('/v1/user/api-keys', {
         method: 'POST',
         body: JSON.stringify(data)

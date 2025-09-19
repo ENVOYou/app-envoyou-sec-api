@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "daily:summary": "node scripts/generate-daily-summary.mjs",
+    "daily:cleanup": "node scripts/cleanup-daily-summaries.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.8",

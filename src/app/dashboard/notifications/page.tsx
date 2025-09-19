@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { apiClient } from '@/lib/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,13 +14,7 @@ export default function NotificationsPage() {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'unread'>('all')
 
-  useEffect(() => {
-    if (user) {
-      fetchNotifications()
-    }
-  }, [user, filter])
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (!user) return
     
     setLoading(true)
@@ -42,7 +36,11 @@ export default function NotificationsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [user, filter])
+
+  useEffect(() => {
+    fetchNotifications()
+  }, [fetchNotifications])
 
   const markAsRead = async (notificationId: string) => {
     try {

@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/useAuth'
 import { useTheme } from '@/components/theme-provider'
 import { apiClient } from '@/lib/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { SettingsIcon, UserIcon, BellIcon, LogOutIcon, SunIcon, MoonIcon } from '@/components/icons'
 import { Session } from '@/types'
 
@@ -56,6 +56,53 @@ export default function SettingsPage() {
     return '💻'
   }
 
+  const [editMode, setEditMode] = useState(false)
+  const [profileLoading, setProfileLoading] = useState(false)
+  const [name, setName] = useState(user?.name || '')
+  const [company, setCompany] = useState(user?.company || '')
+  const [jobTitle, setJobTitle] = useState(user?.job_title || '')
+  const [timezone, setTimezone] = useState(user?.timezone || '')
+  const [message, setMessage] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    // sync when user changes (e.g. after refreshUser)
+    setName(user?.name || '')
+    setCompany(user?.company || '')
+    setJobTitle(user?.job_title || '')
+    setTimezone(user?.timezone || '')
+  }, [user])
+
+  const handleSave = async () => {
+    setProfileLoading(true)
+    setMessage(null)
+    setError(null)
+    try {
+      await apiClient.user.updateProfile({
+        name: name.trim() || undefined,
+        company: company.trim() || undefined,
+        job_title: jobTitle.trim() || undefined,
+        timezone: timezone.trim() || undefined
+      })
+      setMessage('Profile updated successfully.')
+      setEditMode(false)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to update profile')
+    } finally {
+      setProfileLoading(false)
+    }
+  }
+
+  const handleCancel = () => {
+    setName(user?.name || '')
+    setCompany(user?.company || '')
+    setJobTitle(user?.job_title || '')
+    setTimezone(user?.timezone || '')
+    setEditMode(false)
+    setError(null)
+    setMessage(null)
+  }
+
   return (
     <div className="p-6 space-y-6 max-w-4xl mx-auto">
       <div>
@@ -77,6 +124,26 @@ export default function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-sm text-muted-foreground">Profile Details</div>
+            <div className="space-x-2">
+              {!editMode && (
+                <Button size="sm" variant="outline" onClick={() => setEditMode(true)}>Edit</Button>
+              )}
+              {editMode && (
+                <>
+                  <Button size="sm" variant="ghost" onClick={handleCancel} disabled={profileLoading}>Cancel</Button>
+                  <Button size="sm" onClick={handleSave} disabled={profileLoading}>Save</Button>
+                </>
+              )}
+            </div>
+          </div>
+          {message && (
+            <div className="mb-4 text-xs px-3 py-2 rounded bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800">{message}</div>
+          )}
+          {error && (
+            <div className="mb-4 text-xs px-3 py-2 rounded bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800">{error}</div>
+          )}
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-4">
               <div>
@@ -89,13 +156,21 @@ export default function SettingsPage() {
                 <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Full Name
                 </label>
-                <p className="text-sm">{user?.name || 'Not set'}</p>
+                {editMode ? (
+                  <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full name" className="h-9" />
+                ) : (
+                  <p className="text-sm">{user?.name || 'Not set'}</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Company
                 </label>
-                <p className="text-sm">{user?.company || 'Not set'}</p>
+                {editMode ? (
+                  <Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Company" className="h-9" />
+                ) : (
+                  <p className="text-sm">{user?.company || 'Not set'}</p>
+                )}
               </div>
             </div>
             <div className="space-y-4">
@@ -125,13 +200,29 @@ export default function SettingsPage() {
                   )}
                 </p>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
+                  Job Title
+                </label>
+                {editMode ? (
+                  <Input value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} placeholder="Job title" className="h-9" />
+                ) : (
+                  <p className="text-sm">{user?.job_title || 'Not set'}</p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
+                  Timezone
+                </label>
+                {editMode ? (
+                  <Input value={timezone} onChange={(e) => setTimezone(e.target.value)} placeholder="Timezone (e.g. UTC+7)" className="h-9" />
+                ) : (
+                  <p className="text-sm">{user?.timezone || 'Not set'}</p>
+                )}
+              </div>
             </div>
           </div>
-          <div className="flex justify-end mt-6">
-            <Button onClick={() => window.location.href = '/dashboard/profile'}>
-              Edit Profile
-            </Button>
-          </div>
+          {profileLoading && <p className="mt-4 text-xs text-muted-foreground">Saving...</p>}
         </CardContent>
       </Card>
 

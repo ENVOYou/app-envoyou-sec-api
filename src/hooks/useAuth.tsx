@@ -5,6 +5,11 @@ import { User as SupabaseUser } from '@supabase/supabase-js'
 import { supabase, apiClient } from '@/lib/api'
 import { User } from '@/types'
 
+interface SupabaseVerifyResponse {
+  user: User
+  access_token: string
+}
+
 interface AuthContextType {
   user: User | null
   supabaseUser: SupabaseUser | null
@@ -12,7 +17,7 @@ interface AuthContextType {
   signOut: () => Promise<void>
   refreshUser: () => Promise<void>
   signInWithEmail: (email: string, password: string) => Promise<{ error?: string }>
-  signUpWithEmail: (email: string, password: string, metadata?: any) => Promise<{ error?: string }>
+  signUpWithEmail: (email: string, password: string, metadata?: Record<string, unknown>) => Promise<{ error?: string }>
   signInWithProvider: (provider: 'google' | 'github') => Promise<{ error?: string }>
   resetPassword: (email: string) => Promise<{ error?: string }>
 }
@@ -39,9 +44,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.access_token) {
         // Verify with backend and get user data
-        const response = await apiClient.auth.supabaseVerify(session.access_token) as any
-        setUser(response.user)
-        apiClient.setToken(response.access_token)
+  const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
+  setUser(response.user || null)
+  apiClient.setToken(response.access_token || null)
       }
     } catch (error) {
       console.error('Error refreshing user:', error)
@@ -67,12 +72,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       if (error) return { error: error.message }
       return {}
-    } catch (error: any) {
-      return { error: error.message }
+    } catch (error: unknown) {
+      return { error: error instanceof Error ? error.message : 'Unknown error' }
     }
   }
 
-  const signUpWithEmail = async (email: string, password: string, metadata?: any) => {
+  const signUpWithEmail = async (email: string, password: string, metadata?: Record<string, unknown>) => {
     try {
       const { error } = await supabase.auth.signUp({
         email,
@@ -84,8 +89,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       if (error) return { error: error.message }
       return {}
-    } catch (error: any) {
-      return { error: error.message }
+    } catch (error: unknown) {
+      return { error: error instanceof Error ? error.message : 'Unknown error' }
     }
   }
 
@@ -99,8 +104,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       if (error) return { error: error.message }
       return {}
-    } catch (error: any) {
-      return { error: error.message }
+    } catch (error: unknown) {
+      return { error: error instanceof Error ? error.message : 'Unknown error' }
     }
   }
 
@@ -111,8 +116,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       if (error) return { error: error.message }
       return {}
-    } catch (error: any) {
-      return { error: error.message }
+    } catch (error: unknown) {
+      return { error: error instanceof Error ? error.message : 'Unknown error' }
     }
   }
 
@@ -125,7 +130,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSupabaseUser(session.user)
         try {
           // Verify with backend
-          const response = await apiClient.auth.supabaseVerify(session.access_token) as any
+          const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
           setUser(response.user || null)
           apiClient.setToken(response.access_token || null)
         } catch (error) {
@@ -144,7 +149,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (session?.user) {
           setSupabaseUser(session.user)
           try {
-            const response = await apiClient.auth.supabaseVerify(session.access_token) as any
+            const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
             setUser(response.user || null)
             apiClient.setToken(response.access_token || null)
           } catch (error) {

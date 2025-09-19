@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { KeyIcon, PlusIcon, CopyIcon, TrashIcon, EyeIcon, EyeOffIcon } from '@/components/icons'
-import { APIKey, APIKeyCreate } from '@/types'
+import { APIKey } from '@/types'
 
 export default function APIKeysPage() {
   const [apiKeys, setApiKeys] = useState<APIKey[]>([])
@@ -36,8 +36,8 @@ export default function APIKeysPage() {
 
     setCreating(true)
     try {
-      const response = await apiClient.user.createAPIKey({ name: newKeyName }) as any
-      setNewKeyData({ key: response.key, name: newKeyName })
+  const response = await apiClient.user.createAPIKey({ name: newKeyName }) as { key: string }
+  setNewKeyData({ key: response.key, name: newKeyName })
       setNewKeyName('')
       await fetchAPIKeys()
     } catch (error) {
@@ -99,7 +99,7 @@ export default function APIKeysPage() {
       <div className="mb-6">
         <h1 className="text-3xl font-bold tracking-tight">API Keys</h1>
         <p className="text-muted-foreground mt-2">
-          Manage your API keys to access Envoyou's environmental data endpoints.
+          Manage your API keys to access Envoyou&apos;s environmental data endpoints.
         </p>
       </div>
 
@@ -110,7 +110,7 @@ export default function APIKeysPage() {
             <CardHeader>
               <CardTitle>API Key Created</CardTitle>
               <CardDescription>
-                Copy your new API key now. You won't be able to see it again.
+                Copy your new API key now. You won&apos;t be able to see it again.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -180,7 +180,7 @@ export default function APIKeysPage() {
             <span>Your API Keys</span>
           </CardTitle>
           <CardDescription>
-            Manage your existing API keys. Keep them secure and don't share them publicly.
+            Manage your existing API keys. Keep them secure and don&apos;t share them publicly.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -283,8 +283,8 @@ export default function APIKeysPage() {
           <div>
             <h4 className="font-medium mb-2">Security</h4>
             <p className="text-sm text-muted-foreground">
-              Keep your API keys secure and don't commit them to version control. 
-              Regenerate keys immediately if they're compromised.
+              Keep your API keys secure and don&apos;t commit them to version control. 
+              Regenerate keys immediately if they&apos;re compromised.
             </p>
           </div>
         </CardContent>

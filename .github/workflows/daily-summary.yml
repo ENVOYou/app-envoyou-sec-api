@@ -1,0 +1,76 @@
+name: Daily Summary
+
+on:
+  schedule:
+    # Runs at 23:50 UTC every day (adjust to your timezone needs)
+    - cron: '50 23 * * *'
+  workflow_dispatch:
+    inputs:
+      run_reason:
+        description: 'Reason / context for manual run'
+        required: false
+        default: 'manual trigger'
+
+jobs:
+  generate:
+    name: Generate Daily Summary
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies (dash app)
+        working-directory: ./dash-envoyou
+        run: npm ci || npm install --no-audit --no-fund
+
+      - name: Generate summary
+        working-directory: ./dash-envoyou
+        run: npm run daily:summary
+
+      - name: Cleanup old summaries
+        working-directory: ./dash-envoyou
+        env:
+          RETENTION_DAYS: 30
+        run: npm run daily:cleanup || echo 'Cleanup step failed but continuing'
+
+      - name: Commit changes
+        working-directory: ./dash-envoyou
+        run: |
+          if [ -n "$(git status --porcelain | grep DAILY_SUMMARY_ || true)" ]; then
+            git config user.name 'github-actions'
+            git config user.email 'github-actions@github.com'
+            git add DAILY_SUMMARY_*.md
+            SUMMARY_FILE=$(ls -t DAILY_SUMMARY_*.md | head -n 1)
+            git commit -m "chore: add daily summary $(date -u +'%Y-%m-%d')" || echo 'No changes to commit'
+          else
+            echo 'No summary changes detected.'
+          fi
+
+      - name: Push (fast-forward)
+        if: success()
+        run: |
+          if [ -n "$(git -C dash-envoyou status --porcelain | grep DAILY_SUMMARY_ || true)" ]; then
+            git push origin ${{ github.ref }}
+          else
+            echo 'Nothing to push.'
+          fi
+
+      - name: (Optional) Open/Update PR (skipped if pushing to default)
+        if: ${{ github.ref != 'refs/heads/main' }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore: daily summary update'
+          branch: automated/daily-summary
+          title: 'chore: Daily summary update'
+          body: 'Automated daily summary update.'
+          add-paths: |
+            dash-envoyou/DAILY_SUMMARY_*.md

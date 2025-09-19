@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { apiClient } from '@/lib/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -14,11 +14,7 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true)
   const [timeRange, setTimeRange] = useState<number>(24)
 
-  useEffect(() => {
-    fetchAnalytics()
-  }, [timeRange])
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setLoading(true)
     try {
       const [statsRes, analyticsRes] = await Promise.all([
@@ -33,7 +29,11 @@ export default function AnalyticsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [timeRange])
+
+  useEffect(() => {
+    fetchAnalytics()
+  }, [fetchAnalytics])
 
   // Mock data for demonstration since we don't have real chart data
   const mockChartData = [

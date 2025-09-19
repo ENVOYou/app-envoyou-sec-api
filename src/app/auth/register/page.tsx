@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ElevatedCard, CardHeader, CardTitle, CardDescription, CardContent, Card } from '@/components/ui/elevated-card'
 import { LoadingIcon, EyeIcon, EyeOffIcon, GoogleIcon, GitHubIcon, CheckIcon } from '@/components/icons/index'
+import { AuthError, mapSupabaseError, createAuthError } from '@/lib/authErrors'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
@@ -18,7 +19,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<AuthError | null>(null)
   const [success, setSuccess] = useState(false)
   const router = useRouter()
   const { user } = useAuth()
@@ -51,16 +52,16 @@ export default function RegisterPage() {
   const handleEmailRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
+    setError(null)
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      setError(createAuthError('PASSWORD_MISMATCH'))
       setLoading(false)
       return
     }
 
     if (!passwordValidation.isValid) {
-      setError('Password does not meet the requirements')
+      setError(createAuthError('PASSWORD_WEAK'))
       setLoading(false)
       return
     }
@@ -80,8 +81,8 @@ export default function RegisterPage() {
       if (error) throw error
 
       setSuccess(true)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (err: unknown) {
+      setError(mapSupabaseError(err))
     } finally {
       setLoading(false)
     }
@@ -89,7 +90,7 @@ export default function RegisterPage() {
 
   const handleSocialLogin = async (provider: 'google' | 'github') => {
     setLoading(true)
-    setError('')
+    setError(null)
 
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -100,8 +101,9 @@ export default function RegisterPage() {
       })
 
       if (error) throw error
-    } catch (error: any) {
-      setError(error.message)
+    } catch (err: unknown) {
+      const details = err instanceof Error ? err.message : 'OAuth error'
+      setError(createAuthError('OAUTH_ERROR', { details, cause: err }))
       setLoading(false)
     }
   }
@@ -194,8 +196,8 @@ export default function RegisterPage() {
             {/* Email/Password Form */}
             <form onSubmit={handleEmailRegister} className="space-y-5">
               {error && (
-                <div className="p-4 text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg">
-                  {error}
+                <div className="p-4 text-sm bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
+                  {error.message}
                 </div>
               )}
 

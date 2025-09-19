@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { apiClient } from '@/lib/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { UserStats, DeveloperStats, UsageAnalytics } from '@/types'
+import { UserStats, DeveloperStats } from '@/types'
 import { BarChartIcon, KeyIcon, GlobeIcon, BellIcon } from '@/components/icons'
 
 export default function DashboardPage() {
@@ -61,7 +61,7 @@ export default function DashboardPage() {
           Welcome back, {user?.name || user?.email?.split('@')[0]}!
         </h2>
         <p className="text-muted-foreground mt-2">
-          Here's an overview of your account activity and API usage.
+          Here&apos;s an overview of your account activity and API usage.
         </p>
       </div>
 

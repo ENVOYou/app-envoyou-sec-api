@@ -10,13 +10,14 @@ import { Input } from '@/components/ui/input'
 import { CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/elevated-card'
 import { ElevatedCard } from '@/components/ui/elevated-card'
 import { LoadingIcon, EyeIcon, EyeOffIcon, GoogleIcon, GitHubIcon } from '@/components/icons/index'
+import { AuthError, mapSupabaseError, createAuthError } from '@/lib/authErrors'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<AuthError | null>(null)
   const router = useRouter()
   const { user } = useAuth()
 
@@ -29,7 +30,7 @@ export default function LoginPage() {
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
+    setError(null)
 
     try {
       const { error } = await supabase.auth.signInWithPassword({
@@ -40,8 +41,8 @@ export default function LoginPage() {
       if (error) throw error
 
       router.push('/dashboard')
-    } catch (error: any) {
-      setError(error.message)
+    } catch (err: unknown) {
+      setError(mapSupabaseError(err))
     } finally {
       setLoading(false)
     }
@@ -49,7 +50,7 @@ export default function LoginPage() {
 
   const handleSocialLogin = async (provider: 'google' | 'github') => {
     setLoading(true)
-    setError('')
+    setError(null)
 
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -60,8 +61,9 @@ export default function LoginPage() {
       })
 
       if (error) throw error
-    } catch (error: any) {
-      setError(error.message)
+    } catch (err: unknown) {
+      const details = err instanceof Error ? err.message : 'OAuth error'
+      setError(createAuthError('OAUTH_ERROR', { details, cause: err }))
       setLoading(false)
     }
   }
@@ -120,8 +122,8 @@ export default function LoginPage() {
             {/* Email/Password Form */}
             <form onSubmit={handleEmailLogin} className="space-y-5">
               {error && (
-                <div className="p-4 text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg">
-                  {error}
+                <div className="p-4 text-sm bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
+                  {error.message}
                 </div>
               )}
 
