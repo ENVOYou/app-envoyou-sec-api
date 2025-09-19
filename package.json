@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "daily:summary": "node scripts/generate-daily-summary.mjs",
-    "daily:cleanup": "node scripts/cleanup-daily-summaries.mjs"
+    "daily:cleanup": "node scripts/cleanup-daily-summaries.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.8",
@@ -32,6 +34,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
+    "vitest": "^2.1.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
