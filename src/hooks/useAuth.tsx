@@ -20,6 +20,7 @@ interface AuthContextType {
   signUpWithEmail: (email: string, password: string, metadata?: Record<string, unknown>) => Promise<{ error?: string }>
   signInWithProvider: (provider: 'google' | 'github') => Promise<{ error?: string }>
   resetPassword: (email: string) => Promise<{ error?: string }>
+  updateUserLocal: (partial: Partial<User>) => void
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -31,7 +32,8 @@ const AuthContext = createContext<AuthContextType>({
   signInWithEmail: async () => ({ error: 'Context not initialized' }),
   signUpWithEmail: async () => ({ error: 'Context not initialized' }),
   signInWithProvider: async () => ({ error: 'Context not initialized' }),
-  resetPassword: async () => ({ error: 'Context not initialized' })
+  resetPassword: async () => ({ error: 'Context not initialized' }),
+  updateUserLocal: () => {}
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -121,6 +123,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const updateUserLocal = (partial: Partial<User>) => {
+    setUser(prev => prev ? { ...prev, ...partial } : prev)
+  }
+
   useEffect(() => {
     // Get initial session
     const getInitialSession = async () => {
@@ -178,6 +184,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signUpWithEmail,
       signInWithProvider,
       resetPassword
+      , updateUserLocal
     }}>
       {children}
     </AuthContext.Provider>

@@ -1,6 +1,5 @@
-'use client'
-
-import { useState, useEffect } from 'react'
+"use client"
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/useAuth'
 import { useTheme } from '@/components/theme-provider'
@@ -9,10 +8,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { SettingsIcon, UserIcon, BellIcon, LogOutIcon, SunIcon, MoonIcon } from '@/components/icons'
 import { Session } from '@/types'
+import { useToast } from '@/components/ui/toast'
+import { timezones, timezoneGroups, detectLocalTimezone } from '@/lib/timezones'
 
 export default function SettingsPage() {
-  const { user, signOut } = useAuth()
+  const { user, signOut, updateUserLocal } = useAuth()
   const { theme, setTheme } = useTheme()
+  const { push: pushToast } = useToast()
   const [sessions, setSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(false)
   
@@ -62,46 +64,103 @@ export default function SettingsPage() {
   const [company, setCompany] = useState(user?.company || '')
   const [jobTitle, setJobTitle] = useState(user?.job_title || '')
   const [timezone, setTimezone] = useState(user?.timezone || '')
-  const [message, setMessage] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const autoSaveTimer = useRef<number | null>(null)
+  const [savingMode, setSavingMode] = useState<'manual' | 'auto' | null>(null)
+
+  // Snapshot original values for dirty check
+  const original = useMemo(() => ({
+    name: user?.name || '',
+    company: user?.company || '',
+    job_title: user?.job_title || '',
+    timezone: user?.timezone || ''
+  }), [user?.name, user?.company, user?.job_title, user?.timezone])
+
+  const dirty = (
+    name !== original.name ||
+    company !== original.company ||
+    jobTitle !== original.job_title ||
+    timezone !== original.timezone
+  )
 
   useEffect(() => {
     // sync when user changes (e.g. after refreshUser)
     setName(user?.name || '')
     setCompany(user?.company || '')
     setJobTitle(user?.job_title || '')
-    setTimezone(user?.timezone || '')
+    setTimezone(user?.timezone || detectLocalTimezone())
   }, [user])
 
-  const handleSave = async () => {
+  interface PartialUserUpdate {
+    name?: string
+    company?: string
+    job_title?: string
+    timezone?: string
+  }
+
+  const applyOptimistic = (partial: PartialUserUpdate) => {
+    updateUserLocal(partial)
+  }
+
+  const handleSave = async (mode: 'manual' | 'auto' = 'manual') => {
+    if (!dirty) return
+    if (autoSaveTimer.current) {
+      clearTimeout(autoSaveTimer.current)
+      autoSaveTimer.current = null
+    }
+    setSavingMode(mode)
     setProfileLoading(true)
-    setMessage(null)
-    setError(null)
+    const prev = { name: user?.name, company: user?.company, job_title: user?.job_title, timezone: user?.timezone }
+    const partial = {
+      name: name.trim() || undefined,
+      company: company.trim() || undefined,
+      job_title: jobTitle.trim() || undefined,
+      timezone: timezone.trim() || undefined
+    }
+    applyOptimistic(partial)
     try {
-      await apiClient.user.updateProfile({
-        name: name.trim() || undefined,
-        company: company.trim() || undefined,
-        job_title: jobTitle.trim() || undefined,
-        timezone: timezone.trim() || undefined
-      })
-      setMessage('Profile updated successfully.')
-      setEditMode(false)
+      await apiClient.user.updateProfile(partial)
+      if (mode === 'manual') {
+        pushToast({ variant: 'success', title: 'Profile Saved', message: 'Your profile changes were saved.' })
+        setEditMode(false)
+      } else {
+        pushToast({ variant: 'success', message: 'Profile autosaved.' })
+      }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to update profile')
+      // revert
+      applyOptimistic(prev)
+      pushToast({ variant: 'error', title: 'Save Failed', message: e instanceof Error ? e.message : 'Failed to update profile' })
     } finally {
       setProfileLoading(false)
+      setSavingMode(null)
     }
   }
 
   const handleCancel = () => {
-    setName(user?.name || '')
-    setCompany(user?.company || '')
-    setJobTitle(user?.job_title || '')
-    setTimezone(user?.timezone || '')
+    if (autoSaveTimer.current) {
+      clearTimeout(autoSaveTimer.current)
+      autoSaveTimer.current = null
+    }
+    setName(original.name)
+    setCompany(original.company)
+    setJobTitle(original.job_title)
+    setTimezone(original.timezone || detectLocalTimezone())
     setEditMode(false)
-    setError(null)
-    setMessage(null)
   }
+
+  // Debounced autosave when editing
+  useEffect(() => {
+    if (!editMode) return
+    if (!dirty) return
+    if (profileLoading) return
+  if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+    autoSaveTimer.current = window.setTimeout(() => {
+      handleSave('auto')
+    }, 1500)
+    return () => {
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name, company, jobTitle, timezone, editMode])
 
   return (
     <div className="p-6 space-y-6 max-w-4xl mx-auto">
@@ -133,17 +192,12 @@ export default function SettingsPage() {
               {editMode && (
                 <>
                   <Button size="sm" variant="ghost" onClick={handleCancel} disabled={profileLoading}>Cancel</Button>
-                  <Button size="sm" onClick={handleSave} disabled={profileLoading}>Save</Button>
+                  <Button size="sm" onClick={() => handleSave('manual')} disabled={profileLoading}>Save</Button>
                 </>
               )}
             </div>
           </div>
-          {message && (
-            <div className="mb-4 text-xs px-3 py-2 rounded bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800">{message}</div>
-          )}
-          {error && (
-            <div className="mb-4 text-xs px-3 py-2 rounded bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800">{error}</div>
-          )}
+          {/* Inline messages removed in favor of toast system */}
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-4">
               <div>
@@ -215,14 +269,31 @@ export default function SettingsPage() {
                   Timezone
                 </label>
                 {editMode ? (
-                  <Input value={timezone} onChange={(e) => setTimezone(e.target.value)} placeholder="Timezone (e.g. UTC+7)" className="h-9" />
+                  <select
+                    value={timezone}
+                    onChange={(e) => setTimezone(e.target.value)}
+                    className="h-9 w-full rounded-md border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  >
+                    <option value="" disabled>Select timezone</option>
+                    {timezoneGroups.map(group => (
+                      <optgroup key={group} label={group}>
+                        {timezones.filter(t => t.group === group).map(tz => (
+                          <option key={tz.value} value={tz.value}>{tz.label}</option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
                 ) : (
                   <p className="text-sm">{user?.timezone || 'Not set'}</p>
                 )}
               </div>
             </div>
           </div>
-          {profileLoading && <p className="mt-4 text-xs text-muted-foreground">Saving...</p>}
+          {profileLoading && (
+            <p className="mt-4 text-xs text-muted-foreground">
+              {savingMode === 'auto' ? 'Autosaving…' : 'Saving…'}
+            </p>
+          )}
         </CardContent>
       </Card>
 
