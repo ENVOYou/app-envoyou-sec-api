@@ -29,13 +29,35 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8
 class APIClient {
   private baseUrl: string
   private token: string | null = null
+  private refreshToken: string | null = null
+  private storageKey = 'envoyou_internal_tokens'
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = window.localStorage.getItem(this.storageKey)
+        if (raw) {
+          const parsed = JSON.parse(raw) as { access_token?: string; refresh_token?: string; ts?: number }
+            this.token = parsed.access_token || null
+            this.refreshToken = parsed.refresh_token || null
+        }
+      } catch { /* ignore */ }
+    }
   }
 
-  setToken(token: string | null) {
+  setToken(token: string | null, refresh?: string | null) {
     this.token = token
+    if (refresh !== undefined) this.refreshToken = refresh
+    if (typeof window !== 'undefined') {
+      try {
+        if (token) {
+          window.localStorage.setItem(this.storageKey, JSON.stringify({ access_token: token, refresh_token: this.refreshToken, ts: Date.now() }))
+        } else {
+          window.localStorage.removeItem(this.storageKey)
+        }
+      } catch { /* ignore */ }
+    }
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -72,12 +94,18 @@ class APIClient {
 
   // Auth endpoints
   auth = {
-    supabaseVerify: (token: string) =>
-      this.request('/v1/auth/supabase/verify', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ supabase_token: token })
-      }),
+    supabaseVerify: async (token: string) => {
+      const res = await this.request<{ access_token: string; refresh_token: string }>(
+        '/v1/auth/supabase/verify',
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ supabase_token: token })
+        }
+      )
+      this.setToken(res.access_token, res.refresh_token)
+      return res
+    },
     getMe: () => this.request('/v1/auth/supabase/me')
   }
 
