@@ -15,7 +15,13 @@ import {
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    detectSessionInUrl: true,
+    autoRefreshToken: true
+  }
+})
 
 // API Client for backend
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
@@ -69,6 +75,7 @@ class APIClient {
     supabaseVerify: (token: string) =>
       this.request('/v1/auth/supabase/verify', {
         method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ supabase_token: token })
       }),
     getMe: () => this.request('/v1/auth/supabase/me')
