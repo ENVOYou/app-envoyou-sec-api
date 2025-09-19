@@ -3,7 +3,11 @@ import { cn } from '@/lib/utils'
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Card = ({ className, ...props }: CardProps) => (
-  <div className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)} {...props} />
+  <div className={cn(
+    "rounded-xl border border-border bg-card text-card-foreground shadow-lg backdrop-blur-sm",
+    "dark:shadow-xl dark:shadow-black/10",
+    className
+  )} {...props} />
 )
 
 const CardHeader = ({ className, ...props }: CardProps) => (

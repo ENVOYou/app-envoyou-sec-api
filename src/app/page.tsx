@@ -13,7 +13,7 @@ export default function HomePage() {
       if (user) {
         router.replace('/dashboard')
       } else {
-        router.replace('/dashboard')
+        router.replace('/auth/login')
       }
     }
   }, [user, loading, router])
