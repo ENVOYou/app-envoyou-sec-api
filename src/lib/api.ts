@@ -43,18 +43,22 @@ class APIClient {
     let response: Response
     try {
       response = await fetch(url, { ...options, headers })
-    } catch (e: any) {
-      throw new Error(`Network Error: ${e.message || e}`)
+    } catch (e) {
+      const err = e as { message?: string }
+      throw new Error(`Network Error: ${err?.message || 'unknown error'}`)
     }
 
-    let body: any = null
+    let body: unknown = null
     const text = await response.text()
     if (text) {
       try { body = JSON.parse(text) } catch { body = text }
     }
 
     if (!response.ok) {
-      const msg = body?.detail || body?.message || `${response.status} ${response.statusText}`
+      const b = body as Record<string, unknown> | string | null
+      const msg = typeof b === 'object' && b !== null
+        ? (b.detail as string) || (b.message as string) || `${response.status} ${response.statusText}`
+        : `${response.status} ${response.statusText}`
       throw new Error(msg)
     }
     return body as T
@@ -141,9 +145,10 @@ class APIClient {
       return adaptUsageAnalytics(raw)
     },
     getRateLimits: async () => {
-      const raw = await this.request('/v1/developer/rate-limits') as any
-      const info = parseRateLimitInfo(raw?.data?.rate_limit)
-      return { ...raw, parsed: info }
+      const raw = await this.request('/v1/developer/rate-limits') as unknown
+      const r = raw as { data?: { rate_limit?: string } }
+      const info = parseRateLimitInfo(r.data?.rate_limit)
+      return { ...(r as object), parsed: info }
     }
   }
 }

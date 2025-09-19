@@ -3,9 +3,11 @@
 
 import type { UserStats, APIKey, Session, Notification, EmissionData, EmissionStats, DeveloperStats, UsageAnalytics } from '@/types'
 
+type Dict = Record<string, unknown>
+
 // User Stats adapter (backend -> frontend)
-export function adaptUserStats(raw: any): UserStats {
-  if (!raw) {
+export function adaptUserStats(raw: unknown): UserStats {
+  if (!raw || typeof raw !== 'object') {
     return {
       total_requests: 0,
       requests_today: 0,
@@ -14,81 +16,99 @@ export function adaptUserStats(raw: any): UserStats {
       active_sessions: 0
     }
   }
+  const r = raw as Dict
   return {
-    total_requests: raw.total_calls ?? 0,
+    total_requests: (r.total_calls as number) ?? 0,
     requests_today: 0, // backend belum sediakan
-    requests_this_month: raw.monthly_calls ?? raw.total_calls ?? 0,
-    api_keys_count: raw.active_keys ?? 0,
+    requests_this_month: (r.monthly_calls as number) ?? (r.total_calls as number) ?? 0,
+    api_keys_count: (r.active_keys as number) ?? 0,
     active_sessions: 0 // tidak ada data langsung, bisa diisi dari sessions length di tempat lain
   }
 }
 
 // API Keys list adapter
-export function adaptAPIKeys(raw: any): APIKey[] {
+export function adaptAPIKeys(raw: unknown): APIKey[] {
   if (!raw) return []
   if (Array.isArray(raw)) return raw as APIKey[]
-  if (Array.isArray(raw.api_keys)) return raw.api_keys as APIKey[]
+  const r = raw as Dict
+  if (Array.isArray(r.api_keys)) return r.api_keys as APIKey[]
   return []
 }
 
 // Sessions list adapter
-export function adaptSessions(raw: any): Session[] {
+export function adaptSessions(raw: unknown): Session[] {
   if (!raw) return []
   if (Array.isArray(raw)) return raw as Session[]
-  if (Array.isArray(raw.sessions)) return raw.sessions as Session[]
+  const r = raw as Dict
+  if (Array.isArray(r.sessions)) return r.sessions as Session[]
   return []
 }
 
 // Notifications adapter (backend uses `read` -> frontend expects `is_read`)
-export function adaptNotifications(raw: any): Notification[] {
+export function adaptNotifications(raw: unknown): Notification[] {
   if (!raw) return []
-  const list = Array.isArray(raw) ? raw : raw.data || []
-  return list.map((n: any) => ({
-    id: String(n.id),
-    title: n.title,
-    message: n.message,
-    category: n.category,
-    is_read: Boolean(n.read),
-    created_at: n.created_at,
-  }))
+  const r = raw as Dict
+  const list: unknown = Array.isArray(raw) ? raw : r.data
+  if (!Array.isArray(list)) return []
+  return list.map((n) => {
+    const item = n as Dict
+    return {
+      id: String(item.id),
+      title: item.title as string,
+      message: item.message as string,
+      category: item.category as string | undefined,
+      is_read: Boolean(item.read),
+      created_at: item.created_at as string,
+    }
+  })
 }
 
 // Emission data adapter (backend wraps in { status, data, ... })
-export function adaptEmissions(raw: any): EmissionData[] {
+export function adaptEmissions(raw: unknown): EmissionData[] {
   if (!raw) return []
-  const arr = Array.isArray(raw) ? raw : raw.data || []
-  return arr.map((d: any) => ({
-    id: String(d.id ?? d.facility_id ?? d.hash ?? ''),
-    state: d.state,
-    year: typeof d.year === 'number' ? d.year : parseInt(d.year, 10) || undefined,
-    pollutant: d.pollutant,
-    value: Number(d.value ?? d.amount ?? d.emission_value ?? 0),
-    unit: d.unit || d.unit_type || 'unknown',
-    source: d.source || raw.source || undefined
-  }))
+  const r = raw as Dict
+  const arr: unknown = Array.isArray(raw) ? raw : r.data
+  if (!Array.isArray(arr)) return []
+  return arr.map((d) => {
+    const rec = d as Dict
+    const y = rec.year
+    return {
+      id: String(rec.id ?? rec.facility_id ?? rec.hash ?? ''),
+      state: rec.state as string | undefined,
+      year: typeof y === 'number' ? y : (typeof y === 'string' ? (parseInt(y, 10) || undefined) : undefined),
+      pollutant: rec.pollutant as string | undefined,
+      value: Number(rec.value ?? rec.amount ?? rec.emission_value ?? 0),
+      unit: (rec.unit as string) || (rec.unit_type as string) || 'unknown',
+      source: (rec.source as string) || (r.source as string) || undefined
+    }
+  })
 }
 
 // Emission stats adapter
-export function adaptEmissionStats(raw: any): EmissionStats | null {
-  if (!raw || !raw.statistics) return null
-  const stats = raw.statistics
-  const years = Object.keys(stats.by_year || {}).filter(y => /^\d+$/.test(y)).map(y => parseInt(y, 10))
+export function adaptEmissionStats(raw: unknown): EmissionStats | null {
+  if (!raw || typeof raw !== 'object') return null
+  const r = raw as Dict
+  if (!r.statistics || typeof r.statistics !== 'object') return null
+  const stats = r.statistics as Dict
+  const byYear = (stats.by_year as Dict) || {}
+  const years = Object.keys(byYear).filter(y => /^\d+$/.test(y)).map(y => parseInt(y, 10))
   return {
-    total_records: stats.total_records ?? 0,
-    states_covered: Object.keys(stats.by_state || {}).length,
+    total_records: (stats.total_records as number) ?? 0,
+    states_covered: Object.keys((stats.by_state as Dict) || {}).length,
     years_range: {
       min: years.length ? Math.min(...years) : 0,
       max: years.length ? Math.max(...years) : 0
     },
-    pollutants: Object.keys(stats.by_pollutant || {})
+    pollutants: Object.keys((stats.by_pollutant as Dict) || {})
   }
 }
 
 // Developer stats adapter
-export function adaptDeveloperStats(raw: any): DeveloperStats {
-  const data = raw?.data || raw || {}
+export function adaptDeveloperStats(raw: unknown): DeveloperStats {
+  const r = (raw as Dict) || {}
+  const data = (r.data as Dict) || r
   return {
-    requests_count: data.total_calls ?? 0,
+    requests_count: (data.total_calls as number) ?? 0,
     requests_limit: 0, // tidak disediakan backend
     rate_limit_remaining: 0, // perlu endpoint rate limit detail jika tersedia
     rate_limit_reset: 0 // placeholder
@@ -96,19 +116,21 @@ export function adaptDeveloperStats(raw: any): DeveloperStats {
 }
 
 // Usage analytics adapter
-export function adaptUsageAnalytics(raw: any): UsageAnalytics {
-  const data = raw?.data || raw || {}
+export function adaptUsageAnalytics(raw: unknown): UsageAnalytics {
+  const r = (raw as Dict) || {}
+  const data = (r.data as Dict) || r
+  const activity = Array.isArray(data.activity) ? (data.activity as Dict[]) : []
   return {
-    period: `${data.window_hours || 24}h`,
-    total_requests: Array.isArray(data.activity) ? data.activity.reduce((acc: number, k: any) => acc + (k.usage_count || 0), 0) : 0,
+    period: `${(data.window_hours as number) || 24}h`,
+    total_requests: activity.reduce((acc, k) => acc + (Number(k.usage_count) || 0), 0),
     successful_requests: 0,
     error_requests: 0,
-    endpoints_usage: Array.isArray(data.activity) ? data.activity.map((k: any) => ({ endpoint: k.prefix || k.key_id || 'unknown', count: k.usage_count || 0 })) : []
+    endpoints_usage: activity.map(k => ({ endpoint: (k.prefix as string) || (k.key_id as string) || 'unknown', count: (k.usage_count as number) || 0 }))
   }
 }
 
 // Rate limits adapter (string -> parsed parts if pattern known)
-export function parseRateLimitInfo(limitStr: string | undefined) {
+export function parseRateLimitInfo(limitStr: string | undefined): { raw: string; limit: number; window_seconds: number } {
   if (!limitStr) return { raw: '', limit: 0, window_seconds: 0 }
   // Example expected pattern: "1000/3600" meaning 1000 per hour
   const match = limitStr.match(/(\d+)\/(\d+)/)
