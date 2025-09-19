@@ -3,7 +3,6 @@
 import { useAuth } from '@/hooks/useAuth'
 import { Sidebar } from '@/components/sidebar'
 import { Header } from '@/components/header'
-import { supabase } from '@/lib/api'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -17,14 +16,8 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (!loading && !user) {
-      // Redirect to Supabase auth
-      const redirectTo = `${window.location.origin}/dashboard`
-      supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo
-        }
-      })
+      // Rely on middleware to handle redirect to /auth/login
+      router.replace('/auth/login')
     }
   }, [user, loading, router])
 
@@ -36,29 +29,7 @@ export default function DashboardLayout({
     )
   }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-semibold mb-4">Welcome to Envoyou</h1>
-          <p className="text-muted-foreground mb-6">Please sign in to continue</p>
-          <button
-            onClick={async () => {
-              await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                  redirectTo: `${window.location.origin}/dashboard`
-                }
-              })
-            }}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-          >
-            Sign in with Google
-          </button>
-        </div>
-      </div>
-    )
-  }
+  if (!user) return null
 
   return (
     <div className="min-h-screen bg-background">
