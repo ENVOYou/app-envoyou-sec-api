@@ -6,8 +6,11 @@ import { supabase, apiClient } from '@/lib/api'
 import { User } from '@/types'
 
 interface SupabaseVerifyResponse {
-  user: User
+  user: Partial<User>
   access_token: string
+  refresh_token: string
+  token_type: string
+  message: string
 }
 
 interface AuthContextType {
@@ -45,10 +48,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.access_token) {
-        // Verify with backend and get user data
-  const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
-  setUser(response.user || null)
-  apiClient.setToken(response.access_token || null)
+    // Verify with backend and get user data
+    const response: SupabaseVerifyResponse = await apiClient.auth.supabaseVerify(session.access_token)
+        if (response.user) {
+          setUser(prev => ({
+            // preserve existing fields if previously fetched
+            ...prev,
+            ...response.user as User,
+            plan: prev?.plan || 'FREE',
+            created_at: prev?.created_at || new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            email_verified: response.user.email_verified ?? prev?.email_verified ?? false
+          }))
+        }
+    apiClient.setToken(response.access_token || null, response.refresh_token || null)
       }
     } catch (error) {
       console.error('Error refreshing user:', error)
@@ -139,10 +152,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (session?.user) {
           setSupabaseUser(session.user)
           try {
-            const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
+            const response: SupabaseVerifyResponse = await apiClient.auth.supabaseVerify(session.access_token)
             if (!mounted) return
-            setUser(response.user || null)
-            apiClient.setToken(response.access_token || null)
+            if (response.user) {
+              setUser(prev => ({
+                ...prev,
+                ...response.user as User,
+                plan: prev?.plan || 'FREE',
+                created_at: prev?.created_at || new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                email_verified: response.user.email_verified ?? prev?.email_verified ?? false
+              }))
+            }
+            apiClient.setToken(response.access_token || null, response.refresh_token || null)
           } catch (error) {
             console.error('Error verifying user (initial):', error)
             // Invalidate broken session so middleware will treat as unauth
@@ -166,10 +188,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (session?.user) {
           setSupabaseUser(session.user)
           try {
-            const response = await apiClient.auth.supabaseVerify(session.access_token) as SupabaseVerifyResponse
+            const response: SupabaseVerifyResponse = await apiClient.auth.supabaseVerify(session.access_token)
             if (!mounted) return
-            setUser(response.user || null)
-            apiClient.setToken(response.access_token || null)
+            if (response.user) {
+              setUser(prev => ({
+                ...prev,
+                ...response.user as User,
+                plan: prev?.plan || 'FREE',
+                created_at: prev?.created_at || new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                email_verified: response.user.email_verified ?? prev?.email_verified ?? false
+              }))
+            }
+            apiClient.setToken(response.access_token || null, response.refresh_token || null)
           } catch (error) {
             console.error('Error verifying user (onAuthStateChange):', error)
             try { await supabase.auth.signOut() } catch {}

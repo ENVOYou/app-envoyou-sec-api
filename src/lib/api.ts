@@ -95,7 +95,7 @@ class APIClient {
   // Auth endpoints
   auth = {
     supabaseVerify: async (token: string) => {
-      const res = await this.request<{ access_token: string; refresh_token: string }>(
+  const res = await this.request<{ access_token: string; refresh_token: string; user: { id: string; email: string; name?: string; email_verified?: boolean; auth_provider?: string }; token_type: string; message: string }>(
         '/v1/auth/supabase/verify',
         {
           method: 'POST',
