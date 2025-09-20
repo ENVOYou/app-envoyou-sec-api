@@ -55,8 +55,8 @@ export function Sidebar({ className }: SidebarProps) {
       {/* Mobile overlay */}
       {isOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsOpen(false)}
+          className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-30" // Gunakan warna tema
+    onClick={() => setIsOpen(false)}
         />
       )}
 

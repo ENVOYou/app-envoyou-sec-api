@@ -29,8 +29,8 @@
 .dark {
   /* Dark surfaces (stepped) */
   --color-background: 0.11 0 0;           /* base */
-  --color-sidebar: 0.15 0 0;              /* sidebar */
-  --color-card: 0.19 0 0;                 /* card */
+  --color-sidebar: 0.16 0 0;              /* sidebar */
+  --color-card: 0.24 0 0;                 /* card */
   --color-popover: 0.24 0 0;              /* highest */
   --color-foreground: 0.96 0 0;           /* text */
   --color-muted: 0.18 0 0;                /* subtle blocks */
