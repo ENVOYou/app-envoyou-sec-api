@@ -1,48 +1,52 @@
 @import "tailwindcss";
 
 :root {
-  --color-border: 0.8 0 0;
-  --color-input: 0.9 0 0;
-  --color-ring: 0.1 0 0;
-  --color-background: 0.95 0 0;
-  --color-foreground: 0.15 0 0;
-  --color-primary: 0.79 0.17 152.6;
-  --color-primary-foreground: 0.98 0 0;
-  --color-secondary: 0.94 0 0;
-  --color-secondary-foreground: 0.1 0 0;
-  --color-muted: 0.96 0 0;
-  --color-muted-foreground: 0.46 0 0;
-  --color-accent: 0.96 0 0;
-  --color-accent-foreground: 0.1 0 0;
-  --color-destructive: 0.6 0.2 25;
+  /* GitHub-inspired light theme surfaces */
+  --color-background: 0.96 0 0;           /* light canvas */
+  --color-card: 0.99 0 0;                 /* raised surface */
+  --color-popover: 1 0 0;                 /* highest surface */
+  --color-foreground: 0.18 0 0;           /* primary text */
+  --color-muted: 0.94 0 0;                /* subtle bg */
+  --color-muted-foreground: 0.55 0 0;     /* muted text */
+  --color-accent: 0.93 0 0;               /* hover / accent bg */
+  --color-accent-foreground: 0.18 0 0;
+  --color-border: 0.85 0 0;               /* separators */
+  --color-input: 0.99 0 0;                /* input surface */
+  --color-ring: 0.40 0 0;                 /* focus ring */
+  --color-secondary: 0.92 0 0;
+  --color-secondary-foreground: 0.2 0 0;
+  --color-destructive: 0.62 0.22 25;      /* red-ish accent */
   --color-destructive-foreground: 0.98 0 0;
-  --color-card: 0.99 0 0;
-  --color-card-foreground: 0.15 0 0;
-  --color-popover: 1 0 0;
-  --color-popover-foreground: 0.15 0 0;
+  /* Unified brand primary (green hue) for buttons & active menu */
+  --color-primary: 0.79 0.17 152.6;       /* green accent */
+  --color-primary-foreground: 0.99 0 0;   /* on primary */
+  --color-card-foreground: 0.18 0 0;
+  --color-popover-foreground: 0.18 0 0;
   --radius: 0.5rem;
 }
 
 .dark {
-  --color-border: 0.16 0 0;
-  --color-input: 0.16 0 0;
-  --color-ring: 0.84 0 0;
-  --color-background: 0.02 0 0;
-  --color-foreground: 0.98 0 0;
-  --color-primary: 0.98 0 0;
-  --color-primary-foreground: 0.1 0 0;
-  --color-secondary: 0.16 0 0;
-  --color-secondary-foreground: 0.98 0 0;
-  --color-muted: 0.16 0 0;
-  --color-muted-foreground: 0.65 0 0;
-  --color-accent: 0.16 0 0;
-  --color-accent-foreground: 0.98 0 0;
-  --color-destructive: 0.31 0.15 25;
+  /* GitHub dark-ish surfaces */
+  --color-background: 0.12 0 0;           /* canvas dark */
+  --color-card: 0.18 0 0;                 /* elevated */
+  --color-popover: 0.22 0 0;              /* highest */
+  --color-foreground: 0.96 0 0;           /* text */
+  --color-muted: 0.18 0 0;                /* subtle blocks */
+  --color-muted-foreground: 0.70 0 0;     /* muted text */
+  --color-accent: 0.24 0 0;               /* hover */
+  --color-accent-foreground: 0.96 0 0;
+  --color-border: 0.28 0 0;               /* separators */
+  --color-input: 0.22 0 0;
+  --color-ring: 0.65 0 0;
+  --color-secondary: 0.22 0 0;
+  --color-secondary-foreground: 0.96 0 0;
+  --color-destructive: 0.50 0.20 25;
   --color-destructive-foreground: 0.98 0 0;
-  --color-card: 0.08 0 0;
-  --color-card-foreground: 0.98 0 0;
-  --color-popover: 0.08 0 0;
-  --color-popover-foreground: 0.98 0 0;
+  /* Keep primary consistent (green) across themes */
+  --color-primary: 0.79 0.17 152.6;
+  --color-primary-foreground: 0.99 0 0;
+  --color-card-foreground: 0.96 0 0;
+  --color-popover-foreground: 0.96 0 0;
 }
 
 body {
