@@ -87,14 +87,20 @@ export function Sidebar({ className }: SidebarProps) {
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                    "group flex items-center space-x-3 rounded-md px-3 py-2 text-sm transition-colors border border-transparent",
                     isActive
-                      ? "bg-accent text-accent-foreground"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                      ? "bg-accent/60 text-primary border-border/60 shadow-sm"
+                      : "text-muted-foreground hover:text-primary hover:bg-accent/40 hover:border-border/50"
                   )}
                 >
-                  <item.icon className="h-5 w-5" />
-                  <span>{item.name}</span>
+                  <item.icon className={cn(
+                    "h-5 w-5 transition-colors",
+                    isActive ? "text-primary" : "group-hover:text-primary"
+                  )} />
+                  <span className={cn(
+                    "truncate",
+                    isActive && "font-medium"
+                  )}>{item.name}</span>
                 </Link>
               )
             })}
