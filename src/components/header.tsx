@@ -14,11 +14,11 @@ export function Header({ title }: HeaderProps) {
   const { user } = useAuth()
 
   return (
-  <header className="h-16 border-b border-border bg-white/90 dark:bg-neutral-950/80 backdrop-blur-sm">
+  <header className="h-16 border-b border-borderBase/60 dark:border-borderBase/30 bg-surface/90 dark:bg-surface/65 backdrop-blur-sm">
       <div className="flex h-full items-center justify-between px-6">
         <div className="flex items-center gap-3">
           <Logo size={34} />
-          <h1 className="text-xl font-semibold bg-clip-text text-transparent bg-[linear-gradient(to_right,oklch(var(--color-foreground)/0.9),oklch(var(--color-primary)/0.9))]">
+          <h1 className="text-xl font-semibold bg-clip-text text-transparent bg-[linear-gradient(to_right,hsl(var(--foreground)/0.92),hsl(var(--primary)/0.9))]">
             {title || 'Dashboard'}
           </h1>
         </div>

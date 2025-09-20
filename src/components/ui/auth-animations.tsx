@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 export function AuroraBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
-      <div className="absolute -inset-[40%] opacity-60 mix-blend-screen dark:mix-blend-overlay blur-3xl will-change-transform animate-[auroraShift_18s_ease-in-out_infinite] bg-[conic-gradient(from_0deg,oklch(var(--color-primary)/0.18)_0deg,transparent_120deg,oklch(var(--color-primary)/0.24)_240deg,transparent_300deg)]" />
+  <div className="absolute -inset-[40%] opacity-60 mix-blend-screen dark:mix-blend-overlay blur-3xl will-change-transform animate-[auroraShift_18s_ease-in-out_infinite] bg-[conic-gradient(from_0deg,hsl(var(--primary)/0.18)_0deg,transparent_120deg,hsl(var(--primary)/0.24)_240deg,transparent_300deg)]" />
     </div>
   )
 }

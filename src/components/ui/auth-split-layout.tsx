@@ -43,14 +43,14 @@ export function AuthSplitLayout({
     window.__ENV_DARK_CHECK__ = rootHasDark
   }
   return (
-    <div className={cn('min-h-screen grid lg:grid-cols-2 bg-white dark:bg-gradient-to-tr dark:from-background dark:via-background dark:to-card/60 text-foreground relative', className)}>
-      {/* Dark mode radial accent */}
-      <div className="pointer-events-none absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_70%_20%,oklch(var(--color-primary)/0.15),transparent_60%)]" />
+  <div className={cn('min-h-screen grid lg:grid-cols-2 bg-background text-foreground relative dark:bg-background', className)}>
+      {/* Dark mode subtle radial accent using primary token */}
+      <div className="pointer-events-none absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_70%_20%,hsl(var(--primary)/0.15),transparent_60%)]" />
       {/* Left / Branding Panel */}
-      <div className="relative hidden lg:flex flex-col overflow-hidden border-r border-gray-200 dark:border-border/60 bg-white dark:bg-gradient-to-br dark:from-accent/40 dark:via-transparent dark:to-primary/10">
+      <div className="relative hidden lg:flex flex-col overflow-hidden border-r border-borderBase/70 dark:border-borderBase/40 bg-surface dark:bg-surface/75">
         <div className="absolute top-0 right-0 h-full w-10 pointer-events-none select-none">
           <div className="absolute top-0 right-0 h-full w-10 bg-gradient-to-r from-black/5 via-transparent to-transparent dark:from-black/40 dark:via-black/10 dark:to-transparent" />
-          <div className="absolute top-0 right-0 h-full w-8 hidden dark:block bg-[radial-gradient(circle_at_left,oklch(var(--color-primary)/0.15),transparent_70%)] opacity-[0.22] mix-blend-plus-lighter" />
+          <div className="absolute top-0 right-0 h-full w-8 hidden dark:block bg-[radial-gradient(circle_at_left,hsl(var(--primary)/0.18),transparent_70%)] opacity-[0.22] mix-blend-plus-lighter" />
         </div>
         <div className="hidden dark:block"><AuroraBackground /></div>
         <div className="relative z-10 flex flex-col h-full p-12 gap-12">
@@ -98,10 +98,10 @@ export function AuthSplitLayout({
 
       {/* Right / Form Area */}
       <div className="flex items-center justify-center px-4 py-16 sm:px-8 lg:px-14 relative">
-        {/* Light mode solid support layer (prevents darkened translucent look) */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(255,255,255,0.9),rgba(255,255,255,0.92)_45%,rgba(255,255,255,0.86))] dark:bg-transparent pointer-events-none" aria-hidden="true" />
-        {/* Grid overlay: only blend in dark; in light keep normal to avoid gray cast */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.35)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.28)_1px,transparent_1px)] bg-[size:40px_40px] dark:mix-blend-overlay" aria-hidden="true" />
+        {/* Light mode subtle radial using surface token; dark stays transparent (accent handled globally) */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,hsl(var(--surface)/0.9),hsl(var(--surface)/0.92)_45%,hsl(var(--surface)/0.86))] dark:bg-transparent pointer-events-none" aria-hidden="true" />
+        {/* Grid overlay: token-based so it adapts to theme */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-[linear-gradient(to_right,hsl(var(--background))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--background))_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,hsl(var(--foreground)/0.35)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.28)_1px,transparent_1px)] bg-[size:40px_40px] dark:mix-blend-overlay" aria-hidden="true" />
         <div className="w-full max-w-md mx-auto relative">
           {children}
         </div>

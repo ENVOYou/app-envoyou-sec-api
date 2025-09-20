@@ -7,6 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
+    "lint:colors": "node scripts/check-hardcoded-colors.mjs",
+    "prebuild": "pnpm lint:colors",
     "daily:summary": "node scripts/generate-daily-summary.mjs",
     "daily:cleanup": "node scripts/cleanup-daily-summaries.mjs",
     "test": "vitest run",

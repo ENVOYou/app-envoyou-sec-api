@@ -1,55 +1,5 @@
 @import "tailwindcss";
 
-:root {
-  /* GitHub-inspired light theme surfaces (adjusted spacing) */
-  --color-background: 0.97 0 0;           /* base canvas (brighter) */
-  --color-sidebar: 0.985 0 0;             /* nav surface slightly brighter */
-  --color-card: 0.99 0 0;                 /* raised card */
-  --color-popover: 1 0 0;                 /* highest surface */
-  --color-foreground: 0.18 0 0;           /* primary text */
-  --color-muted: 0.94 0 0;                /* subtle bg */
-  --color-muted-foreground: 0.55 0 0;     /* muted text */
-  --color-accent: 0.93 0 0;               /* hover / accent bg */
-  --color-accent-foreground: 0.18 0 0;
-  --color-border: 0.88 0 0;               /* separators lighter */
-  --color-input: 0.99 0 0;                /* input surface */
-  --color-ring: 0.40 0 0;                 /* focus ring */
-  --color-secondary: 0.92 0 0;
-  --color-secondary-foreground: 0.2 0 0;
-  --color-destructive: 0.62 0.22 25;      /* red-ish accent */
-  --color-destructive-foreground: 0.98 0 0;
-  /* Unified brand primary (green hue) for buttons & active menu */
-  --color-primary: 0.79 0.17 152.6;       /* green accent */
-  --color-primary-foreground: 0.99 0 0;   /* on primary */
-  --color-card-foreground: 0.18 0 0;
-  --color-popover-foreground: 0.18 0 0;
-  --radius: 0.5rem;
-}
-
-.dark {
-  /* Dark surfaces (stepped) */
-  --color-background: 0.1 0 0;            /* base */
-  --color-sidebar: 0.15 0 0;              /* sidebar */
-  --color-card: 0.21 0 0;                 /* card slightly lifted */
-  --color-popover: 0.24 0 0;              /* highest */
-  --color-foreground: 0.96 0 0;           /* text */
-  --color-muted: 0.18 0 0;                /* subtle blocks */
-  --color-muted-foreground: 0.70 0 0;     /* muted text */
-  --color-accent: 0.24 0 0;               /* hover */
-  --color-accent-foreground: 0.96 0 0;
-  --color-border: 0.28 0 0;               /* separators */
-  --color-input: 0.22 0 0;
-  --color-ring: 0.65 0 0;
-  --color-secondary: 0.22 0 0;
-  --color-secondary-foreground: 0.96 0 0;
-  --color-destructive: 0.50 0.20 25;
-  --color-destructive-foreground: 0.98 0 0;
-  /* Keep primary consistent (green) across themes */
-  --color-primary: 0.79 0.17 152.6;
-  --color-primary-foreground: 0.99 0 0;
-  --color-card-foreground: 0.96 0 0;
-  --color-popover-foreground: 0.96 0 0;
-}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -57,27 +7,21 @@ body {
 
 @layer base {
   body {
-    background-color: oklch(var(--color-background) / 1);
-    color: oklch(var(--color-foreground) / 1);
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     transition: background-color 0.25s ease, color 0.25s ease;
   }
-  .dark body {
-    background-color: oklch(var(--color-background) / 1);
-    color: oklch(var(--color-foreground) / 1);
-  }
+  .dark body { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
 
   select {
-    background-color: oklch(var(--color-card) / 1);
-    color: oklch(var(--color-foreground) / 1);
-    border: 1px solid oklch(var(--color-border) / 1);
+    background-color: hsl(var(--surface-strong));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border-base));
     border-radius: 0.5rem;
   }
-  select:focus {
-    outline: 2px solid oklch(var(--color-ring) / 0.6);
-    outline-offset: 2px;
-  }
+  select:focus { outline: 2px solid hsl(var(--ring)/0.6); outline-offset: 2px; }
 }
 
   @keyframes fadeInUp {
@@ -116,3 +60,42 @@ body {
   @media (prefers-reduced-motion: reduce) {
     [class*="fadeInUp"] { animation: none !important; }
   }
+
+  /* -------------------------------------------------- */
+  /* Canonical Theme HSL Tokens */
+  /* -------------------------------------------------- */
+  :root {
+    --background: 0 0% 100%;
+    --surface: 210 22% 98.5%; /* slightly cleaner neutral */
+    --surface-strong: 210 28% 97.5%; /* lift ~1.5% for clearer separation */
+    --foreground: 222 22% 6%;
+    --muted: 215 10% 55%;
+    --muted-foreground: 215 8% 40%;
+    --primary: 146 55% 44%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 210 18% 94%;
+    --accent-foreground: 222 20% 20%;
+    --destructive: 2 65% 54%;
+    --destructive-foreground: 0 0% 100%;
+    --border-base: 210 18% 88%;
+    --ring: 146 55% 44%;
+  }
+
+  .dark {
+    --background: 222 22% 7%;
+    --surface: 222 21% 11%; /* +1% for less crushed base cards */
+    --surface-strong: 222 22% 15%; /* +2% to improve readable elevation */
+    --foreground: 0 0% 98%;
+    --muted: 220 7% 60%;
+    --muted-foreground: 220 8% 72%;
+    --primary: 146 55% 50%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 230 20% 18%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 2 70% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --border-base: 222 16% 26%;
+    --ring: 146 55% 50%;
+  }
+
+  /* (Removed legacy semantic helper classes; rely on Tailwind utilities) */
