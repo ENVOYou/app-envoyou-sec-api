@@ -43,27 +43,22 @@ export function AuthSplitLayout({
     window.__ENV_DARK_CHECK__ = rootHasDark
   }
   return (
-    <div className={cn('min-h-screen grid lg:grid-cols-2 bg-gradient-to-tr from-background via-background to-card/60 text-foreground relative', className)}>
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,oklch(var(--color-primary)/0.15),transparent_60%)]" />
+    <div className={cn('min-h-screen grid lg:grid-cols-2 bg-white dark:bg-gradient-to-tr dark:from-background dark:via-background dark:to-card/60 text-foreground relative', className)}>
+      {/* Dark mode radial accent */}
+      <div className="pointer-events-none absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_70%_20%,oklch(var(--color-primary)/0.15),transparent_60%)]" />
       {/* Left / Branding Panel */}
-      <div className="relative hidden lg:flex flex-col overflow-hidden border-r border-border/60 bg-gradient-to-br from-accent/40 via-transparent to-primary/10">
-        {/* Depth Divider: subtle layered gradient + line to give separation */}
+      <div className="relative hidden lg:flex flex-col overflow-hidden border-r border-gray-200 dark:border-border/60 bg-white dark:bg-gradient-to-br dark:from-accent/40 dark:via-transparent dark:to-primary/10">
         <div className="absolute top-0 right-0 h-full w-10 pointer-events-none select-none">
-          {/* Subtle soft shadow only (remove white line) */}
-          <div className="absolute top-0 right-0 h-full w-10 bg-gradient-to-r from-black/15 via-black/0 to-transparent dark:from-black/40 dark:via-black/10 dark:to-transparent" />
-          {/* Ambient glow toned down */}
-          <div className="absolute top-0 right-0 h-full w-8 bg-[radial-gradient(circle_at_left,oklch(var(--color-primary)/0.15),transparent_70%)] opacity-[0.14] dark:opacity-[0.22] mix-blend-plus-lighter" />
+          <div className="absolute top-0 right-0 h-full w-10 bg-gradient-to-r from-black/5 via-transparent to-transparent dark:from-black/40 dark:via-black/10 dark:to-transparent" />
+          <div className="absolute top-0 right-0 h-full w-8 hidden dark:block bg-[radial-gradient(circle_at_left,oklch(var(--color-primary)/0.15),transparent_70%)] opacity-[0.22] mix-blend-plus-lighter" />
         </div>
-        <AuroraBackground />
-        <div className="absolute inset-0 pointer-events-none [mask:radial-gradient(circle_at_30%_30%,black,transparent)]" />
+        <div className="hidden dark:block"><AuroraBackground /></div>
         <div className="relative z-10 flex flex-col h-full p-12 gap-12">
           <header className="space-y-4">
             <Link href="/" className="group inline-flex items-center gap-2 relative">
               <Logo size={42} withWordmark wordmarkClassName="group-hover:text-primary transition-colors" />
               <FloatingIcon className="absolute -top-4 -right-8 hidden xl:block">
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary/20 text-primary text-[10px] font-bold shadow-inner ring-1 ring-primary/40 backdrop-blur-sm">
-                  β
-                </span>
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary/15 text-primary text-[10px] font-bold shadow-inner ring-1 ring-primary/30 backdrop-blur-sm dark:bg-primary/20 dark:ring-primary/40">β</span>
               </FloatingIcon>
             </Link>
             {headlineIsFuture ? (
