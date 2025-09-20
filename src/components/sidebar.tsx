@@ -62,7 +62,7 @@ export function Sidebar({ className }: SidebarProps) {
 
       {/* Sidebar */}
       <aside className={cn(
-        "fixed top-0 left-0 z-40 h-screen w-64 bg-sidebar border-r border-border shadow-md/70 backdrop-blur-sm transition-transform lg:translate-x-0",
+        "fixed top-0 left-0 z-40 h-screen w-64 bg-white/90 dark:bg-neutral-950/95 border-r border-white/30 dark:border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_-6px_rgba(0,0,0,0.2)] backdrop-blur-sm transition-transform lg:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full",
         className
       )}>
@@ -87,10 +87,10 @@ export function Sidebar({ className }: SidebarProps) {
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    "group flex items-center space-x-3 rounded-md px-3 py-2 text-sm transition-colors",
+                    "group flex items-center space-x-3 rounded-md px-3 py-2 text-sm transition-all duration-200",
                     isActive
-                      ? "bg-primary/10 text-primary shadow-sm"
-                      : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                      ? "bg-primary/10 text-primary shadow-sm border-l-2 border-primary/70"
+                      : "text-muted-foreground hover:text-primary/90 hover:bg-primary/5 hover:border-l-2 hover:border-primary/40"
                   )}
                 >
                   <item.icon className={cn(

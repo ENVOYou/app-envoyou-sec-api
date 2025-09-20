@@ -17,8 +17,8 @@ export const ElevatedCard = ({ className, children, hoverGlow = true, ...props }
           hoverGlow ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
         )}
       />
-      <div className="relative">
-        <Card className="relative rounded-2xl border border-border/60 bg-card/95 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_8px_32px_-4px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.6),0_2px_8px_-2px_rgba(0,0,0,0.4)]">
+      <div className="relative motion-safe:animate-[fadeInUp_0.5s_ease]">
+        <Card className="relative rounded-3xl border border-white/40 dark:border-white/5 bg-[linear-gradient(to_br,oklch(var(--color-card)/0.85),oklch(var(--color-card)/0.65))] dark:bg-[linear-gradient(to_br,oklch(var(--color-card)/0.55),oklch(var(--color-card)/0.35))] backdrop-blur-xl supports-[backdrop-filter]:backdrop-blur-xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.12),0_10px_40px_-4px_rgba(0,0,0,0.15)] dark:shadow-[0_8px_32px_-6px_rgba(0,0,0,0.7),0_2px_12px_-2px_rgba(0,0,0,0.55)]">
           <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-border/60 ring-inset" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-0 rounded-2xl [mask:linear-gradient(to_bottom,black,transparent)] opacity-[0.35] bg-gradient-to-b from-white/60 dark:from-white/10 to-transparent" aria-hidden="true" />
           {children}

@@ -79,3 +79,40 @@ body {
     outline-offset: 2px;
   }
 }
+
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Aurora gradient slow drift */
+  @keyframes auroraShift {
+    0% { transform: translate3d(-10%, -5%, 0) scale(1); }
+    50% { transform: translate3d(10%, 5%, 0) scale(1.05); }
+    100% { transform: translate3d(-10%, -5%, 0) scale(1); }
+  }
+
+  /* Typewriter caret blink */
+  @keyframes caretBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  /* Subtle float */
+  @keyframes floatPulse {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0); }
+  }
+
+  /* Carousel fade */
+  @keyframes carouselFade {
+    0% { opacity: 0; transform: translateY(6px); }
+    10% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-4px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [class*="fadeInUp"] { animation: none !important; }
+  }

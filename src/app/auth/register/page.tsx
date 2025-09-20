@@ -322,7 +322,8 @@ export default function RegisterPage() {
 
               <Button
                 type="submit"
-                className="w-full h-12 font-medium text-base shadow-md hover:shadow-xl transition-all duration-300 relative bg-[linear-gradient(to_bottom,oklch(var(--color-primary)/1)_0%,oklch(var(--color-primary)/0.85)_100%)] ring-1 ring-inset ring-white/10 dark:ring-black/40 after:absolute after:inset-0 after:rounded-md after:pointer-events-none after:[mask:linear-gradient(to_bottom,black,transparent)] after:bg-white/30 dark:after:bg-white/10 after:opacity-40"
+                variant="elevated"
+                className="w-full h-12 font-medium text-base"
                 disabled={loading || !passwordValidation.isValid || password !== confirmPassword}
               >
                 {loading ? (

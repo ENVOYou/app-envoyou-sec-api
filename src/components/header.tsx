@@ -16,7 +16,7 @@ export function Header({ title }: HeaderProps) {
     <header className="h-16 border-b border-border bg-card">
       <div className="flex h-full items-center justify-between px-6">
         <div className="flex items-center">
-          <h1 className="ml-4 lg:ml-0 text-xl font-semibold">
+          <h1 className="ml-4 lg:ml-0 text-xl font-semibold bg-clip-text text-transparent bg-[linear-gradient(to_right,oklch(var(--color-foreground)/0.9),oklch(var(--color-primary)/0.9))]">
             {title || 'Dashboard'}
           </h1>
         </div>
