@@ -103,7 +103,10 @@ export function AuthSplitLayout({
 
       {/* Right / Form Area */}
       <div className="flex items-center justify-center px-4 py-16 sm:px-8 lg:px-14 relative">
-        <div className="absolute inset-0 pointer-events-none opacity-[0.07] bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.4)_1px,transparent_1px)] bg-[size:40px_40px] mix-blend-overlay" />
+        {/* Light mode solid support layer (prevents darkened translucent look) */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(255,255,255,0.9),rgba(255,255,255,0.92)_45%,rgba(255,255,255,0.86))] dark:bg-transparent pointer-events-none" aria-hidden="true" />
+        {/* Grid overlay: only blend in dark; in light keep normal to avoid gray cast */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.35)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.28)_1px,transparent_1px)] bg-[size:40px_40px] dark:mix-blend-overlay" aria-hidden="true" />
         <div className="w-full max-w-md mx-auto relative">
           {children}
         </div>
