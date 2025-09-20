@@ -20,8 +20,8 @@ export const ElevatedCard = ({ className, children, hoverGlow = true, ...props }
         )}
       />
       <div className="relative motion-safe:animate-[fadeInUp_0.5s_ease]">
-        <Card className="relative rounded-3xl border border-white/40 dark:border-white/10 bg-white/90 dark:bg-neutral-950/80 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_12px_-2px_rgba(0,0,0,0.12),0_14px_36px_-10px_rgba(0,0,0,0.16)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.45),0_6px_18px_-2px_rgba(0,0,0,0.5),0_24px_60px_-14px_rgba(0,0,0,0.6)]">
-          <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/50 dark:ring-white/10 ring-inset" aria-hidden="true" />
+        <Card className="relative rounded-3xl border border-[oklch(var(--color-border)/0.55)] dark:border-[oklch(var(--color-border)/0.4)] bg-[oklch(var(--color-card)/0.94)] dark:bg-[oklch(var(--color-card)/0.78)] backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_12px_-2px_rgba(0,0,0,0.12),0_14px_36px_-10px_rgba(0,0,0,0.16)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.45),0_6px_18px_-2px_rgba(0,0,0,0.5),0_24px_60px_-14px_rgba(0,0,0,0.6)]">
+          <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-[oklch(var(--color-border)/0.65)] dark:ring-[oklch(var(--color-border)/0.4)] ring-inset" aria-hidden="true" />
           {children}
         </Card>
       </div>

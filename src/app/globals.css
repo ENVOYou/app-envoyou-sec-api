@@ -2,8 +2,8 @@
 
 :root {
   /* GitHub-inspired light theme surfaces (adjusted spacing) */
-  --color-background: 0.95 0 0;           /* base canvas */
-  --color-sidebar: 0.97 0 0;              /* nav surface */
+  --color-background: 0.97 0 0;           /* base canvas (brighter) */
+  --color-sidebar: 0.985 0 0;             /* nav surface slightly brighter */
   --color-card: 0.99 0 0;                 /* raised card */
   --color-popover: 1 0 0;                 /* highest surface */
   --color-foreground: 0.18 0 0;           /* primary text */
@@ -11,7 +11,7 @@
   --color-muted-foreground: 0.55 0 0;     /* muted text */
   --color-accent: 0.93 0 0;               /* hover / accent bg */
   --color-accent-foreground: 0.18 0 0;
-  --color-border: 0.85 0 0;               /* separators */
+  --color-border: 0.88 0 0;               /* separators lighter */
   --color-input: 0.99 0 0;                /* input surface */
   --color-ring: 0.40 0 0;                 /* focus ring */
   --color-secondary: 0.92 0 0;
@@ -28,9 +28,9 @@
 
 .dark {
   /* Dark surfaces (stepped) */
-  --color-background: 0.11 0 0;           /* base */
-  --color-sidebar: 0.16 0 0;              /* sidebar */
-  --color-card: 0.24 0 0;                 /* card */
+  --color-background: 0.1 0 0;            /* base */
+  --color-sidebar: 0.15 0 0;              /* sidebar */
+  --color-card: 0.21 0 0;                 /* card slightly lifted */
   --color-popover: 0.24 0 0;              /* highest */
   --color-foreground: 0.96 0 0;           /* text */
   --color-muted: 0.18 0 0;                /* subtle blocks */
