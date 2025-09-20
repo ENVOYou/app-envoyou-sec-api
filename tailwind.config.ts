@@ -42,6 +42,10 @@ export default {
         elevationMd: "0 2px 4px rgba(0,0,0,0.08),0 8px 24px -6px rgba(0,0,0,0.14)",
         hoverLift: "0 4px 10px -2px rgba(0,0,0,0.10),0 12px 28px -6px rgba(0,0,0,0.12)",
         hoverLiftDark: "0 4px 10px -2px rgba(0,0,0,0.55),0 14px 32px -8px rgba(0,0,0,0.55)",
+        depth: "0 4px 8px -2px rgba(0,0,0,0.08),0 8px 20px -4px rgba(0,0,0,0.10)",
+        depthLg: "0 8px 16px -4px rgba(0,0,0,0.10),0 16px 40px -8px rgba(0,0,0,0.16)",
+        depthXl: "0 12px 24px -6px rgba(0,0,0,0.14),0 28px 64px -12px rgba(0,0,0,0.22)",
+        depthGlow: "0 0 0 1px rgba(255,255,255,0.04),0 4px 18px -4px rgba(0,0,0,0.32),0 0 32px -4px hsl(var(--primary)/0.25)",
       }
     },
   },

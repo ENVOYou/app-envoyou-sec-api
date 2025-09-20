@@ -61,6 +61,61 @@ body {
     [class*="fadeInUp"] { animation: none !important; }
   }
 
+    /* -------------------------------------------------- */
+    /* Depth & Pattern Utilities                          */
+    /* -------------------------------------------------- */
+    @layer utilities {
+      .surface-gradient {
+        background: linear-gradient(
+          145deg,
+          hsl(var(--surface)/0.98),
+          hsl(var(--surface-strong)/0.96) 40%,
+          hsl(var(--surface)/0.94) 85%
+        );
+      }
+      .surface-gradient-dark {
+        background: linear-gradient(
+          150deg,
+          hsl(var(--surface)/0.92),
+          hsl(var(--surface-strong)/0.88) 50%,
+          hsl(var(--surface)/0.86) 90%
+        );
+      }
+      .dot-grid-light {
+        background-image:
+          radial-gradient(circle at 1px 1px, hsl(var(--foreground)/0.12) 1px, transparent 0);
+        background-size: 18px 18px;
+      }
+      .dot-grid-dark {
+        background-image:
+          radial-gradient(circle at 1px 1px, hsl(var(--foreground)/0.22) 1px, transparent 0);
+        background-size: 18px 18px;
+      }
+      .layered-surface {
+        position: relative;
+      }
+      .layered-surface:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background:
+          linear-gradient(hsl(var(--foreground)/0.08),transparent 60%),
+          radial-gradient(circle at 25% 15%,hsl(var(--primary)/0.20),transparent 70%);
+        mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+      .focus-ring-soft:focus-visible {
+        outline: 2px solid hsl(var(--ring)/0.55);
+        outline-offset: 3px;
+      }
+      .glass-layer {
+        background: hsl(var(--surface)/0.55);
+        backdrop-filter: blur(14px) saturate(1.1);
+        -webkit-backdrop-filter: blur(14px) saturate(1.1);
+      }
+    }
+
   /* -------------------------------------------------- */
   /* Canonical Theme HSL Tokens */
   /* -------------------------------------------------- */
