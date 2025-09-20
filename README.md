@@ -2,6 +2,16 @@
 
 A modern SaaS dashboard for environmental data management built with Next.js 15, TypeScript, and Tailwind CSS.
 
+## Theme & Design System
+
+The dashboard uses a semantic HSL token system (no hardcoded colors) and a layered component hierarchy (`Card`, `ElevatedCard`, `DepthCard`) for visual priority.
+
+- Theme usage & hierarchy guide: [THEME_USAGE_GUIDE.md](./THEME_USAGE_GUIDE.md)
+- Live component preview (once added): `/design-system` route
+- Depth components: prefer smallest depth tier that achieves emphasis
+
+To propose new tokens or patterns, follow the extension workflow in the guide before opening a PR.
+
 ## Features
 
 - **Modern UI/UX**: Clean, professional interface with dark/light theme support

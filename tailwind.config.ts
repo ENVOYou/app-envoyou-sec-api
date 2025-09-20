@@ -1,10 +1,14 @@
 import type { Config } from "tailwindcss";
 
-export default {
+// Using `as any` to allow `safelist` (supported by Tailwind runtime but missing in current type version)
+const config: any = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  safelist: [
+    { pattern: /bg-(background|surface|surfaceStrong|foreground|muted|primary|accent|destructive|borderBase|ring)/ }
   ],
   darkMode: "class",
   theme: {
@@ -49,4 +53,6 @@ export default {
       }
     },
   },
-} satisfies Config;
+};
+
+export default config as Config;
