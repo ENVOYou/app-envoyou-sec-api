@@ -14,14 +14,14 @@ export const ElevatedCard = ({ className, children, hoverGlow = true, ...props }
       <div
         aria-hidden="true"
         className={cn(
-          'absolute -inset-0.5 rounded-2xl transition-opacity',
-          'dark:bg-gradient-to-br dark:from-primary/15 dark:via-accent/10 dark:to-transparent',
+          'absolute -inset-0.5 rounded-2xl transition-opacity pointer-events-none',
+          'hidden dark:block dark:bg-[radial-gradient(circle_at_30%_20%,rgba(80,220,150,0.18),transparent_60%),radial-gradient(circle_at_75%_70%,rgba(120,200,255,0.15),transparent_65%)]',
           hoverGlow ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
         )}
       />
       <div className="relative motion-safe:animate-[fadeInUp_0.5s_ease]">
-        <Card className="relative rounded-3xl border border-gray-200 bg-white dark:border-white/10 dark:bg-[linear-gradient(to_bottom_right,rgba(40,40,42,0.85),rgba(30,30,32,0.65))] shadow-[0_2px_4px_rgba(0,0,0,0.05),0_8px_24px_-6px_rgba(0,0,0,0.10)] dark:shadow-[0_10px_34px_-6px_rgba(0,0,0,0.55),0_4px_14px_-4px_rgba(0,0,0,0.45)]">
-          <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-gray-200/60 dark:ring-white/10 ring-inset" aria-hidden="true" />
+        <Card className="relative rounded-3xl border border-white/40 dark:border-white/10 bg-white/90 dark:bg-neutral-950/80 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_12px_-2px_rgba(0,0,0,0.12),0_14px_36px_-10px_rgba(0,0,0,0.16)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.45),0_6px_18px_-2px_rgba(0,0,0,0.5),0_24px_60px_-14px_rgba(0,0,0,0.6)]">
+          <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/50 dark:ring-white/10 ring-inset" aria-hidden="true" />
           {children}
         </Card>
       </div>

@@ -6,9 +6,9 @@ const Card = ({ className, ...props }: CardProps) => (
   <div
       className={cn(
         // Light mode: pure white surface, soft border, subtle natural shadow
-  "relative rounded-xl border border-gray-200 bg-white dark:border-white/10 dark:bg-[linear-gradient(to_bottom_right,rgba(34,34,36,0.8),rgba(28,28,30,0.65))] overflow-hidden",
-  "shadow-[0_2px_4px_rgba(0,0,0,0.06),0_6px_16px_-4px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_26px_-6px_rgba(0,0,0,0.55),0_4px_12px_-4px_rgba(0,0,0,0.45)]",
-  "transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[0_4px_10px_rgba(0,0,0,0.10),0_10px_28px_-6px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_10px_34px_-6px_rgba(0,0,0,0.6),0_6px_18px_-4px_rgba(0,0,0,0.5)]",
+  "relative rounded-2xl border border-white/40 dark:border-white/10 bg-white/90 dark:bg-neutral-950/80 backdrop-blur-sm overflow-hidden",
+  "shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_10px_-2px_rgba(0,0,0,0.10),0_12px_32px_-10px_rgba(0,0,0,0.12)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_4px_12px_-2px_rgba(0,0,0,0.45),0_18px_42px_-12px_rgba(0,0,0,0.6)]",
+  "transition-all duration-300 hover:translate-y-[-3px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),0_6px_16px_-2px_rgba(0,0,0,0.14),0_18px_46px_-12px_rgba(0,0,0,0.18)] dark:hover:shadow-[0_2px_4px_rgba(0,0,0,0.5),0_8px_22px_-2px_rgba(0,0,0,0.55),0_26px_58px_-14px_rgba(0,0,0,0.6)]",
         className
       )}
     {...props}
