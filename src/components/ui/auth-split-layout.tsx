@@ -3,7 +3,12 @@
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { ReactNode, useMemo } from 'react'
-import dynamic from 'next/dynamic'
+
+declare global {
+  interface Window {
+    __ENV_DARK_CHECK__?: boolean
+  }
+}
 import { AuroraBackground, Typewriter, StaggerUpdatesList, UpdatesCarousel, FloatingIcon } from './auth-animations'
 import { Logo } from './logo'
 
@@ -34,9 +39,8 @@ export function AuthSplitLayout({
   const useCarousel = forceCarousel || updates.length > 3
   const topHighlight = useMemo(() => updates.slice(0, 3), [updates])
   if (typeof window !== 'undefined') {
-    // Dark mode verification helper (silent)
     const rootHasDark = document.documentElement.classList.contains('dark')
-    ;(window as any).__ENV_DARK_CHECK__ = rootHasDark
+    window.__ENV_DARK_CHECK__ = rootHasDark
   }
   return (
     <div className={cn('min-h-screen grid lg:grid-cols-2 bg-gradient-to-tr from-background via-background to-card/60 text-foreground relative', className)}>

@@ -4,12 +4,14 @@ type CardProps = React.HTMLAttributes<HTMLDivElement>
 
 const Card = ({ className, ...props }: CardProps) => (
   <div
-    className={cn(
-      "rounded-2xl border border-white/20 dark:border-white/10 bg-white/90 dark:bg-neutral-950/80 text-card-foreground",
-      "shadow-[0_4px_12px_rgba(0,0,0,0.15),0_8px_24px_-4px_rgba(0,0,0,0.2)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.6),0_2px_8px_-2px_rgba(0,0,0,0.5)]",
-      "backdrop-blur-sm transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2),0_12px_40px_-6px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_10px_28px_rgba(0,0,0,0.7),0_4px_16px_-4px_rgba(0,0,0,0.6)]",
-      className
-    )}
+      className={cn(
+            "relative rounded-xl border border-border/60 bg-[linear-gradient(to_bottom_right,rgba(255,255,255,0.96),rgba(255,255,255,0.90))] dark:bg-[linear-gradient(to_bottom_right,rgba(30,30,32,0.75),rgba(30,30,32,0.55))] backdrop-blur-sm overflow-hidden transition-colors",
+        // Base shadow (balanced, subtle depth)
+        "shadow-[0_4px_10px_-2px_rgba(0,0,0,0.08),0_2px_4px_-2px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_24px_-6px_rgba(0,0,0,0.6),0_4px_10px_-4px_rgba(0,0,0,0.5)]",
+        // Hover elevation
+        "transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[0_8px_28px_-4px_rgba(0,0,0,0.18),0_14px_42px_-8px_rgba(0,0,0,0.25)] dark:hover:shadow-[0_10px_32px_-6px_rgba(0,0,0,0.7),0_6px_18px_-4px_rgba(0,0,0,0.55)]",
+        className
+      )}
     {...props}
   />
 )
