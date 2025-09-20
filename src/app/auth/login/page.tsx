@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/elevated-card'
 import { ElevatedCard } from '@/components/ui/elevated-card'
 import { LoadingIcon, EyeIcon, EyeOffIcon, GoogleIcon, GitHubIcon } from '@/components/icons/index'
+import AuthSplitLayout from '@/components/ui/auth-split-layout'
 import { AuthError, mapSupabaseError, createAuthError } from '@/lib/authErrors'
 
 export default function LoginPage() {
@@ -69,21 +70,24 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgba(255,255,255,0.15)_1px,_transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,_rgba(255,255,255,0.05)_1px,_transparent_0)] bg-[size:20px_20px]" />
-      <div className="w-full max-w-md space-y-8 relative z-10">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>
-          <p className="text-muted-foreground">Sign in to your account</p>
+    <AuthSplitLayout
+      title="Welcome Back"
+      subtitle="Access your unified environmental data dashboard"
+      updates={[
+        { title: 'Realtime Stream API', description: 'Streaming endpoint beta launching soon for live sensor data.', date: 'Coming Soon' },
+        { title: 'Usage Analytics', description: 'Per-endpoint latency & quota dashboards added last release.', date: 'Latest' },
+        { title: 'Global Data Layer', description: 'Expanded coverage for air & water quality indices.' }
+      ]}
+    >
+      <div className="space-y-8">
+        <div className="space-y-2 text-center">
+          <h1 className="text-3xl font-bold tracking-tight">Sign In</h1>
+          <p className="text-muted-foreground text-sm">Use social login or your credentials</p>
         </div>
-
         <ElevatedCard>
           <CardHeader className="pb-4 relative">
-            <CardTitle className="text-xl">Sign In</CardTitle>
-            <CardDescription>
-              Enter your credentials to access your dashboard
-            </CardDescription>
+            <CardTitle className="text-xl">Your Account</CardTitle>
+            <CardDescription>Secure access with OAuth or email</CardDescription>
           </CardHeader>
           <CardContent className="space-y-7 relative">
             {/* Social Login Buttons */}
@@ -210,6 +214,6 @@ export default function LoginPage() {
           </CardContent>
         </ElevatedCard>
       </div>
-    </div>
+    </AuthSplitLayout>
   )
 }

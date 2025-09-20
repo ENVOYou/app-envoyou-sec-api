@@ -43,6 +43,9 @@ export default {
           DEFAULT: "oklch(var(--color-card) / <alpha-value>)",
           foreground: "oklch(var(--color-card-foreground) / <alpha-value>)",
         },
+        sidebar: {
+          DEFAULT: "oklch(var(--color-sidebar) / <alpha-value>)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

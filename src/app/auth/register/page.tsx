@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ElevatedCard, CardHeader, CardTitle, CardDescription, CardContent, Card } from '@/components/ui/elevated-card'
 import { LoadingIcon, EyeIcon, EyeOffIcon, GoogleIcon, GitHubIcon, CheckIcon } from '@/components/icons/index'
+import AuthSplitLayout from '@/components/ui/auth-split-layout'
 import { AuthError, mapSupabaseError, createAuthError } from '@/lib/authErrors'
 
 export default function RegisterPage() {
@@ -141,17 +142,20 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8 relative">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgba(255,255,255,0.15)_1px,_transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,_rgba(255,255,255,0.05)_1px,_transparent_0)] bg-[size:20px_20px]" />
-
-      <div className="w-full max-w-md space-y-8 relative z-10">
+    <AuthSplitLayout
+      title="Join Envoyou"
+      subtitle="Create your account and start accessing unified environmental data."
+      updates={[
+        { title: 'Team Workspaces', description: 'Invite teammates to collaborate with role-based permissions.', date: 'Planned' },
+        { title: 'Data Export Jobs', description: 'Schedule periodic bulk exports to S3 (alpha soon).', date: 'Coming Soon' },
+        { title: 'Expanded Coverage', description: 'Adding more satellite-derived atmospheric metrics.' }
+      ]}
+    >
+      <div className="space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">Create Account</h1>
-          <p className="text-muted-foreground">Get started with your free account</p>
+          <h1 className="text-3xl font-bold tracking-tight">Create Account</h1>
+          <p className="text-muted-foreground text-sm">Your gateway to real-time environmental insight</p>
         </div>
-
         <ElevatedCard>
           <CardHeader className="pb-4 relative">
             <CardTitle className="text-xl">Sign Up</CardTitle>
@@ -346,6 +350,6 @@ export default function RegisterPage() {
           </CardContent>
         </ElevatedCard>
       </div>
-    </div>
+    </AuthSplitLayout>
   )
 }

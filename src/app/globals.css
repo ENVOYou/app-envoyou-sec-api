@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  /* GitHub-inspired light theme surfaces */
-  --color-background: 0.96 0 0;           /* light canvas */
-  --color-card: 0.99 0 0;                 /* raised surface */
+  /* GitHub-inspired light theme surfaces (adjusted spacing) */
+  --color-background: 0.95 0 0;           /* base canvas */
+  --color-sidebar: 0.97 0 0;              /* nav surface */
+  --color-card: 0.99 0 0;                 /* raised card */
   --color-popover: 1 0 0;                 /* highest surface */
   --color-foreground: 0.18 0 0;           /* primary text */
   --color-muted: 0.94 0 0;                /* subtle bg */
@@ -26,10 +27,11 @@
 }
 
 .dark {
-  /* GitHub dark-ish surfaces */
-  --color-background: 0.12 0 0;           /* canvas dark */
-  --color-card: 0.18 0 0;                 /* elevated */
-  --color-popover: 0.22 0 0;              /* highest */
+  /* Dark surfaces (stepped) */
+  --color-background: 0.11 0 0;           /* base */
+  --color-sidebar: 0.15 0 0;              /* sidebar */
+  --color-card: 0.19 0 0;                 /* card */
+  --color-popover: 0.24 0 0;              /* highest */
   --color-foreground: 0.96 0 0;           /* text */
   --color-muted: 0.18 0 0;                /* subtle blocks */
   --color-muted-foreground: 0.70 0 0;     /* muted text */
@@ -64,5 +66,16 @@ body {
   .dark body {
     background-color: oklch(var(--color-background) / 1);
     color: oklch(var(--color-foreground) / 1);
+  }
+
+  select {
+    background-color: oklch(var(--color-card) / 1);
+    color: oklch(var(--color-foreground) / 1);
+    border: 1px solid oklch(var(--color-border) / 1);
+    border-radius: 0.5rem;
+  }
+  select:focus {
+    outline: 2px solid oklch(var(--color-ring) / 0.6);
+    outline-offset: 2px;
   }
 }
