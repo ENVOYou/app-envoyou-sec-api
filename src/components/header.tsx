@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/hooks/useAuth'
 import { BellIcon, UserIcon } from '@/components/icons'
+import { Logo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 
@@ -15,8 +16,9 @@ export function Header({ title }: HeaderProps) {
   return (
     <header className="h-16 border-b border-border bg-card">
       <div className="flex h-full items-center justify-between px-6">
-        <div className="flex items-center">
-          <h1 className="ml-4 lg:ml-0 text-xl font-semibold bg-clip-text text-transparent bg-[linear-gradient(to_right,oklch(var(--color-foreground)/0.9),oklch(var(--color-primary)/0.9))]">
+        <div className="flex items-center gap-3">
+          <Logo size={34} />
+          <h1 className="text-xl font-semibold bg-clip-text text-transparent bg-[linear-gradient(to_right,oklch(var(--color-foreground)/0.9),oklch(var(--color-primary)/0.9))]">
             {title || 'Dashboard'}
           </h1>
         </div>

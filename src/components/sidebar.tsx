@@ -17,6 +17,7 @@ import {
   MenuIcon,
   XIcon
 } from '@/components/icons'
+import { Logo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
 
 const navigation = [
@@ -69,11 +70,8 @@ export function Sidebar({ className }: SidebarProps) {
         <div className="flex h-full flex-col">
           {/* Logo */}
           <div className="flex h-16 items-center border-b border-border px-6">
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <GlobeIcon className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="font-semibold text-lg">Envoyou</span>
+            <Link href="/dashboard" className="flex items-center">
+              <Logo size={36} withWordmark wordmarkClassName="text-base font-semibold" />
             </Link>
           </div>
 

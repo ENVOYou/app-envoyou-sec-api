@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ReactNode, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { AuroraBackground, Typewriter, StaggerUpdatesList, UpdatesCarousel, FloatingIcon } from './auth-animations'
+import { Logo } from './logo'
 
 interface AuthSplitLayoutProps {
   children: ReactNode
@@ -44,29 +45,22 @@ export function AuthSplitLayout({
       <div className="relative hidden lg:flex flex-col overflow-hidden border-r border-border/60 bg-gradient-to-br from-accent/40 via-transparent to-primary/10">
         {/* Depth Divider: subtle layered gradient + line to give separation */}
         <div className="absolute top-0 right-0 h-full w-10 pointer-events-none select-none">
-          {/* Core border reinforcement / highlight */}
-          <div className="absolute top-0 right-0 h-full w-px bg-white/30 dark:bg-white/10 mix-blend-overlay" />
-          {/* Shadow gradient casting onto form side */}
-          <div className="absolute top-0 right-0 h-full w-10 bg-gradient-to-r from-black/10 via-black/0 to-transparent dark:from-black/45 dark:via-black/10 dark:to-transparent" />
-          {/* Soft ambient glow to simulate elevation */}
-          <div className="absolute top-0 right-0 h-full w-8 bg-[radial-gradient(circle_at_left,oklch(var(--color-primary)/0.18),transparent_70%)] opacity-[0.18] dark:opacity-[0.25] mix-blend-plus-lighter" />
+          {/* Subtle soft shadow only (remove white line) */}
+          <div className="absolute top-0 right-0 h-full w-10 bg-gradient-to-r from-black/15 via-black/0 to-transparent dark:from-black/40 dark:via-black/10 dark:to-transparent" />
+          {/* Ambient glow toned down */}
+          <div className="absolute top-0 right-0 h-full w-8 bg-[radial-gradient(circle_at_left,oklch(var(--color-primary)/0.15),transparent_70%)] opacity-[0.14] dark:opacity-[0.22] mix-blend-plus-lighter" />
         </div>
         <AuroraBackground />
         <div className="absolute inset-0 pointer-events-none [mask:radial-gradient(circle_at_30%_30%,black,transparent)]" />
         <div className="relative z-10 flex flex-col h-full p-12 gap-12">
           <header className="space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2 group">
-              <div className="h-10 w-10 rounded-lg bg-primary/90 flex items-center justify-center shadow-sm ring-1 ring-inset ring-white/20 dark:ring-black/40">
-                <span className="font-bold text-primary-foreground text-lg">E</span>
-              </div>
-              <span className="text-xl font-semibold tracking-tight group-hover:text-primary transition-colors relative">
-                Envoyou
-                <FloatingIcon className="absolute -top-5 -right-6 hidden xl:block">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary/20 text-primary text-[10px] font-bold shadow-inner ring-1 ring-primary/40 backdrop-blur-sm">
-                    β
-                  </span>
-                </FloatingIcon>
-              </span>
+            <Link href="/" className="group inline-flex items-center gap-2 relative">
+              <Logo size={42} withWordmark wordmarkClassName="group-hover:text-primary transition-colors" />
+              <FloatingIcon className="absolute -top-4 -right-8 hidden xl:block">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary/20 text-primary text-[10px] font-bold shadow-inner ring-1 ring-primary/40 backdrop-blur-sm">
+                  β
+                </span>
+              </FloatingIcon>
             </Link>
             {headlineIsFuture ? (
               <h1 className="text-3xl font-bold leading-tight tracking-tight">
