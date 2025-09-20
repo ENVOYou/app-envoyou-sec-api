@@ -12,6 +12,7 @@ interface AuthSplitLayoutProps {
   subtitle?: string
   updates?: { title: string; description: string; date?: string }[]
   className?: string
+  forceCarousel?: boolean
 }
 
 /*
@@ -25,11 +26,17 @@ export function AuthSplitLayout({
   title = 'Envoyou Platform',
   subtitle = 'Unified environmental data & insights',
   updates = [],
-  className
+  className,
+  forceCarousel = false
 }: AuthSplitLayoutProps) {
   const headlineIsFuture = /soon|coming|realtime|real-time|future|next/i.test(title)
-  const useCarousel = updates.length > 3
+  const useCarousel = forceCarousel || updates.length > 3
   const topHighlight = useMemo(() => updates.slice(0, 3), [updates])
+  if (typeof window !== 'undefined') {
+    // Dark mode verification helper (silent)
+    const rootHasDark = document.documentElement.classList.contains('dark')
+    ;(window as any).__ENV_DARK_CHECK__ = rootHasDark
+  }
   return (
     <div className={cn('min-h-screen grid lg:grid-cols-2 bg-gradient-to-tr from-background via-background to-card/60 text-foreground relative', className)}>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,oklch(var(--color-primary)/0.15),transparent_60%)]" />

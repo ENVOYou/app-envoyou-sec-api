@@ -63,47 +63,65 @@ interface UpdatesCarouselProps {
   items: CarouselItem[]
   interval?: number
   className?: string
+  pauseOnHover?: boolean
+  ariaLabel?: string
 }
 
-export function UpdatesCarousel({ items, interval = 5000, className }: UpdatesCarouselProps) {
+export function UpdatesCarousel({ items, interval = 5000, className, pauseOnHover = true, ariaLabel = 'Updates carousel' }: UpdatesCarouselProps) {
   const [index, setIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
   const active = items[index]
-  const prevIndex = useRef(0)
 
   useEffect(() => {
-    const id = window.setInterval(() => {
+    if (paused) return
+    const id = window.setTimeout(() => {
       setIndex(i => (i + 1) % items.length)
     }, interval)
-    return () => window.clearInterval(id)
-  }, [items.length, interval])
-
-  useEffect(() => { prevIndex.current = index }, [index])
+    return () => window.clearTimeout(id)
+  }, [index, paused, items.length, interval])
 
   return (
-    <div className={className}>
+    <div
+      className={className}
+      role="group"
+      aria-roledescription="carousel"
+      aria-label={ariaLabel}
+      onMouseEnter={() => pauseOnHover && setPaused(true)}
+      onMouseLeave={() => pauseOnHover && setPaused(false)}
+    >
+      <div className="sr-only" aria-live="polite">{active.title}</div>
       <AnimatePresence mode="wait">
         <motion.div
           key={index}
           initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }}
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }}
           exit={{ opacity: 0, y: -6, transition: { duration: 0.35, ease: 'easeIn' } }}
           className="space-y-2"
         >
           <h3 className="text-base font-semibold leading-snug tracking-tight">{active.title}</h3>
           {active.date && <p className="text-[10px] uppercase tracking-wider text-muted-foreground/70">{active.date}</p>}
-          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{active.description}</p>
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">{active.description}</p>
         </motion.div>
       </AnimatePresence>
       {items.length > 1 && (
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-4 items-center">
           {items.map((_, i) => (
             <button
               key={i}
               onClick={() => setIndex(i)}
               aria-label={`Show update ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all ${i === index ? 'w-6 bg-primary' : 'w-2 bg-primary/30 hover:bg-primary/50'}`}
+              aria-current={i === index}
+              className={`h-1.5 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${i === index ? 'w-6 bg-primary' : 'w-2 bg-primary/30 hover:bg-primary/50'}`}
             />
           ))}
+          <button
+            type="button"
+            onClick={() => setPaused(p => !p)}
+            className="ml-2 text-[10px] uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
+            aria-label={paused ? 'Resume carousel' : 'Pause carousel'}
+          >
+            {paused ? 'Play' : 'Pause'}
+          </button>
         </div>
       )}
     </div>

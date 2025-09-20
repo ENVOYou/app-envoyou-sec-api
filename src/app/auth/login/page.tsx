@@ -76,8 +76,11 @@ export default function LoginPage() {
       updates={[
         { title: 'Realtime Stream API', description: 'Streaming endpoint beta launching soon for live sensor data.', date: 'Coming Soon' },
         { title: 'Usage Analytics', description: 'Per-endpoint latency & quota dashboards added last release.', date: 'Latest' },
-        { title: 'Global Data Layer', description: 'Expanded coverage for air & water quality indices.' }
+        { title: 'Global Data Layer', description: 'Expanded coverage for air & water quality indices.' },
+        { title: 'Team Workspaces', description: 'Collaborate with granular roles & environment isolation.', date: 'Planned' },
+        { title: 'Data Export Jobs', description: 'Automated batch exports to S3 & Glacier tiers.' }
       ]}
+      forceCarousel
     >
       <div className="space-y-8">
         <div className="space-y-2 text-center">
