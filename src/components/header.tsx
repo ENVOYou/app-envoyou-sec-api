@@ -14,7 +14,7 @@ export function Header({ title }: HeaderProps) {
   const { user } = useAuth()
 
   return (
-    <header className="h-16 border-b border-border bg-card">
+  <header className="h-16 border-b border-border bg-white/90 dark:bg-neutral-950/80 backdrop-blur-sm">
       <div className="flex h-full items-center justify-between px-6">
         <div className="flex items-center gap-3">
           <Logo size={34} />
