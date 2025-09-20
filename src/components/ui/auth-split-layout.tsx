@@ -42,6 +42,15 @@ export function AuthSplitLayout({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,oklch(var(--color-primary)/0.15),transparent_60%)]" />
       {/* Left / Branding Panel */}
       <div className="relative hidden lg:flex flex-col overflow-hidden border-r border-border/60 bg-gradient-to-br from-accent/40 via-transparent to-primary/10">
+        {/* Depth Divider: subtle layered gradient + line to give separation */}
+        <div className="absolute top-0 right-0 h-full w-10 pointer-events-none select-none">
+          {/* Core border reinforcement / highlight */}
+          <div className="absolute top-0 right-0 h-full w-px bg-white/30 dark:bg-white/10 mix-blend-overlay" />
+          {/* Shadow gradient casting onto form side */}
+          <div className="absolute top-0 right-0 h-full w-10 bg-gradient-to-r from-black/10 via-black/0 to-transparent dark:from-black/45 dark:via-black/10 dark:to-transparent" />
+          {/* Soft ambient glow to simulate elevation */}
+          <div className="absolute top-0 right-0 h-full w-8 bg-[radial-gradient(circle_at_left,oklch(var(--color-primary)/0.18),transparent_70%)] opacity-[0.18] dark:opacity-[0.25] mix-blend-plus-lighter" />
+        </div>
         <AuroraBackground />
         <div className="absolute inset-0 pointer-events-none [mask:radial-gradient(circle_at_30%_30%,black,transparent)]" />
         <div className="relative z-10 flex flex-col h-full p-12 gap-12">
