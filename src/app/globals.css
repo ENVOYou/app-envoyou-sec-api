@@ -138,8 +138,8 @@ body {
 
   .dark {
     --background: 222 22% 5%;
-    --surface: 222 21% 9%; /* +1% for less crushed base cards */
-    --surface-strong: 222 22% 13%; /* +2% to improve readable elevation */
+    --surface: 222 21% 12%; /* +1% for less crushed base cards */
+    --surface-strong: 222 22% 16%; /* +2% to improve readable elevation */
     --foreground: 0 0% 98%;
     --muted: 220 7% 60%;
     --muted-foreground: 220 8% 72%;
@@ -149,7 +149,7 @@ body {
     --accent-foreground: 0 0% 98%;
     --destructive: 2 70% 48%;
     --destructive-foreground: 0 0% 100%;
-    --border-base: 222 16% 20%;
+    --border-base: 222 16% 22%;
     --ring: 146 55% 50%;
   }
 
