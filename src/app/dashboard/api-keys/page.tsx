@@ -147,7 +147,7 @@ export default function APIKeysPage() {
       )}
 
       {/* Create new API Key */}
-  <div className="grid-item mb-6"><Card className="mb-0">
+  <div className="surface-section mb-6"><div className="grid-item"><Card className="mb-0">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <PlusIcon className="h-5 w-5" />
@@ -170,10 +170,10 @@ export default function APIKeysPage() {
             </Button>
           </div>
         </CardContent>
-  </Card></div>
+  </Card></div></div>
 
       {/* API Keys List */}
-  <div className="grid-item"><Card>
+  <div className="surface-section"><div className="grid-item"><Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <KeyIcon className="h-5 w-5" />
@@ -259,10 +259,10 @@ export default function APIKeysPage() {
             </div>
           )}
         </CardContent>
-  </Card></div>
+  </Card></div></div>
 
       {/* Usage Guidelines */}
-  <div className="grid-item mt-6"><Card className="mt-0">
+  <div className="surface-section mt-6"><div className="grid-item"><Card className="mt-0">
         <CardHeader>
           <CardTitle>Usage Guidelines</CardTitle>
         </CardHeader>
@@ -288,7 +288,7 @@ export default function APIKeysPage() {
             </p>
           </div>
         </CardContent>
-  </Card></div>
+  </Card></div></div>
     </div>
   )
 }
