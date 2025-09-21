@@ -6,19 +6,19 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const tierMap: Record<NonNullable<CardProps['variant']>, string> = {
-  // Base: sits just above canvas; minimal shadow
+  // Base: sits just above section; no explicit border to avoid double outline
   base: 'bg-surface shadow-elevationSm',
-  // Raised: clearer separation using alt tone + mid shadow (solid)
+  // Raised: adds tone shift + mid shadow (still borderless by default)
   raised: 'bg-surface-alt shadow-elevationMd relative',
-  // Strong: highest panel tier; stronger tone + composite shadow + faint top gradient (solid)
-  strong: 'bg-surface-strong shadow-depth relative'
+  // Strong: only tier that gets a structural border by default
+  strong: 'bg-surface-strong shadow-depth relative border border-borderBase/55 dark:border-borderBase/35'
 }
 
 const Card = ({ className, variant = 'base', interactive = true, ...props }: CardProps) => {
   return (
     <div
       className={cn(
-        'group rounded-2xl border border-borderBase/55 dark:border-borderBase/30 overflow-hidden backdrop-blur-sm transition-colors',
+        'group rounded-2xl overflow-hidden backdrop-blur-sm transition-colors',
         tierMap[variant],
         interactive && 'transition-transform duration-300 will-change-transform hover:translate-y-[-3px] hover:shadow-hoverLift dark:hover:shadow-hoverLiftDark',
         variant === 'strong' && 'before:absolute before:inset-0 before:pointer-events-none before:bg-[linear-gradient(to_bottom,hsl(var(--foreground)/0.08),transparent_55%)] before:mix-blend-overlay',

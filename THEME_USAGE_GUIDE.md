@@ -1,180 +1,146 @@
-# Theme Usage Guide
+# Theme & Hierarchy Usage Guide
 
-This guide explains how to use the Envoyou dashboard's semantic theme tokens, component hierarchy tools (Card, ElevatedCard, DepthCard), utilities, and visual patterns to ensure a consistent, accessible, and modern interface.
+Updated to reflect unified layering model (canvas → section → grid → grid-item → card) and deprecation path for `DepthCard`.
 
-## 1. Core Principles
+## 1. Objectives
+- Instantly readable visual hierarchy (modern SaaS parity / exceed).
+- Strict semantic tokens (no ad‑hoc HSL in components).
+- Single structural border per tier cluster (avoid outline stacking).
+- Opaque, confident surfaces (alpha only for effects / accents).
+- Deterministic elevation + typography scale.
 
-1. **Semantic over literal**: Always reference semantic CSS variables / Tailwind tokens (`bg-background`, `text-foreground`, `border-borderBase`, `bg-primary`) rather than hardcoded color values.
-2. **Layered hierarchy**: Depth and visual emphasis scale with component importance (surface → Card → ElevatedCard → DepthCard tiers).
-3. **Subtle motion & light**: Use hover elevation and radial accents sparingly for interactive elements or primary KPIs.
-4. **Contrast + readability first**: Decorative gradients/patterns must never reduce text contrast below AA levels.
-5. **Composable utilities**: Patterns, gradients, and overlays are additive wrappers—avoid baking them directly into core components unless part of their identity.
+## 2. Layer Stack
+| Order | Layer | Implementation | Notes |
+|-------|-------|----------------|-------|
+| 0 | Canvas | `<body>` (vignette pseudo) | Ambient depth only, no border |
+| 1 | Section | `.surface-section` | Gradient + inset border + top highlight |
+| 2 | Grid | Tailwind grid container | Uses spacing tokens `--space-grid-gap*` |
+| 3 | Grid Item | `.grid-item` | Shadow isolation wrapper |
+| 4 | Card | `<Card variant="base|raised|strong" />` | Variant defines tone + elevation + (only strong has border) |
+| 5 | Inline Tile | `.action-tile` | Internal navigational blocks |
 
-## 2. Semantic Tokens (HSL)
-Defined in `globals.css` and mapped in Tailwind:
+Legacy `DepthCard` maps to Card variants (see §9) and will be removed gradually.
 
-| Token | Purpose | Example Usage |
-|-------|---------|---------------|
-| `--background` / `bg-background` | Base page canvas | `<body>` background, full-width wrappers |
-| `--surface` / `bg-surface` | Standard component base | Cards, panels, inputs |
-| `--surface-alt` / `bg-surfaceAlt` | Intermediate elevated surface | Secondary raised panels, mid-depth cards |
-| `--surface-strong` | Higher contrast surface | Modals, dropdown menus |
-| `--foreground` | Primary text color | Body text |
-| `--muted` + `--muted-foreground` (via Tailwind) | Subtle UI chrome & secondary text | Meta labels, separators |
-| `--primary` | Brand accent & key CTAs | Buttons, active states |
-| `--accent` | Secondary accent | Secondary stats, mild highlights |
-| `--destructive` | Destructive actions/errors | Danger buttons, alerts |
-| `--border-base` | Neutral border/ring color | Borders, focus rings |
-| `--ring` | Focus outline hue | Accessible focus indicators |
+## 3. Semantic Tokens
+Light ladder (ΔL* ~3–6 per step):
+- `--background` (canvas)
+- `--surface` (base plain panel)
+- `--surface-alt` (mid separation)
+- `--surface-strong` (highest neutral tier)
+- `--foreground`, `--muted(-foreground)` (text hierarchy)
+- Interaction: `--primary`, `--accent`, `--destructive`, `--ring`, `--border-base`
 
-Never introduce new raw color literals. Use existing semantic tokens or propose an extension first.
+Dark ladder widened: background → surface → surface-alt → (strong via variant). Do NOT introduce unregistered neutrals.
 
-## 3. Component Hierarchy
+## 4. Card Variants
+| Variant | Purpose | Visual Recipe |
+|---------|---------|---------------|
+| base | Default content module | Surface tone + small shadow (no border) |
+| raised | Emphasis above base cluster | Alt tone + mid shadow (no border) |
+| strong | High emphasis / anchor / summary | Strong tone + border + composite shadow + top gradient overlay |
 
-| Level | Component | Typical Use | Visual Traits |
-|-------|-----------|-------------|---------------|
-| Base Surface | (no wrapper) or simple `div` | Layout sections, flex/grid containers | No elevation, transparent or `bg-background` |
-| Card | `Card` | Standard informational groups | Subtle border, minimal or no shadow |
-| ElevatedCard | `ElevatedCard` | Featured panels requiring mild emphasis | Slight elevation + radial soft light |
-| DepthCard (sm) | `DepthCard depth="sm"` | Low-priority stat tiles, compact arrays | Light shadow, compact padding option |
-| DepthCard (md) | `DepthCard depth="md"` | Standard KPI metric blocks | Medium composite shadow |
-| DepthCard (lg) + accent | `DepthCard depth="lg" accent="primary"` | High-value primary KPI / hero stat | Stronger depth, optional gradient/radial accent (dark uses `surfaceAlt` higher opacity) |
-| DepthCard (xl/glow) | Reserved (sparingly) | Marketing hero, highlight moment | Deep multi-layer shadow, optional glow |
+Rules:
+- Only one or few `strong` cards per viewport.
+- Inside a `.surface-section` do not add custom borders to base/raised.
+- Use `.hover-lift` selectively (interactive groups, not all cards).
 
-### When to Choose Which
+## 5. Borders & Elevation Policy
+| Layer | Border | Shadow Style |
+|-------|--------|--------------|
+| Canvas | None | None (vignette only) |
+| Section | Inset 1px (via class) | Soft ambient + broad |
+| Card base/raised | None | ElevationSm / ElevationMd |
+| Card strong | 1px | Depth composite + overlay |
+| Action tile | Hairline (1px) | No external shadow |
 
-- Use **Card** for neutral content containers (lists, forms, settings groups).
-- Use **ElevatedCard** for sections you want to gently lift (summary overviews, comparative panels) without competing with KPIs.
-- Use **DepthCard** for hierarchy-critical or dashboard metric elements, especially when depth communicates importance.
-- Avoid more than one `glow` or `xl` DepthCard per view unless a deliberate hero composition is designed.
+Avoid two physical borders adjacent. If an isolated card sits directly on canvas and needs framing, either wrap in section or upgrade to strong variant (not both).
 
-### Do / Don't
+## 6. Utilities
+| Utility | Purpose |
+|---------|---------|
+| `.surface-section` | Intermediate elevated group container |
+| `.grid-item` | Shadow isolation / flex column wrapper |
+| `.cluster` | Vertical stack of multiple sections with governed spacing |
+| `.hover-lift` | Optional interactive elevation (shadow + translate) |
+| `.action-tile` | Inline nav/action row tile styling |
+| Typography: `.ts-page-title`, `.ts-section-title`, `.ts-card-title`, `.ts-metric`, `.ts-label`, `.ts-body`, `.ts-meta` |
 
-- ✅ Combine `DepthCard` + pattern utility (e.g. `dot-grid-faint`) inside for ambient texture.
-- ✅ Use `accent="primary"` only on top-tier metric or hero card.
-- ❌ Stack more than two consecutive high-depth (`lg` or above) cards without breathing space.
-- ❌ Mix different accent radials in a tight cluster (visual noise risk).
+## 7. Spacing Tokens
+| Token | Default | Usage |
+|-------|---------|-------|
+| `--space-section-pad` | 0.75rem | Section inner padding |
+| `--space-card-pad` | 1.25rem | Card internal (apply via Tailwind) |
+| `--space-grid-gap` | 1.5rem | Standard grid gap |
+| `--space-grid-gap-lg` | 2rem | Large grid layouts |
+| `--space-cluster-gap` | 2.25rem | Internal section gap in `.cluster` |
+| `--space-cluster-stack` | 3.5rem | Gap between clusters |
 
- 
-## 4. DepthCard Props
+## 8. Typography Scale
+| Utility | Role |
+|---------|-----|
+| `.ts-page-title` | Page heading |
+| `.ts-section-title` | Section header inside section wrapper |
+| `.ts-card-title` | Card-level heading |
+| `.ts-metric` | Numeric KPIs |
+| `.ts-label` | Uppercase label / micro heading |
+| `.ts-body` | Standard body text |
+| `.ts-meta` | Secondary meta / footnote |
 
-```tsx
-<DepthCard
-  depth="sm|md|lg|xl|glow"
-  accent="none|primary|accent"
-  interactive={true|false}
-  glow={false|true}
-  density="base|compact"
-  className="..."
->
-  ...content
-</DepthCard>
-```
+Apply these instead of ad-hoc `text-xl`, etc. for consistency.
 
-| Prop | Guidance |
-|------|----------|
-| `depth` | Choose smallest that communicates needed emphasis. `lg` only for primary KPI tier. |
-| `accent` | `primary` for main stat; `accent` for secondary highlight. Avoid both in same row repetitively. |
-| `interactive` | Disable for purely informational aggregates to reduce motion. |
-| `glow` | Rare; marketing or celebratory state only (e.g., plan upgrade success). |
-| `density` | Use `compact` for 2–4 line stat tiles; `base` for richer content. |
+## 9. DepthCard Migration
+| DepthCard depth | New Mapping |
+|-----------------|------------|
+| sm | `Card variant="base"` |
+| md | `Card variant="raised"` |
+| lg / xl | `Card variant="strong"` |
+| glow | `Card variant="strong"` + custom glow utility |
 
- 
-## 5. Utility & Pattern Layer
-Utilities defined under `@layer utilities` in `globals.css`:
+Migration steps: replace import, map props, move padding (if density), add accent effect with `.layered-surface` or custom pseudo if needed.
 
-| Utility | Purpose | Example |
-|---------|---------|---------|
-| `surface-gradient` | Subtle multi-stop backdrop for grouping KPI cluster | Wrap grid of DepthCards |
-| `dot-grid-faint` | Very low-contrast texture overlay | Inside progress bars or large empty metrics |
-| `dot-grid-soft` | Slightly stronger variant | Hero metric backgrounds (limit usage) |
-| `layered-surface` | Dual-layer subtle inner lighting | Applied automatically when `accent="primary"` on DepthCard |
-| `glass-layer` | Adds glassy transparency effect | Use cautiously on overlapping panels |
+## 10. Active Navigation Style
+- Active nav uses subtle horizontal gradient + inset dual ring + brand text color.
+- Hover uses neutral accent fill + single inset border.
+- Focus visible ring uses `--ring` color (never suppressed).
 
-Composition pattern:
+## 11. Visual Regression Strategy
+| Snapshot | Coverage |
+|----------|----------|
+| design-system | Tokens, components, states |
+| analytics | Multi-card, section grouping, tile actions |
+| (future) settings/security | Form + strong card mix |
 
-```html
-<div class="surface-gradient rounded-3xl p-2">
-  <div class="grid gap-4 md:grid-cols-4">
-    <DepthCard depth="lg" accent="primary" />
-    <DepthCard depth="md" />
-    <DepthCard depth="md" />
-    <DepthCard depth="sm" />
-  </div>
-</div>
-```
+Add new snapshot when a new archetype (layout pattern) introduced; update baseline only on approved token/structure changes.
 
- 
-## 6. Progress Indicators
-Use semantic structure + gradient fill:
+## 12. Implementation Checklist (New Feature)
+- [ ] Determine grouping → wrap in `.surface-section` if multi-card or needs isolation.
+- [ ] Use proper card variants (≤1–2 strong per view).
+- [ ] Apply typography utilities.
+- [ ] Avoid raw color; rely on semantic classes.
+- [ ] Confirm no double borders.
+- [ ] Test light & dark; run visual snapshots.
 
-```tsx
-<div class="relative h-2 w-full rounded-full bg-muted/70 overflow-hidden">
-  <div class="absolute inset-y-0 left-0 bg-gradient-to-r from-primary/80 via-primary to-primary/60" style={{ width: pct + '%' }} />
-  <div class="absolute inset-0 dot-grid-faint opacity-30 pointer-events-none" />
-</div>
-```
+## 13. Anti‑Patterns & Fixes
+| Anti-Pattern | Replace With |
+|--------------|--------------|
+| Base card with manual border inside section | Remove border (let section frame) |
+| Multiple nested `.surface-section` | Single outer section + grid |
+| Random HSL in component file | Add / reuse semantic token |
+| Overusing strong variant for all panels | Mix base/raised/strong intentionally |
+| DepthCard + Card mixture in same grid | Migrate DepthCard or isolate patterns |
 
-Avoid harsh solid bars unless conveying alert state.
+## 14. Future Enhancements
+- Auto lint: disallow new raw colors.
+- Motion tokenization (durations / easings).
+- Panel component abstraction for common header + section shell.
+- High contrast mode variant tokens.
 
- 
-## 7. Accessibility & Contrast
+## 15. FAQ
+**Q: Kapan pakai strong tanpa section?**
+A: Hindari. Strong idealnya selalu di dalam section kecuali hero single-card layout (then add generous margin + vignette contrast).
 
-- Minimum contrast: Body text ≥ 4.5:1, small meta text ≥ 3:1 (verify with tooling if adjusting tokens).
-- Radial accents must *not* overlap high-importance text without ensuring contrast (keep overlays <= 0.25 opacity effective).
-- Focus rings: rely on `ring` token; never remove focus outline on interactive elements.
-- Motion reduction: Respect `prefers-reduced-motion`; keep transitions opacity/transform only and short.
-
- 
-## 8. Extending the System
-1. Propose new semantic token with rationale (what semantic gap?).
-2. Add CSS variable + Tailwind mapping (no direct hex usage in components).
-3. Update guide + color guard allowlist only if structurally justified.
-4. Provide before/after use case screenshot in PR description.
-
- 
-## 9. Anti-Patterns
-| Anti-Pattern | Fix |
-|--------------|-----|
-| Hardcoded `#` / `rgb()` / `hsl()` in component | Replace with semantic class (e.g. `text-muted-foreground`) |
-| Overusing `glow` variant | Restrict to one hero or stateful celebration |
-| Nesting multiple `surface-gradient` wrappers | Collapse to a single outer wrapper |
-| Mixed depth levels with no visual spacing | Add `gap-*`, or normalize depths |
-
- 
-## 10. Migration Checklist (For New Views)
-- [ ] Use page-level base container with `p-6` (or responsive spacing).
-- [ ] Group KPIs inside a single `surface-gradient` frame if emphasis needed.
-- [ ] Assign depth tiers intentionally (1 primary, ≤2 secondary, rest low emphasis).
-- [ ] Confirm no raw colors in diff (color guard passes).
-- [ ] Validate dark mode readability (esp. muted text and progress fills).
-- [ ] Test keyboard navigation + focus visibility.
-
- 
-## 11. Example: KPI Cluster Layout
-```html
-<section class="surface-gradient rounded-3xl p-2">
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    <DepthCard depth="lg" accent="primary" density="compact">...</DepthCard>
-    <DepthCard depth="md" density="compact">...</DepthCard>
-    <DepthCard depth="md" density="compact">...</DepthCard>
-    <DepthCard depth="sm" density="compact">...</DepthCard>
-  </div>
-</section>
-```
-
-## 12. Review & Governance
-During PR review:
-- Confirm semantic token usage only.
-- Verify depth usage rationale (comment if unclear).
-- Check that accent usage is not duplicated redundantly.
-- Run local: `pnpm run color-guard` (if script available) + build.
-
-## 13. Future Enhancements (Roadmap Candidates)
-- Visual regression snapshots for theme tokens.
-- Adaptive token tuning for high-contrast mode.
-- Ambient soft animation for primary KPI entrance.
-- Theming playground story with live token adjustment.
+**Q: Boleh gradient baru di card?**
+A: Hanya lewat utility / wrapper; jangan embed di Card core.
 
 ---
-Maintainers: Update this guide when introducing new tokens, utilities, or component tiers. Consistency is leverage—treat the design system as product infrastructure.
+Last updated: current iteration. Update this file on any new token / variant introduction.

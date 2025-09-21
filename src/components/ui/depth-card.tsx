@@ -1,4 +1,11 @@
 import { cn } from '@/lib/utils'
+// DEPRECATION NOTICE:
+// DepthCard will be phased out in favor of the unified Card component + section layering.
+// New work should prefer <Card variant="base|raised|strong" /> wrapped by .surface-section
+// plus optional utilities (.hover-lift, .action-tile, accent overlays). Migrate gradually
+// by mapping:
+// depth sm -> Card base, md -> Card raised, lg/xl -> Card strong (with accent wrapper),
+// glow -> Card strong + custom glow utility.
 import React from 'react'
 
 interface DepthCardProps extends React.HTMLAttributes<HTMLDivElement> {

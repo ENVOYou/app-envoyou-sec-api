@@ -173,7 +173,7 @@ export default function DashboardPage() {
           <div className="space-y-2">
             <a
               href="/dashboard/api-keys"
-              className="group flex items-center space-x-3 p-3 rounded-xl border border-borderBase/50 hover:bg-accent/50 transition-colors backdrop-blur-sm"
+              className="action-tile group flex items-center space-x-3 p-3 rounded-xl transition-colors"
             >
               <KeyIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
               <div>
@@ -183,7 +183,7 @@ export default function DashboardPage() {
             </a>
             <a
               href="/dashboard/global-data"
-              className="group flex items-center space-x-3 p-3 rounded-xl border border-borderBase/50 hover:bg-accent/50 transition-colors backdrop-blur-sm"
+              className="action-tile group flex items-center space-x-3 p-3 rounded-xl transition-colors"
             >
               <GlobeIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
               <div>
@@ -193,7 +193,7 @@ export default function DashboardPage() {
             </a>
             <a
               href="/dashboard/analytics"
-              className="group flex items-center space-x-3 p-3 rounded-xl border border-borderBase/50 hover:bg-accent/50 transition-colors backdrop-blur-sm"
+              className="action-tile group flex items-center space-x-3 p-3 rounded-xl transition-colors"
             >
               <BarChartIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
               <div>

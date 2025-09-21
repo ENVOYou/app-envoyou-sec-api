@@ -87,8 +87,8 @@ export function Sidebar({ className }: SidebarProps) {
                   className={cn(
                     "group flex items-center space-x-3 rounded-md px-3 py-2 text-sm transition-all duration-200",
                     isActive
-                      ? "bg-primary/12 text-primary shadow-sm border-l-2 border-primary/70"
-                      : "text-muted hover:text-primary hover:bg-accent/60 hover:border-l-2 hover:border-primary/35"
+                      ? "relative text-primary bg-gradient-to-r from-primary/15 via-primary/10 to-transparent hover:from-primary/18 hover:via-primary/12 focus:outline-none focus:ring-2 focus:ring-primary/40 before:absolute before:inset-0 before:rounded-md before:pointer-events-none before:shadow-[inset_0_0_0_1px_hsl(var(--border-base)/0.45),inset_0_1px_0_0_hsl(var(--foreground)/0.25)]"
+                      : "text-muted hover:text-primary hover:bg-accent/60 hover:shadow-[inset_0_0_0_1px_hsl(var(--border-base)/0.35)] focus:outline-none focus:ring-2 focus:ring-primary/30"
                   )}
                 >
                   <item.icon className={cn(
