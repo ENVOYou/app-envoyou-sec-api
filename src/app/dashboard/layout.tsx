@@ -38,13 +38,13 @@ export default function DashboardLayout({
   }
 
   return (
-  <div className="min-h-screen relative bg-background text-foreground dark:bg-background">
-    {/* Subtle dark grid texture */}
-  <div className="pointer-events-none absolute inset-0 hidden dark:block dark:opacity-[0.05] dark:bg-[linear-gradient(to_right,hsl(var(--foreground)/0.22)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.15)_1px,transparent_1px)] dark:bg-[size:60px_60px]" aria-hidden="true" />
-      <Sidebar />
+    <div className="min-h-screen relative bg-background text-foreground">
+      {/* Canvas texture only on very dark base to keep separation */}
+      <div className="pointer-events-none absolute inset-0 hidden dark:block dark:opacity-[0.04] dark:bg-[radial-gradient(circle_at_25%_20%,hsl(var(--foreground)/0.15),transparent_55%),linear-gradient(to_right,hsl(var(--foreground)/0.18)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.12)_1px,transparent_1px)] dark:bg-[size:100%_100%,70px_70px,70px_70px]" aria-hidden="true" />
+      <Sidebar className="bg-surface/92 dark:bg-surface/85 backdrop-blur-md" />
       <div className="lg:pl-64 relative z-10">
         <Header />
-        <main className="flex-1 p-6 lg:p-10 space-y-8">
+        <main className="flex-1 p-6 lg:p-10 space-y-10">
           {children}
         </main>
       </div>

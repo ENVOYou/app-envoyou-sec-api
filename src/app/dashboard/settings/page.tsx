@@ -171,8 +171,8 @@ export default function SettingsPage() {
         </p>
       </div>
 
-      {/* Account Overview */}
-      <Card>
+  {/* Account Overview (primary focus) */}
+  <Card variant="strong">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <UserIcon className="h-5 w-5" />
@@ -297,8 +297,8 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Appearance */}
-      <Card>
+  {/* Appearance (secondary) */}
+  <Card variant="raised">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             {theme === 'dark' ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
@@ -346,8 +346,8 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Notification Preferences */}
-      <Card>
+  {/* Notification Preferences */}
+  <Card variant="raised">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <BellIcon className="h-5 w-5" />
@@ -395,8 +395,8 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Active Sessions */}
-      <Card>
+  {/* Active Sessions */}
+  <Card variant="raised">
         <CardHeader>
           <CardTitle>Active Sessions</CardTitle>
           <CardDescription>
@@ -449,8 +449,8 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Danger Zone */}
-      <Card className="border-destructive">
+  {/* Danger Zone */}
+  <Card variant="strong" className="border border-destructive/40">
         <CardHeader>
           <CardTitle className="text-destructive">Danger Zone</CardTitle>
           <CardDescription>
