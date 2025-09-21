@@ -1,6 +1,6 @@
 # Theme & Hierarchy Usage Guide
 
-Updated to reflect unified layering model (canvas → section → grid → grid-item → card) and deprecation path for `DepthCard`.
+Updated to reflect unified layering model (canvas → section → grid → grid-item → card). `DepthCard` has been removed; use Card variants exclusively.
 
 ## 1. Objectives
 - Instantly readable visual hierarchy (modern SaaS parity / exceed).
@@ -89,12 +89,7 @@ Avoid two physical borders adjacent. If an isolated card sits directly on canvas
 Apply these instead of ad-hoc `text-xl`, etc. for consistency.
 
 ## 9. DepthCard Migration
-| DepthCard depth | New Mapping |
-|-----------------|------------|
-| sm | `Card variant="base"` |
-| md | `Card variant="raised"` |
-| lg / xl | `Card variant="strong"` |
-| glow | `Card variant="strong"` + custom glow utility |
+DepthCard removed; historical mapping was: sm→base, md→raised, lg/xl/glow→strong (+ optional accent glow).
 
 Migration steps: replace import, map props, move padding (if density), add accent effect with `.layered-surface` or custom pseudo if needed.
 
