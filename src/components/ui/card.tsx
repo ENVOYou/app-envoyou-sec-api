@@ -6,19 +6,22 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const tierMap: Record<NonNullable<CardProps['variant']>, string> = {
-  base: 'bg-surface/90 dark:bg-surface/80',
-  raised: 'bg-surface-alt/92 dark:bg-surfaceAlt/78',
-  strong: 'bg-surface-strong/95 dark:bg-surface-strong/82'
+  // Base: sits just above canvas; minimal shadow
+  base: 'bg-surface/96 dark:bg-surface/88 shadow-elevationSm',
+  // Raised: clearer separation using alt tone + mid shadow
+  raised: 'bg-surface-alt/96 dark:bg-surfaceAlt/90 shadow-elevationMd relative',
+  // Strong: highest panel tier; stronger tone + composite shadow + faint top gradient
+  strong: 'bg-surface-strong/98 dark:bg-surface-strong/92 shadow-depth relative'
 }
 
 const Card = ({ className, variant = 'base', interactive = true, ...props }: CardProps) => {
   return (
     <div
       className={cn(
-        'relative rounded-2xl border border-borderBase/60 dark:border-borderBase/30 backdrop-blur-sm overflow-hidden',
+        'group rounded-2xl border border-borderBase/55 dark:border-borderBase/30 overflow-hidden backdrop-blur-sm transition-colors',
         tierMap[variant],
-        'shadow-card dark:shadow-cardDark',
-        interactive && 'transition-all duration-300 hover:translate-y-[-3px] hover:shadow-hoverLift dark:hover:shadow-hoverLiftDark',
+        interactive && 'transition-transform duration-300 will-change-transform hover:translate-y-[-3px] hover:shadow-hoverLift dark:hover:shadow-hoverLiftDark',
+        variant === 'strong' && 'before:absolute before:inset-0 before:pointer-events-none before:bg-[linear-gradient(to_bottom,hsl(var(--foreground)/0.08),transparent_55%)] before:mix-blend-overlay',
         className
       )}
       {...props}
