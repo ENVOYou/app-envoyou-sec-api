@@ -17,7 +17,7 @@ export function Header({ title }: HeaderProps) {
   <header className="h-16 bg-surface-alt dark:bg-surface-alt border-b border-borderBase/60 dark:border-borderBase/35 shadow-[0_2px_0_0_hsl(var(--border-base)/0.6)] supports-[backdrop-filter]:backdrop-blur-md data-[scrolled=true]:shadow-[0_4px_12px_-4px_hsl(var(--foreground)/0.18)] transition-shadow">
       <div className="flex h-full items-center justify-between px-6">
         <div className="flex items-center gap-3">
-          <Logo size={34} />
+          {/* <Logo size={34} /> */}
           <h1 className="text-xl font-semibold bg-clip-text text-transparent bg-[linear-gradient(to_right,hsl(var(--foreground)/0.92),hsl(var(--primary)/0.9))]">
             {title || 'Dashboard'}
           </h1>
