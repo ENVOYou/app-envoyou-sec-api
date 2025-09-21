@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { apiClient } from '@/lib/api'
-// Removed unused Card components after refactor to DepthCard
-import { DepthCard } from '@/components/ui/depth-card'
+import { Card } from '@/components/ui/card'
 import { UserStats, DeveloperStats } from '@/types'
 import { BarChartIcon, KeyIcon, GlobeIcon, BellIcon } from '@/components/icons'
 
@@ -66,12 +65,12 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Stats cards (refactored with DepthCard for hierarchy) */}
+  {/* Stats cards */}
       <div className="relative">
         <div className="surface-gradient rounded-3xl p-1.5 md:p-2">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <div className="grid-item">
-            <DepthCard depth="lg" accent="primary" density="compact" className="group">
+            <Card variant="strong" className="group p-4 layered-surface">
               <div className="flex items-start justify-between mb-1.5">
                 <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Total Requests</span>
                 <BarChartIcon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" />
@@ -82,10 +81,10 @@ export default function DashboardPage() {
               <p className="text-[11px] mt-1 text-muted-foreground">
                 {userStats?.requests_today || 0} today
               </p>
-            </DepthCard>
+            </Card>
             </div>
             <div className="grid-item">
-            <DepthCard depth="md" density="compact" className="group">
+            <Card variant="raised" className="group p-4">
               <div className="flex items-start justify-between mb-1.5">
                 <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">API Keys</span>
                 <KeyIcon className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
@@ -96,10 +95,10 @@ export default function DashboardPage() {
               <p className="text-[11px] mt-1 text-muted-foreground">
                 Active keys
               </p>
-            </DepthCard>
+            </Card>
             </div>
             <div className="grid-item">
-            <DepthCard depth="md" density="compact" className="group">
+            <Card variant="raised" className="group p-4">
               <div className="flex items-start justify-between mb-1.5">
                 <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Rate Limit</span>
                 <GlobeIcon className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
@@ -110,10 +109,10 @@ export default function DashboardPage() {
               <p className="text-[11px] mt-1 text-muted-foreground">
                 Remaining this hour
               </p>
-            </DepthCard>
+            </Card>
             </div>
             <div className="grid-item">
-            <DepthCard depth="sm" density="compact" className="group">
+            <Card variant="base" className="group p-4">
               <div className="flex items-start justify-between mb-1.5">
                 <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Active Sessions</span>
                 <BellIcon className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
@@ -124,7 +123,7 @@ export default function DashboardPage() {
               <p className="text-[11px] mt-1 text-muted-foreground">
                 Current sessions
               </p>
-            </DepthCard>
+            </Card>
             </div>
           </div>
         </div>
@@ -133,7 +132,7 @@ export default function DashboardPage() {
       {/* Usage overview (depth + pattern) */}
   <div className="surface-section"><div className="grid gap-6 md:grid-cols-2">
         <div className="grid-item">
-        <DepthCard depth="lg" density="base" className="relative overflow-hidden">
+  <Card variant="strong" className="relative overflow-hidden p-6">
           <div className="mb-4">
             <h3 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">API Usage This Month</h3>
             <p className="text-sm text-muted-foreground mt-1">Track your monthly API consumption</p>
@@ -162,10 +161,10 @@ export default function DashboardPage() {
               <span>{developerStats?.requests_limit?.toLocaleString() || 1000} limit</span>
             </div>
           </div>
-  </DepthCard>
+  </Card>
   </div>
   <div className="grid-item">
-  <DepthCard depth="md" density="base" className="space-y-4">
+  <Card variant="raised" className="space-y-4 p-6">
           <div>
             <h3 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Quick Actions</h3>
             <p className="text-sm text-muted-foreground mt-1">Manage your account and API settings</p>
@@ -202,7 +201,7 @@ export default function DashboardPage() {
               </div>
             </a>
           </div>
-        </DepthCard>
+    </Card>
         </div>
   </div></div>
     </div>

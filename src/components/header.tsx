@@ -2,7 +2,6 @@
 
 import { useAuth } from '@/hooks/useAuth'
 import { BellIcon, UserIcon } from '@/components/icons'
-import { Logo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 
