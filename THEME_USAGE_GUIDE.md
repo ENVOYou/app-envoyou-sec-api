@@ -17,6 +17,7 @@ Defined in `globals.css` and mapped in Tailwind:
 |-------|---------|---------------|
 | `--background` / `bg-background` | Base page canvas | `<body>` background, full-width wrappers |
 | `--surface` / `bg-surface` | Standard component base | Cards, panels, inputs |
+| `--surface-alt` / `bg-surfaceAlt` | Intermediate elevated surface | Secondary raised panels, mid-depth cards |
 | `--surface-strong` | Higher contrast surface | Modals, dropdown menus |
 | `--foreground` | Primary text color | Body text |
 | `--muted` + `--muted-foreground` (via Tailwind) | Subtle UI chrome & secondary text | Meta labels, separators |
@@ -37,23 +38,27 @@ Never introduce new raw color literals. Use existing semantic tokens or propose 
 | ElevatedCard | `ElevatedCard` | Featured panels requiring mild emphasis | Slight elevation + radial soft light |
 | DepthCard (sm) | `DepthCard depth="sm"` | Low-priority stat tiles, compact arrays | Light shadow, compact padding option |
 | DepthCard (md) | `DepthCard depth="md"` | Standard KPI metric blocks | Medium composite shadow |
-| DepthCard (lg)` + accent | High-value primary KPI / hero stat | Stronger depth, optional gradient/radial accent |
+| DepthCard (lg) + accent | `DepthCard depth="lg" accent="primary"` | High-value primary KPI / hero stat | Stronger depth, optional gradient/radial accent (dark uses `surfaceAlt` higher opacity) |
 | DepthCard (xl/glow) | Reserved (sparingly) | Marketing hero, highlight moment | Deep multi-layer shadow, optional glow |
 
 ### When to Choose Which
+
 - Use **Card** for neutral content containers (lists, forms, settings groups).
 - Use **ElevatedCard** for sections you want to gently lift (summary overviews, comparative panels) without competing with KPIs.
 - Use **DepthCard** for hierarchy-critical or dashboard metric elements, especially when depth communicates importance.
 - Avoid more than one `glow` or `xl` DepthCard per view unless a deliberate hero composition is designed.
 
 ### Do / Don't
+
 - ✅ Combine `DepthCard` + pattern utility (e.g. `dot-grid-faint`) inside for ambient texture.
 - ✅ Use `accent="primary"` only on top-tier metric or hero card.
 - ❌ Stack more than two consecutive high-depth (`lg` or above) cards without breathing space.
 - ❌ Mix different accent radials in a tight cluster (visual noise risk).
 
+ 
 ## 4. DepthCard Props
-```
+
+```tsx
 <DepthCard
   depth="sm|md|lg|xl|glow"
   accent="none|primary|accent"
@@ -74,6 +79,7 @@ Never introduce new raw color literals. Use existing semantic tokens or propose 
 | `glow` | Rare; marketing or celebratory state only (e.g., plan upgrade success). |
 | `density` | Use `compact` for 2–4 line stat tiles; `base` for richer content. |
 
+ 
 ## 5. Utility & Pattern Layer
 Utilities defined under `@layer utilities` in `globals.css`:
 
@@ -86,7 +92,8 @@ Utilities defined under `@layer utilities` in `globals.css`:
 | `glass-layer` | Adds glassy transparency effect | Use cautiously on overlapping panels |
 
 Composition pattern:
-```
+
+```html
 <div class="surface-gradient rounded-3xl p-2">
   <div class="grid gap-4 md:grid-cols-4">
     <DepthCard depth="lg" accent="primary" />
@@ -97,28 +104,35 @@ Composition pattern:
 </div>
 ```
 
+ 
 ## 6. Progress Indicators
 Use semantic structure + gradient fill:
-```
+
+```tsx
 <div class="relative h-2 w-full rounded-full bg-muted/70 overflow-hidden">
   <div class="absolute inset-y-0 left-0 bg-gradient-to-r from-primary/80 via-primary to-primary/60" style={{ width: pct + '%' }} />
   <div class="absolute inset-0 dot-grid-faint opacity-30 pointer-events-none" />
 </div>
 ```
+
 Avoid harsh solid bars unless conveying alert state.
 
+ 
 ## 7. Accessibility & Contrast
+
 - Minimum contrast: Body text ≥ 4.5:1, small meta text ≥ 3:1 (verify with tooling if adjusting tokens).
 - Radial accents must *not* overlap high-importance text without ensuring contrast (keep overlays <= 0.25 opacity effective).
 - Focus rings: rely on `ring` token; never remove focus outline on interactive elements.
 - Motion reduction: Respect `prefers-reduced-motion`; keep transitions opacity/transform only and short.
 
+ 
 ## 8. Extending the System
 1. Propose new semantic token with rationale (what semantic gap?).
 2. Add CSS variable + Tailwind mapping (no direct hex usage in components).
 3. Update guide + color guard allowlist only if structurally justified.
 4. Provide before/after use case screenshot in PR description.
 
+ 
 ## 9. Anti-Patterns
 | Anti-Pattern | Fix |
 |--------------|-----|
@@ -127,6 +141,7 @@ Avoid harsh solid bars unless conveying alert state.
 | Nesting multiple `surface-gradient` wrappers | Collapse to a single outer wrapper |
 | Mixed depth levels with no visual spacing | Add `gap-*`, or normalize depths |
 
+ 
 ## 10. Migration Checklist (For New Views)
 - [ ] Use page-level base container with `p-6` (or responsive spacing).
 - [ ] Group KPIs inside a single `surface-gradient` frame if emphasis needed.
@@ -135,8 +150,9 @@ Avoid harsh solid bars unless conveying alert state.
 - [ ] Validate dark mode readability (esp. muted text and progress fills).
 - [ ] Test keyboard navigation + focus visibility.
 
+ 
 ## 11. Example: KPI Cluster Layout
-```
+```html
 <section class="surface-gradient rounded-3xl p-2">
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     <DepthCard depth="lg" accent="primary" density="compact">...</DepthCard>

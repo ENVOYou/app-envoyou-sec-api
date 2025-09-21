@@ -122,6 +122,7 @@ body {
   :root {
     --background: 210 20% 98%;
     --surface: 0 0% 100%; /* slightly cleaner neutral */
+    --surface-alt: 210 24% 97%; /* new mid layer between surface and surface-strong (light) */
     --surface-strong: 210 25% 96%; /* lift ~1.5% for clearer separation */
     --foreground: 222 22% 6%;
     --muted: 215 10% 55%;
@@ -137,9 +138,11 @@ body {
   }
 
   .dark {
-    --background: 222 22% 5%;
-    --surface: 222 21% 12%; /* +1% for less crushed base cards */
-    --surface-strong: 222 22% 16%; /* +2% to improve readable elevation */
+    /* Dark hierarchy ladder (approx L* progression): background 5% → surface 11% → surface-alt 15% → surface-strong 19% */
+    --background: 222 22% 5%; /* page canvas */
+    --surface: 222 21% 11%; /* base panels */
+    --surface-alt: 222 21% 15%; /* raised panels / secondary sections */
+    --surface-strong: 222 22% 19%; /* elevated focus areas (modals, key depth) */
     --foreground: 0 0% 98%;
     --muted: 220 7% 60%;
     --muted-foreground: 220 8% 72%;

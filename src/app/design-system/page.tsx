@@ -26,7 +26,7 @@ const sampleMetrics: Metric[] = [
 
 export default function DesignSystemPage() {
   return (
-    <div className="p-8 space-y-12">
+    <main data-testid="design-system-root" className="p-8 space-y-12">
       <section className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Design System</h1>
         <p className="text-muted-foreground max-w-2xl text-sm">
@@ -144,6 +144,6 @@ export default function DesignSystemPage() {
           Proposing new tokens or elevation tiers requires justification in a PR (what semantic gap, contrast verification, usage scenario). Keep the system lean.
         </p>
       </section>
-    </div>
+    </main>
   )
 }

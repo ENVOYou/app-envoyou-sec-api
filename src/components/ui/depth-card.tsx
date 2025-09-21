@@ -17,13 +17,23 @@ const depthMap: Record<NonNullable<DepthCardProps['depth']>, string> = {
   glow: 'shadow-depthGlow'
 }
 
+// Dark mode background layering per depth (progressively lighter / more opaque)
+const darkBgMap: Record<NonNullable<DepthCardProps['depth']>, string> = {
+  sm: 'dark:bg-surface/65',      // lowest elevation uses base surface
+  md: 'dark:bg-surfaceAlt/70',   // mid uses new alt layer
+  lg: 'dark:bg-surfaceAlt/80',   // strong emphasis slightly more solid
+  xl: 'dark:bg-surface-strong/82',
+  glow: 'dark:bg-surface-strong/88'
+}
+
 export const DepthCard = React.forwardRef<HTMLDivElement, DepthCardProps>(function DepthCard(
   { className, children, accent = 'none', interactive = true, glow = false, density = 'base', depth = 'md', ...props }, ref) {
   return (
     <div
       ref={ref}
       className={cn(
-        'relative rounded-3xl border border-borderBase/55 dark:border-borderBase/35 bg-surface/90 dark:bg-surface/75 backdrop-blur-sm transition-all duration-400',
+  'relative rounded-3xl border border-borderBase/55 dark:border-borderBase/35 bg-surface/90 dark:bg-surface/70 backdrop-blur-sm transition-all duration-400',
+  darkBgMap[depth],
         depthMap[depth],
         interactive && 'hover:shadow-depthLg dark:hover:shadow-depthXl hover:translate-y-[-2px]',
         glow && 'before:absolute before:inset-0 before:rounded-[inherit] before:pointer-events-none before:bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.18),transparent_60%)]',

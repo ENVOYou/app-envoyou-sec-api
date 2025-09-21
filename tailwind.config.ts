@@ -8,7 +8,7 @@ const config: any = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   safelist: [
-    { pattern: /bg-(background|surface|surfaceStrong|foreground|muted|primary|accent|destructive|borderBase|ring)/ }
+    { pattern: /bg-(background|surface|surfaceAlt|surfaceStrong|foreground|muted|primary|accent|destructive|borderBase|ring)/ }
   ],
   darkMode: "class",
   theme: {
@@ -16,7 +16,8 @@ const config: any = {
       colors: {
         background: "hsl(var(--background) / <alpha-value>)",
         surface: "hsl(var(--surface) / <alpha-value>)",
-        surfaceStrong: "hsl(var(--surface-strong) / <alpha-value>)",
+  surfaceStrong: "hsl(var(--surface-strong) / <alpha-value>)",
+  surfaceAlt: "hsl(var(--surface-alt) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",
         muted: "hsl(var(--muted) / <alpha-value>)",
         primary: {

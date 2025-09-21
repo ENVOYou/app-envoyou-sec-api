@@ -12,7 +12,9 @@
     "daily:summary": "node scripts/generate-daily-summary.mjs",
     "daily:cleanup": "node scripts/cleanup-daily-summaries.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+  "test:visual": "pnpm exec playwright test",
+  "test:visual:update": "pnpm exec playwright test --update-snapshots"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.8",
@@ -36,6 +38,7 @@
     "@types/node": "^20.19.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@playwright/test": "^1.48.2",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
     "vitest": "^2.1.4",

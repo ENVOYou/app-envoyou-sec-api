@@ -20,7 +20,7 @@ export const ElevatedCard = ({ className, children, hoverGlow = true, ...props }
         )}
       />
       <div className="relative motion-safe:animate-[fadeInUp_0.5s_ease]">
-  <Card className="relative rounded-3xl border border-borderBase/55 dark:border-borderBase/35 bg-surfaceStrong/95 dark:bg-surfaceStrong/80 backdrop-blur-sm shadow-card dark:shadow-cardDark transition-shadow duration-300 hover:shadow-hoverLift dark:hover:shadow-hoverLiftDark">
+        <Card variant="strong" className="rounded-3xl border border-borderBase/55 dark:border-borderBase/35">
           <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-borderBase/65 dark:ring-borderBase/40 ring-inset" aria-hidden="true" />
           {children}
         </Card>

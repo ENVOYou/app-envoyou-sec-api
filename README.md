@@ -128,6 +128,27 @@ This dashboard works with the Envoyou API backend located at `/home/husni/PROJEC
 
 ## License
 
+## Visual Regression Tests
+
+Playwright is configured to capture light + dark snapshots of the design system showcase.
+
+### Install Browsers (first time)
+```bash
+npx playwright install --with-deps
+```
+
+### Run Visual Tests
+```bash
+pnpm run test:visual
+```
+
+### Update Baselines
+```bash
+pnpm run test:visual:update
+```
+
+Baseline snapshots are stored under `tests/visual/__screenshots__/`. Commit updated baselines only when intentional UI changes occur and reference them in the PR description.
+
 Private project - All rights reserved.
 
 ## Daily Summaries & Retention
