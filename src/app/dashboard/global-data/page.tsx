@@ -85,7 +85,7 @@ export default function GlobalDataPage() {
 
       {/* Stats Overview */}
       {emissionsStats && (
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="surface-section"><div className="grid gap-4 md:grid-cols-4">
           <div className="grid-item"><Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Records</CardTitle>
@@ -130,11 +130,11 @@ export default function GlobalDataPage() {
               </div>
             </CardContent>
           </Card></div>
-        </div>
+        </div></div>
       )}
 
       {/* Data Explorer */}
-  <div className="grid-item"><Card>
+  <div className="surface-section"><div className="grid-item"><Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <GlobeIcon className="h-5 w-5" />
@@ -290,10 +290,10 @@ export default function GlobalDataPage() {
             </div>
           )}
         </CardContent>
-  </Card></div>
+  </Card></div></div>
 
       {/* Available Datasets */}
-  <div className="grid-item"><Card>
+  <div className="surface-section"><div className="grid-item"><Card>
         <CardHeader>
           <CardTitle>Available Datasets</CardTitle>
           <CardDescription>
@@ -363,7 +363,7 @@ export default function GlobalDataPage() {
             </div>
           </div>
         </CardContent>
-  </Card></div>
+  </Card></div></div>
     </div>
   )
 }

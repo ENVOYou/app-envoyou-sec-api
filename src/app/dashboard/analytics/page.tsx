@@ -95,8 +95,9 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Stats overview */}
-      <div className="grid gap-6 md:grid-cols-3">
+  {/* Stats overview */}
+  <div className="surface-section">
+  <div className="grid gap-6 md:grid-cols-3">
         <div className="grid-item">
         <Card variant="raised" className="h-full">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -148,9 +149,11 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
         </div>
-      </div>
+  </div>
+  </div>
 
-      {/* Charts */}
+    {/* Charts */}
+  <div className="surface-section">
   <div className="grid gap-8 md:grid-cols-2">
         {/* Request Timeline */}
   <div className="grid-item"><Card variant="strong">
@@ -198,9 +201,11 @@ export default function AnalyticsPage() {
             </ResponsiveContainer>
           </CardContent>
         </Card></div>
-      </div>
+  </div>
+  </div>
 
-      {/* Detailed metrics */}
+    {/* Detailed metrics */}
+  <div className="surface-section">
   <div className="grid gap-8 md:grid-cols-2">
         {/* Rate Limit Details */}
   <div className="grid-item"><Card variant="raised">
@@ -281,7 +286,8 @@ export default function AnalyticsPage() {
             </div>
           </CardContent>
         </Card></div>
-      </div>
+  </div>
+  </div>
     </div>
   )
 }

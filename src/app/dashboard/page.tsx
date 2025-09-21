@@ -131,7 +131,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Usage overview (depth + pattern) */}
-      <div className="grid gap-6 md:grid-cols-2">
+  <div className="surface-section"><div className="grid gap-6 md:grid-cols-2">
         <div className="grid-item">
         <DepthCard depth="lg" density="base" className="relative overflow-hidden">
           <div className="mb-4">
@@ -204,7 +204,7 @@ export default function DashboardPage() {
           </div>
         </DepthCard>
         </div>
-      </div>
+  </div></div>
     </div>
   )
 }

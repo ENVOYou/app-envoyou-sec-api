@@ -172,7 +172,7 @@ export default function SettingsPage() {
       </div>
 
   {/* Account Overview (primary focus) */}
-  <div className="grid-item"><Card variant="strong">
+  <div className="surface-section"><div className="grid-item"><Card variant="strong">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <UserIcon className="h-5 w-5" />
@@ -295,10 +295,10 @@ export default function SettingsPage() {
             </p>
           )}
         </CardContent>
-  </Card></div>
+  </Card></div></div>
 
   {/* Appearance (secondary) */}
-  <div className="grid-item"><Card variant="raised">
+  <div className="surface-section"><div className="grid-item"><Card variant="raised">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             {theme === 'dark' ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
@@ -344,10 +344,10 @@ export default function SettingsPage() {
             </div>
           </div>
         </CardContent>
-  </Card></div>
+  </Card></div></div>
 
   {/* Notification Preferences */}
-  <div className="grid-item"><Card variant="raised">
+  <div className="surface-section"><div className="grid-item"><Card variant="raised">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <BellIcon className="h-5 w-5" />
@@ -393,10 +393,10 @@ export default function SettingsPage() {
             ))}
           </div>
         </CardContent>
-      </Card></div>
+      </Card></div></div>
 
   {/* Active Sessions */}
-  <div className="grid-item"><Card variant="raised">
+  <div className="surface-section"><div className="grid-item"><Card variant="raised">
         <CardHeader>
           <CardTitle>Active Sessions</CardTitle>
           <CardDescription>
@@ -447,10 +447,10 @@ export default function SettingsPage() {
             </div>
           )}
         </CardContent>
-      </Card></div>
+      </Card></div></div>
 
   {/* Danger Zone */}
-  <div className="grid-item"><Card variant="strong" className="border border-destructive/40">
+  <div className="surface-section"><div className="grid-item"><Card variant="strong" className="border border-destructive/40">
         <CardHeader>
           <CardTitle className="text-destructive">Danger Zone</CardTitle>
           <CardDescription>
@@ -483,7 +483,7 @@ export default function SettingsPage() {
             </Button>
           </div>
         </CardContent>
-      </Card></div>
+      </Card></div></div>
     </div>
   )
 }
