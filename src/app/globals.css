@@ -139,9 +139,9 @@ body {
 
   .dark {
     /* Dark hierarchy ladder updated: 5 → 11 → 16 → 23 (clearer tonal steps) */
-    --background: 222 10% 40%;
-    --surface: 222 21% 11%;
-    --surface-alt: 222 21% 16%;
+    --background: 222 10% 25%;
+    --surface: 222 10% 17%;
+    --surface-alt: 222 10% 10%;
     --surface-strong: 222 22% 23%;
     --foreground: 0 0% 98%;
     --muted: 220 7% 60%;

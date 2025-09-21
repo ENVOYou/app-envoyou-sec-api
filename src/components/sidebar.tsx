@@ -63,7 +63,7 @@ export function Sidebar({ className }: SidebarProps) {
 
       {/* Sidebar */}
       <aside className={cn(
-        "fixed top-0 left-0 z-40 h-screen w-64 bg-surface/90 dark:bg-surface/75 border-r border-borderBase/60 dark:border-borderBase/30 shadow-card dark:shadow-cardDark backdrop-blur-sm transition-transform lg:translate-x-0",
+        "fixed top-0 left-0 z-40 h-screen w-64 bg-surface dark:bg-surface border-r border-borderBase/60 dark:border-borderBase/30 shadow-card dark:shadow-cardDark transition-transform lg:translate-x-0 after:absolute after:top-0 after:right-[-1px] after:w-px after:h-full after:bg-[linear-gradient(to_bottom,hsl(var(--border-base)/0.35),hsl(var(--border-base)/0))]",
         isOpen ? "translate-x-0" : "-translate-x-full",
         className
       )}>

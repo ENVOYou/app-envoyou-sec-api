@@ -7,11 +7,11 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const tierMap: Record<NonNullable<CardProps['variant']>, string> = {
   // Base: sits just above canvas; minimal shadow
-  base: 'bg-surface/96 dark:bg-surface/88 shadow-elevationSm',
-  // Raised: clearer separation using alt tone + mid shadow
-  raised: 'bg-surface-alt/96 dark:bg-surfaceAlt/90 shadow-elevationMd relative',
-  // Strong: highest panel tier; stronger tone + composite shadow + faint top gradient
-  strong: 'bg-surface-strong/98 dark:bg-surface-strong/92 shadow-depth relative'
+  base: 'bg-surface shadow-elevationSm',
+  // Raised: clearer separation using alt tone + mid shadow (solid)
+  raised: 'bg-surface-alt shadow-elevationMd relative',
+  // Strong: highest panel tier; stronger tone + composite shadow + faint top gradient (solid)
+  strong: 'bg-surface-strong shadow-depth relative'
 }
 
 const Card = ({ className, variant = 'base', interactive = true, ...props }: CardProps) => {
