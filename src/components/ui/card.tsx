@@ -15,11 +15,14 @@ const tierMap: Record<NonNullable<CardProps['variant']>, string> = {
 }
 
 const Card = ({ className, variant = 'base', interactive = true, ...props }: CardProps) => {
+  const variantClass =
+    variant === 'strong' ? 'card-strong' : variant === 'raised' ? 'card-raised' : 'card-base'
   return (
     <div
       className={cn(
-        'group rounded-2xl overflow-hidden backdrop-blur-sm transition-colors',
+        'card-root group rounded-2xl overflow-hidden backdrop-blur-sm transition-colors',
         tierMap[variant],
+        variantClass,
         interactive && 'transition-transform duration-300 will-change-transform hover:translate-y-[-3px] hover:shadow-hoverLift dark:hover:shadow-hoverLiftDark',
         variant === 'strong' && 'before:absolute before:inset-0 before:pointer-events-none before:bg-[linear-gradient(to_bottom,hsl(var(--foreground)/0.08),transparent_55%)] before:mix-blend-overlay',
         className

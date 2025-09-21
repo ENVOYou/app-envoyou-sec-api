@@ -137,6 +137,11 @@ body {
       .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 4px 8px -2px hsl(var(--foreground)/0.25), 0 10px 28px -6px hsl(var(--foreground)/0.28); }
       .dark .hover-lift:hover { box-shadow: 0 4px 10px -2px hsl(var(--foreground)/0.55), 0 10px 30px -6px hsl(var(--foreground)/0.50); }
       .surface-section .group.bg-surface, .surface-section .group.bg-surface-alt { box-shadow: 0 1px 2px -1px hsl(var(--foreground)/0.25), 0 2px 6px -2px hsl(var(--foreground)/0.16); }
+  /* Remove inner strong card border inside composite section/gradient to avoid double outline */
+  .surface-section .card-strong,
+  .surface-gradient .card-strong { border-color: transparent; box-shadow: 0 1px 2px -1px hsl(var(--foreground)/0.35), 0 3px 10px -3px hsl(var(--foreground)/0.25); }
+  .dark .surface-section .card-strong,
+  .dark .surface-gradient .card-strong { border-color: transparent; box-shadow: 0 1px 2px -1px hsl(var(--foreground)/0.65), 0 3px 10px -3px hsl(var(--foreground)/0.55); }
       .cluster { display: flex; flex-direction: column; gap: var(--space-cluster-gap); }
       .cluster + .cluster { margin-top: var(--space-cluster-stack); }
       .action-tile { background: hsl(var(--surface-alt)/0.35); border: 1px solid hsl(var(--border-base)/0.35); backdrop-filter: blur(6px); }
