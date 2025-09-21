@@ -160,7 +160,7 @@ export default function NotificationsPage() {
       </div>
 
       {/* Filter tabs */}
-      <Card>
+  <div className="grid-item"><Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center space-x-2">
@@ -266,10 +266,10 @@ export default function NotificationsPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+  </Card></div>
 
       {/* Notification Settings Preview */}
-      <Card>
+  <div className="grid-item"><Card>
         <CardHeader>
           <CardTitle>Notification Preferences</CardTitle>
           <CardDescription>
@@ -324,7 +324,7 @@ export default function NotificationsPage() {
             </div>
           </div>
         </CardContent>
-      </Card>
+  </Card></div>
     </div>
   )
 }

@@ -97,6 +97,7 @@ export default function AnalyticsPage() {
 
       {/* Stats overview */}
       <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid-item">
         <Card variant="raised" className="h-full">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
@@ -110,8 +111,9 @@ export default function AnalyticsPage() {
               Last {timeRange === 24 ? '24 hours' : timeRange === 168 ? '7 days' : '30 days'}
             </p>
           </CardContent>
-        </Card>
-
+    </Card>
+    </div>
+    <div className="grid-item">
   <Card variant="raised" className="h-full">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
@@ -128,8 +130,9 @@ export default function AnalyticsPage() {
               {usageAnalytics?.successful_requests?.toLocaleString() || '1,265'} successful requests
             </p>
           </CardContent>
-        </Card>
-
+    </Card>
+    </div>
+    <div className="grid-item">
   <Card variant="raised" className="h-full">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Rate Limit</CardTitle>
@@ -144,12 +147,13 @@ export default function AnalyticsPage() {
             </p>
           </CardContent>
         </Card>
+        </div>
       </div>
 
       {/* Charts */}
   <div className="grid gap-8 md:grid-cols-2">
         {/* Request Timeline */}
-  <Card variant="strong">
+  <div className="grid-item"><Card variant="strong">
           <CardHeader>
             <CardTitle>Request Timeline</CardTitle>
             <CardDescription>
@@ -172,10 +176,10 @@ export default function AnalyticsPage() {
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
-        </Card>
+  </Card></div>
 
         {/* Top Endpoints */}
-  <Card variant="strong">
+  <div className="grid-item"><Card variant="strong">
           <CardHeader>
             <CardTitle>Top Endpoints</CardTitle>
             <CardDescription>
@@ -193,13 +197,13 @@ export default function AnalyticsPage() {
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
-        </Card>
+        </Card></div>
       </div>
 
       {/* Detailed metrics */}
   <div className="grid gap-8 md:grid-cols-2">
         {/* Rate Limit Details */}
-  <Card variant="raised">
+  <div className="grid-item"><Card variant="raised">
           <CardHeader>
             <CardTitle>Rate Limit Status</CardTitle>
             <CardDescription>
@@ -235,10 +239,10 @@ export default function AnalyticsPage() {
               </div>
             </div>
           </CardContent>
-        </Card>
+  </Card></div>
 
         {/* Performance Metrics */}
-  <Card variant="raised">
+  <div className="grid-item"><Card variant="raised">
           <CardHeader>
             <CardTitle>Performance Summary</CardTitle>
             <CardDescription>
@@ -276,7 +280,7 @@ export default function AnalyticsPage() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card></div>
       </div>
     </div>
   )

@@ -86,7 +86,7 @@ export default function GlobalDataPage() {
       {/* Stats Overview */}
       {emissionsStats && (
         <div className="grid gap-4 md:grid-cols-4">
-          <Card>
+          <div className="grid-item"><Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Records</CardTitle>
               <BarChartIcon className="h-4 w-4 text-muted-foreground" />
@@ -96,9 +96,8 @@ export default function GlobalDataPage() {
                 {emissionsStats.total_records?.toLocaleString()}
               </div>
             </CardContent>
-          </Card>
-
-          <Card>
+          </Card></div>
+          <div className="grid-item"><Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">States Covered</CardTitle>
               <GlobeIcon className="h-4 w-4 text-muted-foreground" />
@@ -108,9 +107,8 @@ export default function GlobalDataPage() {
                 {emissionsStats.states_covered}
               </div>
             </CardContent>
-          </Card>
-
-          <Card>
+          </Card></div>
+          <div className="grid-item"><Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Year Range</CardTitle>
               <BarChartIcon className="h-4 w-4 text-muted-foreground" />
@@ -120,9 +118,8 @@ export default function GlobalDataPage() {
                 {emissionsStats.years_range?.min} - {emissionsStats.years_range?.max}
               </div>
             </CardContent>
-          </Card>
-
-          <Card>
+          </Card></div>
+          <div className="grid-item"><Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Pollutants</CardTitle>
               <GlobeIcon className="h-4 w-4 text-muted-foreground" />
@@ -132,12 +129,12 @@ export default function GlobalDataPage() {
                 {emissionsStats.pollutants?.length}
               </div>
             </CardContent>
-          </Card>
+          </Card></div>
         </div>
       )}
 
       {/* Data Explorer */}
-      <Card>
+  <div className="grid-item"><Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <GlobeIcon className="h-5 w-5" />
@@ -293,10 +290,10 @@ export default function GlobalDataPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+  </Card></div>
 
       {/* Available Datasets */}
-      <Card>
+  <div className="grid-item"><Card>
         <CardHeader>
           <CardTitle>Available Datasets</CardTitle>
           <CardDescription>
@@ -366,7 +363,7 @@ export default function GlobalDataPage() {
             </div>
           </div>
         </CardContent>
-      </Card>
+  </Card></div>
     </div>
   )
 }

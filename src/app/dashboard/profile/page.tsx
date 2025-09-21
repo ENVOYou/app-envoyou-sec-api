@@ -79,7 +79,7 @@ export default function ProfilePage() {
         </p>
       </div>
 
-      <Card>
+  <div className="grid-item"><Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <UserIcon className="h-5 w-5" />
@@ -173,10 +173,10 @@ export default function ProfilePage() {
             </div>
           </form>
         </CardContent>
-      </Card>
+  </Card></div>
 
       {/* Account Information */}
-      <Card className="mt-6">
+  <div className="grid-item mt-6"><Card className="mt-0">
         <CardHeader>
           <CardTitle>Account Information</CardTitle>
           <CardDescription>
@@ -228,7 +228,7 @@ export default function ProfilePage() {
             </div>
           </div>
         </CardContent>
-      </Card>
+  </Card></div>
     </div>
   )
 }

@@ -70,6 +70,7 @@ export default function DashboardPage() {
       <div className="relative">
         <div className="surface-gradient rounded-3xl p-1.5 md:p-2">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid-item">
             <DepthCard depth="lg" accent="primary" density="compact" className="group">
               <div className="flex items-start justify-between mb-1.5">
                 <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Total Requests</span>
@@ -82,7 +83,8 @@ export default function DashboardPage() {
                 {userStats?.requests_today || 0} today
               </p>
             </DepthCard>
-
+            </div>
+            <div className="grid-item">
             <DepthCard depth="md" density="compact" className="group">
               <div className="flex items-start justify-between mb-1.5">
                 <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">API Keys</span>
@@ -95,7 +97,8 @@ export default function DashboardPage() {
                 Active keys
               </p>
             </DepthCard>
-
+            </div>
+            <div className="grid-item">
             <DepthCard depth="md" density="compact" className="group">
               <div className="flex items-start justify-between mb-1.5">
                 <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Rate Limit</span>
@@ -108,7 +111,8 @@ export default function DashboardPage() {
                 Remaining this hour
               </p>
             </DepthCard>
-
+            </div>
+            <div className="grid-item">
             <DepthCard depth="sm" density="compact" className="group">
               <div className="flex items-start justify-between mb-1.5">
                 <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Active Sessions</span>
@@ -121,12 +125,14 @@ export default function DashboardPage() {
                 Current sessions
               </p>
             </DepthCard>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Usage overview (depth + pattern) */}
       <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid-item">
         <DepthCard depth="lg" density="base" className="relative overflow-hidden">
           <div className="mb-4">
             <h3 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">API Usage This Month</h3>
@@ -156,9 +162,10 @@ export default function DashboardPage() {
               <span>{developerStats?.requests_limit?.toLocaleString() || 1000} limit</span>
             </div>
           </div>
-        </DepthCard>
-
-        <DepthCard depth="md" density="base" className="space-y-4">
+  </DepthCard>
+  </div>
+  <div className="grid-item">
+  <DepthCard depth="md" density="base" className="space-y-4">
           <div>
             <h3 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Quick Actions</h3>
             <p className="text-sm text-muted-foreground mt-1">Manage your account and API settings</p>
@@ -196,6 +203,7 @@ export default function DashboardPage() {
             </a>
           </div>
         </DepthCard>
+        </div>
       </div>
     </div>
   )

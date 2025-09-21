@@ -106,7 +106,7 @@ export default function APIKeysPage() {
       {/* New API Key Modal */}
       {newKeyData && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <Card className="w-full max-w-md mx-4">
+          <div className="grid-item w-full max-w-md mx-4"><Card className="w-full max-w-md mx-0">
             <CardHeader>
               <CardTitle>API Key Created</CardTitle>
               <CardDescription>
@@ -142,12 +142,12 @@ export default function APIKeysPage() {
                 </Button>
               </div>
             </CardContent>
-          </Card>
+          </Card></div>
         </div>
       )}
 
       {/* Create new API Key */}
-      <Card className="mb-6">
+  <div className="grid-item mb-6"><Card className="mb-0">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <PlusIcon className="h-5 w-5" />
@@ -170,10 +170,10 @@ export default function APIKeysPage() {
             </Button>
           </div>
         </CardContent>
-      </Card>
+  </Card></div>
 
       {/* API Keys List */}
-      <Card>
+  <div className="grid-item"><Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <KeyIcon className="h-5 w-5" />
@@ -259,10 +259,10 @@ export default function APIKeysPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+  </Card></div>
 
       {/* Usage Guidelines */}
-      <Card className="mt-6">
+  <div className="grid-item mt-6"><Card className="mt-0">
         <CardHeader>
           <CardTitle>Usage Guidelines</CardTitle>
         </CardHeader>
@@ -288,7 +288,7 @@ export default function APIKeysPage() {
             </p>
           </div>
         </CardContent>
-      </Card>
+  </Card></div>
     </div>
   )
 }

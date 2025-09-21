@@ -114,16 +114,30 @@ body {
         backdrop-filter: blur(14px) saturate(1.1);
         -webkit-backdrop-filter: blur(14px) saturate(1.1);
       }
+      /* Grid item wrapper for consistent card hierarchy */
+      .grid-item {
+        position: relative;
+        min-width: 0; /* allow content truncation inside */
+        isolation: isolate; /* create stacking context for shadows */
+        display: flex;
+        flex-direction: column;
+      }
+      .grid-item > .group, .grid-item > .card-root {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+      }
     }
 
   /* -------------------------------------------------- */
   /* Canonical Theme HSL Tokens */
   /* -------------------------------------------------- */
   :root {
+    /* Light ladder widened: background 98 → surface 100 → alt 96.5 → strong 94.5 */
     --background: 210 20% 98%;
-    --surface: 0 0% 100%; /* slightly cleaner neutral */
-    --surface-alt: 210 24% 97%; /* new mid layer between surface and surface-strong (light) */
-    --surface-strong: 210 25% 96%; /* lift ~1.5% for clearer separation */
+    --surface: 0 0% 100%; /* base canvas panels */
+    --surface-alt: 210 20% 96.5%; /* mid layer (≈ -3.5 L*) */
+    --surface-strong: 210 22% 94.5%; /* strong layer (≈ -5.5 L*) */
     --foreground: 222 22% 6%;
     --muted: 215 10% 55%;
     --muted-foreground: 215 8% 40%;
