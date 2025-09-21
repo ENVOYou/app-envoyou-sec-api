@@ -120,9 +120,9 @@ body {
   /* Canonical Theme HSL Tokens */
   /* -------------------------------------------------- */
   :root {
-    --background: 0 0% 100%;
-    --surface: 210 22% 96%; /* slightly cleaner neutral */
-    --surface-strong: 210 28% 94%; /* lift ~1.5% for clearer separation */
+    --background: 210 20% 98%;
+    --surface: 0 0% 100%; /* slightly cleaner neutral */
+    --surface-strong: 210 25% 96%; /* lift ~1.5% for clearer separation */
     --foreground: 222 22% 6%;
     --muted: 215 10% 55%;
     --muted-foreground: 215 8% 40%;
@@ -137,9 +137,9 @@ body {
   }
 
   .dark {
-    --background: 222 22% 7%;
-    --surface: 222 21% 13%; /* +1% for less crushed base cards */
-    --surface-strong: 222 22% 17%; /* +2% to improve readable elevation */
+    --background: 222 22% 5%;
+    --surface: 222 21% 9%; /* +1% for less crushed base cards */
+    --surface-strong: 222 22% 13%; /* +2% to improve readable elevation */
     --foreground: 0 0% 98%;
     --muted: 220 7% 60%;
     --muted-foreground: 220 8% 72%;
@@ -149,7 +149,7 @@ body {
     --accent-foreground: 0 0% 98%;
     --destructive: 2 70% 48%;
     --destructive-foreground: 0 0% 100%;
-    --border-base: 222 16% 26%;
+    --border-base: 222 16% 20%;
     --ring: 146 55% 50%;
   }
 
