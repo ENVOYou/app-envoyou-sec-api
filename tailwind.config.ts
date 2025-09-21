@@ -50,6 +50,8 @@ const config: any = {
         depthLg: "0 8px 16px -4px rgba(0,0,0,0.10),0 16px 40px -8px rgba(0,0,0,0.16)",
         depthXl: "0 12px 24px -6px rgba(0,0,0,0.14),0 28px 64px -12px rgba(0,0,0,0.22)",
         depthGlow: "0 0 0 1px rgba(255,255,255,0.04),0 4px 18px -4px rgba(0,0,0,0.32),0 0 32px -4px hsl(var(--primary)/0.25)",
+        buttonElevated: "0 4px 0 0 hsl(146 55% 38%)",
+        buttonPressed: "0 1px 0 0 hsl(146 55% 38%)"
       }
     },
   },

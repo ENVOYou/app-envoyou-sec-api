@@ -14,7 +14,8 @@ const buttonVariants = cva(
   ghost: "hover:bg-accent/50 text-foreground",
   link: "underline-offset-4 hover:underline text-primary",
   social: "bg-surface border border-borderBase/50 dark:bg-surface/70 hover:bg-accent/40 text-foreground shadow-sm hover:shadow-card transition-colors",
-  elevated: "relative overflow-hidden rounded-lg bg-primary text-primary-foreground shadow-card hover:shadow-cardDark transition-all duration-200 hover:scale-[1.03] active:scale-95 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_25%_20%,hsl(var(--primary)/0.25),transparent_65%)] dark:before:bg-[radial-gradient(circle_at_30%_25%,hsl(var(--primary)/0.18),transparent_65%)] before:pointer-events-none"
+  elevated: "relative overflow-hidden rounded-lg bg-primary text-primary-foreground shadow-buttonElevated duration-200 ease-out hover:brightness-110 active:translate-y-0.5 active:shadow-buttonPressed before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_25%_20%,hsl(var(--primary)/3),transparent_85%)] dark:before:bg-[radial-gradient(circle_at_30%_25%,hsl(var(--primary)/5),transparent_90%)] before:pointer-events-none"
+        // --- AKHIR PERUBAHAN ---
       },
       size: {
         default: "h-10 py-2 px-4",

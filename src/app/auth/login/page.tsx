@@ -12,6 +12,7 @@ import { ElevatedCard } from '@/components/ui/elevated-card'
 import { LoadingIcon, EyeIcon, EyeOffIcon, GoogleIcon, GitHubIcon } from '@/components/icons/index'
 import AuthSplitLayout from '@/components/ui/auth-split-layout'
 import { AuthError, mapSupabaseError, createAuthError } from '@/lib/authErrors'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -82,6 +83,9 @@ export default function LoginPage() {
       ]}
       forceCarousel
     >
+      <div className="absolute top-6 right-6 z-10">
+        <ThemeToggle />
+      </div>
       <div className="space-y-8">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold tracking-tight">Sign In</h1>
