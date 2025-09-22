@@ -180,15 +180,19 @@ body {
     --ring: 146 55% 44%;
     /* Chrome (header) semantic surfaces */
   --surface-chrome: 210 16% 95.5%; /* header chrome (light) */
+    /* Shadow tokens (light) */
+    --shadow-hairline: 0 1px 0 0 hsl(var(--border-base)/0.55);
+    --shadow-chrome-elevated: 0 2px 4px -2px hsl(var(--foreground)/0.15), 0 4px 12px -4px hsl(var(--foreground)/0.12), 0 1px 0 0 hsl(var(--border-base)/0.60);
+    --shadow-chrome-rest: var(--shadow-hairline);
     --header-height: 4rem; /* 64px */
   }
 
   .dark {
     /* Dark hierarchy ladder updated: 5 → 11 → 16 → 23 (clearer tonal steps) */
     --background: 240 10% 3.9%;
-    --surface: 240 3.7% 15.9%;
-    --surface-alt: 222 10% 10%;
-    --surface-strong: 240 3.7% 15.9%;
+  --surface-alt: 222 10% 10%; /* mid layer */
+  --surface: 240 4% 17%; /* base panels (was 15.9%) */
+  --surface-strong: 240 5% 20%; /* elevated strong layer (new distinct step) */
     --foreground: 0 0% 98%;
     --muted: 220 7% 60%;
     --muted-foreground: 220 8% 72%;
@@ -201,15 +205,19 @@ body {
     --border-base: 240 3.7% 25.3%;
     --ring: 146 55% 50%;
   --surface-chrome: 222 12% 12.5%; /* header chrome (dark) */
+    /* Shadow tokens (dark) */
+    --shadow-hairline: 0 1px 0 0 hsl(var(--border-base)/0.50);
+    --shadow-chrome-elevated: 0 2px 4px -2px hsl(var(--foreground)/0.45), 0 4px 14px -4px hsl(var(--foreground)/0.40), 0 1px 0 0 hsl(var(--border-base)/0.60);
+    --shadow-chrome-rest: var(--shadow-hairline);
   }
 
   /* Header / app-chrome utilities */
   @layer utilities {
     .app-chrome { position: fixed; top: 0; inset-inline: 0; height: var(--header-height); z-index: 60; display: flex; align-items: center; background: hsl(var(--surface-chrome));
-      box-shadow: 0 1px 0 0 hsl(var(--border-base)/0.55); transition: box-shadow .35s, background-color .35s; }
-    .dark .app-chrome { background: hsl(var(--surface-chrome)); box-shadow: 0 1px 0 0 hsl(var(--border-base)/0.50); }
-    .app-chrome[data-scrolled="true"] { box-shadow: 0 2px 4px -2px hsl(var(--foreground)/0.15), 0 4px 12px -4px hsl(var(--foreground)/0.12), 0 1px 0 0 hsl(var(--border-base)/0.60); }
-    .dark .app-chrome[data-scrolled="true"] { box-shadow: 0 2px 4px -2px hsl(var(--foreground)/0.45), 0 4px 14px -4px hsl(var(--foreground)/0.40), 0 1px 0 0 hsl(var(--border-base)/0.60); }
+      box-shadow: var(--shadow-chrome-rest); transition: box-shadow .35s, background-color .35s; }
+    .dark .app-chrome { background: hsl(var(--surface-chrome)); box-shadow: var(--shadow-chrome-rest); }
+    .app-chrome[data-scrolled="true"] { box-shadow: var(--shadow-chrome-elevated); }
+    .dark .app-chrome[data-scrolled="true"] { box-shadow: var(--shadow-chrome-elevated); }
     .app-chrome:after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: linear-gradient(to right, hsl(var(--foreground)/0.25), hsl(var(--foreground)/0.05), hsl(var(--foreground)/0.25)); opacity: 0.55; pointer-events: none; transition: opacity .35s; }
     .app-chrome[data-scrolled="true"]:after { opacity: 0.75; }
   /* Chrome navigation items (header or sidebar with chrome context) */

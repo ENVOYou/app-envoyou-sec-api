@@ -41,9 +41,25 @@ Light:
 
 Dark:
 
-- `--surface-chrome: 222 12% 12.5%` (above background 3.9%, near alt 10%, below main surface 15.9%)
+- `--surface-chrome: 222 12% 12.5%` (above background 3.9%, above alt 10%, below surface 17%)
+- Updated ladder (dark):
+- background: 3.9%
+- surface-alt: 10%
+- surface-chrome: 12.5%
+- surface (base panels): 17%
+- surface-strong: 20%
 
 Rationale: Thin delta ensures header doesn’t overweight visual hierarchy while still separating in grayscale.
+
+## Shadow Tokens
+
+Defined in `globals.css`:
+
+- `--shadow-hairline`: single pixel structural divider (light & dark variant)
+- `--shadow-chrome-rest`: alias -> hairline (resting state)
+- `--shadow-chrome-elevated`: multi-layer elevation when scrolled (ambient + directional + hairline)
+
+Rationale: Encapsulates elevation semantics for reuse (future side panels, sticky bars) and simplifies future tuning.
 
 ## Interactive States (Chrome Navigation)
 
@@ -72,6 +88,11 @@ Recommendation: If future tweaks reduce lightness gap, re-run automated contrast
 - Add visual snapshots (Playwright) for header (light/dark) route `/dashboard` waiting for hydration to complete.
 - Add lint guard (implemented: `lint:chrome-tokens`) to prevent reintroduction of legacy alpha tokens.
 - Optional: grayscale screenshot (CI artifact) to verify tonal separation.
+
+### Grayscale Workflow
+
+- Script: `pnpm snapshots:grayscale` generates `tests/visual/__screenshots__/__grayscale__` variants.
+- Use in CI post-visual-test step to attach tonal-only diffs (helps catch imperceptible color drifts that reduce hierarchy).
 
 ## Do / Avoid
 
