@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { Sidebar } from '@/components/sidebar'
 import { Header } from '@/components/header'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, type CSSProperties } from 'react'
 
 export default function DashboardLayout({
   children,
@@ -55,9 +55,10 @@ export default function DashboardLayout({
   }
 
   const sidebarWidth = collapsed ? '4rem' : '16rem'
+  const layoutStyle: CSSProperties = { ['--sidebar-w' as string]: sidebarWidth }
 
   return (
-    <div className="min-h-screen bg-background text-foreground" style={{ ['--sidebar-w' as any]: sidebarWidth }}>
+  <div className="min-h-screen bg-background text-foreground" style={layoutStyle}>
       <div className="pointer-events-none absolute inset-0 hidden dark:block dark:opacity-[0.04] dark:bg-[radial-gradient(circle_at_25%_20%,hsl(var(--foreground)/0.15),transparent_55%),linear-gradient(to_right,hsl(var(--foreground)/0.18)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.12)_1px,transparent_1px)] dark:bg-[size:100%_100%,70px_70px,70px_70px]" aria-hidden="true" />
       <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} className="bg-surface/92 dark:bg-surface/85" />
       <a href="#main-content" className="skip-link">Skip to content</a>
