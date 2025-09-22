@@ -69,12 +69,14 @@ export default function DashboardLayout({
   <div className="h-screen overflow-hidden bg-background text-foreground" style={layoutStyle}>
       <a href="#main-content" className="skip-link">Skip to content</a>
       <Header className="with-sidebar" />
-  <div className="flex pt-[var(--header-height)] h-full">
+      <div className="flex h-full">
         <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} className="bg-surface/92 dark:bg-surface/85 sidebar-panel" />
-        <div className="flex-1 min-w-0 lg:pl-[var(--sidebar-w)] lg:ml-[-var(--sidebar-w)] h-[calc(100vh-var(--header-height))] overflow-y-auto overscroll-contain">
-          <main id="main-content" className="p-6 lg:p-10 space-y-10 max-w-full">
-            {children}
-          </main>
+        <div className="flex-1 min-w-0 lg:pl-[var(--sidebar-w)] lg:ml-[-var(--sidebar-w)] h-full overflow-hidden">
+          <div className="h-full overflow-y-auto overscroll-contain pt-[var(--header-height)]">
+            <main id="main-content" className="p-6 lg:p-10 space-y-10 max-w-full">
+              {children}
+            </main>
+          </div>
         </div>
       </div>
     </div>
