@@ -65,14 +65,14 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
 
       {/* Sidebar: Mobile off-canvas (fixed). Desktop: sticky column participant */}
       <aside className={cn(
-        // Mobile: off-canvas fixed with viewport height. Desktop: stretch with grid row height.
-        "h-screen lg:h-auto lg:self-stretch bg-surface dark:bg-surface shadow-card dark:shadow-cardDark chrome-hairline-y overflow-hidden transition-[width,transform] duration-200 ease-in-out",
-        "fixed top-0 left-0 z-40 lg:static lg:translate-x-0",
+        // Mobile: fixed off-canvas; Desktop: sticky full-height
+        "h-screen bg-surface dark:bg-surface shadow-card dark:shadow-cardDark chrome-hairline-y overflow-hidden transition-[width,transform] duration-200 ease-in-out",
+        "fixed top-0 left-0 z-40 lg:sticky lg:top-0 lg:translate-x-0 lg:h-screen",
         collapsed ? 'w-16' : 'w-64',
         isOpen ? "translate-x-0" : "-translate-x-full",
         className
       )} aria-label="Primary">
-  <div className="flex h-full flex-col lg:sticky lg:top-0 lg:h-screen overflow-hidden min-w-0">
+        <div className="flex h-full flex-col overflow-hidden min-w-0">
           {/* Chrome top bar inside sidebar */}
           <div className="flex h-16 items-center px-4 chrome-hairline-x">
             <Link href="/dashboard" className="flex items-center gap-2 min-w-0">
