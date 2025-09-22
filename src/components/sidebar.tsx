@@ -72,7 +72,7 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
         isOpen ? "translate-x-0" : "-translate-x-full",
         className
       )} aria-label="Primary">
-        <div className="flex h-full flex-col lg:sticky lg:top-0 lg:h-screen">
+  <div className="flex h-full flex-col lg:sticky lg:top-0 lg:h-screen overflow-hidden min-w-0">
           {/* Chrome top bar inside sidebar */}
           <div className="flex h-16 items-center px-4 chrome-hairline-x">
             <Link href="/dashboard" className="flex items-center gap-2 min-w-0">
@@ -91,11 +91,11 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
 
           {/* Navigation (internally scrollable) */}
           <nav className={cn(
-            "flex-1 min-h-0 overflow-y-auto overscroll-contain py-4 scroll-smooth",
+            "flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain py-4 scroll-smooth min-w-0",
             collapsed ? 'px-1 space-y-1' : 'px-3 space-y-1'
           )}>
             {/* Top fade mask */}
-            <div aria-hidden="true" className="pointer-events-none sticky -top-4 h-4 -mt-4 bg-gradient-to-b from-surface/95 dark:from-surface/90 to-transparent z-10" />
+            <div aria-hidden="true" className="w-full pointer-events-none sticky -top-4 h-4 -mt-4 bg-gradient-to-b from-surface/95 dark:from-surface/90 to-transparent z-10" />
             {navigation.map((item) => {
               const isActive = pathname === item.href
               return (
@@ -124,7 +124,7 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
               )
             })}
             {/* Bottom fade mask (placed after items to overlay) */}
-            <div aria-hidden="true" className="pointer-events-none sticky -bottom-4 h-4 -mb-4 bg-gradient-to-t from-surface/95 dark:from-surface/90 to-transparent z-10" />
+            <div aria-hidden="true" className="w-full pointer-events-none sticky -bottom-4 h-4 -mb-4 bg-gradient-to-t from-surface/95 dark:from-surface/90 to-transparent z-10" />
           </nav>
 
           {/* User section */}
