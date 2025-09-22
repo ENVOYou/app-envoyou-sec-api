@@ -220,6 +220,10 @@ body {
     .dark .app-chrome[data-scrolled="true"] { box-shadow: var(--shadow-chrome-elevated); }
     .app-chrome:after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: linear-gradient(to right, hsl(var(--foreground)/0.25), hsl(var(--foreground)/0.05), hsl(var(--foreground)/0.25)); opacity: 0.55; pointer-events: none; transition: opacity .35s; }
     .app-chrome[data-scrolled="true"]:after { opacity: 0.75; }
+    /* Offset header when fixed sidebar present */
+    @media (min-width: 1024px) {
+      .app-chrome.with-sidebar { left: var(--sidebar-w,16rem); width: calc(100% - var(--sidebar-w,16rem)); }
+    }
   /* Inline chrome variant: used inside grid/flex column so it doesn't overlay sidebar */
   .app-chrome-inline { position: sticky; top: 0; height: var(--header-height); z-index: 50; display: flex; align-items: center; background: hsl(var(--surface-chrome)); box-shadow: var(--shadow-chrome-rest); backdrop-filter: none; transition: box-shadow .35s, background-color .35s; }
   .dark .app-chrome-inline { background: hsl(var(--surface-chrome)); box-shadow: var(--shadow-chrome-rest); }

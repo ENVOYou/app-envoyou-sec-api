@@ -62,10 +62,9 @@ export default function DashboardLayout({
       <div className="pointer-events-none absolute inset-0 hidden dark:block dark:opacity-[0.04] dark:bg-[radial-gradient(circle_at_25%_20%,hsl(var(--foreground)/0.15),transparent_55%),linear-gradient(to_right,hsl(var(--foreground)/0.18)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.12)_1px,transparent_1px)] dark:bg-[size:100%_100%,70px_70px,70px_70px]" aria-hidden="true" />
       <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} className="bg-surface/92 dark:bg-surface/85" />
       <a href="#main-content" className="skip-link">Skip to content</a>
-      <Header className="hidden lg:flex" />
-      {/* Mobile header inline inside flow if needed (reuse existing Header inline for <lg) */}
-      <div className="lg:pl-[var(--sidebar-w)] pt-[var(--header-height)]">
-        <main id="main-content" className="p-6 lg:p-10 space-y-10">
+      <Header className="with-sidebar" />
+      <div className="pt-[var(--header-height)] lg:pl-[var(--sidebar-w)]">
+        <main id="main-content" className="p-6 lg:p-10 space-y-10 max-w-full">
           {children}
         </main>
       </div>
