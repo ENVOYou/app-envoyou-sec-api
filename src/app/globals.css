@@ -179,9 +179,7 @@ body {
     --border-base: 210 18% 88%;
     --ring: 146 55% 44%;
     /* Chrome (header) semantic surfaces */
-    --surface-chrome: var(--surface-alt); /* could diverge later */
-    --surface-chrome-alpha: 0.72;
-    --surface-chrome-alpha-dark: 0.65;
+  --surface-chrome: 210 16% 95.5%; /* header chrome (light) */
     --header-height: 4rem; /* 64px */
   }
 
@@ -202,7 +200,7 @@ body {
     --destructive-foreground: 0 0% 100%;
     --border-base: 240 3.7% 25.3%;
     --ring: 146 55% 50%;
-    --surface-chrome: var(--surface-alt);
+  --surface-chrome: 222 12% 12.5%; /* header chrome (dark) */
   }
 
   /* Header / app-chrome utilities */
@@ -214,6 +212,14 @@ body {
     .dark .app-chrome[data-scrolled="true"] { box-shadow: 0 2px 4px -2px hsl(var(--foreground)/0.45), 0 4px 14px -4px hsl(var(--foreground)/0.40), 0 1px 0 0 hsl(var(--border-base)/0.60); }
     .app-chrome:after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: linear-gradient(to right, hsl(var(--foreground)/0.25), hsl(var(--foreground)/0.05), hsl(var(--foreground)/0.25)); opacity: 0.55; pointer-events: none; transition: opacity .35s; }
     .app-chrome[data-scrolled="true"]:after { opacity: 0.75; }
+  /* Chrome navigation items (header or sidebar with chrome context) */
+  .chrome-nav-item { position: relative; display: flex; align-items: center; gap: .625rem; font-size: .75rem; font-weight: 500; padding: .55rem .75rem; border-radius: .55rem; line-height: 1.2; color: hsl(var(--muted-foreground)); transition: background-color .25s, color .25s, box-shadow .35s; }
+  .chrome-nav-item:hover { color: hsl(var(--foreground)); background: hsl(var(--foreground)/0.06); }
+  .dark .chrome-nav-item:hover { background: hsl(var(--foreground)/0.18); }
+  .chrome-nav-item[aria-current="page"], .chrome-nav-item[data-active="true"] { color: hsl(var(--foreground)); background: linear-gradient(90deg, hsl(var(--primary)/0.18), hsl(var(--primary)/0.08) 55%, transparent); box-shadow: inset 0 0 0 1px hsl(var(--border-base)/0.50), inset 0 1px 0 0 hsl(var(--foreground)/0.25); }
+  .dark .chrome-nav-item[aria-current="page"], .dark .chrome-nav-item[data-active="true"] { background: linear-gradient(95deg, hsl(var(--primary)/0.30), hsl(var(--primary)/0.14) 60%, transparent); box-shadow: inset 0 0 0 1px hsl(var(--border-base)/0.45), inset 0 1px 0 0 hsl(var(--foreground)/0.35); }
+  .chrome-nav-item:focus-visible { outline: 2px solid hsl(var(--ring)/0.65); outline-offset: 2px; }
+  .chrome-nav-item-icon { width: 1rem; height: 1rem; flex-shrink: 0; }
     .skip-link { position: fixed; left: 0; top: 0; transform: translateY(-100%); background: hsl(var(--foreground)); color: hsl(var(--background)); padding: 0.5rem 0.75rem; z-index: 100; border-radius: 0 0 .5rem 0; font-size: 0.85rem; font-weight: 600; transition: transform .3s; }
     .skip-link:focus { transform: translateY(0); outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
   }

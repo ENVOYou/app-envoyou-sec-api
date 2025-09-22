@@ -84,21 +84,15 @@ export function Sidebar({ className }: SidebarProps) {
                   key={item.name}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
+                  aria-current={isActive ? 'page' : undefined}
                   className={cn(
-                    "group flex items-center space-x-3 rounded-md px-3 py-2 text-sm transition-all duration-200",
-                    isActive
-                      ? "relative text-primary bg-gradient-to-r from-primary/15 via-primary/10 to-transparent hover:from-primary/18 hover:via-primary/12 focus:outline-none focus:ring-2 focus:ring-primary/40 before:absolute before:inset-0 before:rounded-md before:pointer-events-none before:shadow-[inset_0_0_0_1px_hsl(var(--border-base)/0.45),inset_0_1px_0_0_hsl(var(--foreground)/0.25)]"
-                      : "text-muted hover:text-primary hover:bg-accent/60 hover:shadow-[inset_0_0_0_1px_hsl(var(--border-base)/0.35)] focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    'chrome-nav-item',
+                    isActive && 'data-[active=true]' // allow both aria-current and data-active matching
                   )}
+                  data-active={isActive ? 'true' : undefined}
                 >
-                  <item.icon className={cn(
-                    "h-5 w-5 transition-colors",
-                    isActive ? "text-primary" : "group-hover:text-primary"
-                  )} />
-                  <span className={cn(
-                    "truncate",
-                    isActive && "font-medium"
-                  )}>{item.name}</span>
+                  <item.icon className="chrome-nav-item-icon" />
+                  <span className="truncate">{item.name}</span>
                 </Link>
               )
             })}
