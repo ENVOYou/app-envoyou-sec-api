@@ -89,8 +89,13 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
             </button>
           </div>
 
-          {/* Navigation */}
-          <nav className={cn("flex-1 py-4", collapsed ? 'px-1 space-y-1' : 'px-3 space-y-1')}>
+          {/* Navigation (internally scrollable) */}
+          <nav className={cn(
+            "flex-1 min-h-0 overflow-y-auto overscroll-contain py-4 scroll-smooth",
+            collapsed ? 'px-1 space-y-1' : 'px-3 space-y-1'
+          )}>
+            {/* Top fade mask */}
+            <div aria-hidden="true" className="pointer-events-none sticky -top-4 h-4 -mt-4 bg-gradient-to-b from-surface/95 dark:from-surface/90 to-transparent z-10" />
             {navigation.map((item) => {
               const isActive = pathname === item.href
               return (
@@ -118,6 +123,8 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
                 </Link>
               )
             })}
+            {/* Bottom fade mask (placed after items to overlay) */}
+            <div aria-hidden="true" className="pointer-events-none sticky -bottom-4 h-4 -mb-4 bg-gradient-to-t from-surface/95 dark:from-surface/90 to-transparent z-10" />
           </nav>
 
           {/* User section */}
