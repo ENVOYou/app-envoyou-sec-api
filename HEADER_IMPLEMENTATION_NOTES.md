@@ -1,18 +1,18 @@
 # Header Implementation Notes
 
-This document summarizes the new header (app chrome) approach.
+This document summarizes the header (app chrome) approach. (Updated: now using solid surface instead of translucent blur.)
 
 ## Goals
 
 - Clear separation from body without heavy solid border lines.
 - Subtle depth that increases only after the user scrolls.
-- Translucent, token-driven surface for consistency with design hierarchy.
+- Solid, token-driven surface (`--surface-chrome`) for consistency with design hierarchy and visual stability.
 - Accessible navigation: skip link & proper aria attributes.
 
 ## Key Elements
 
 - Utility class `.app-chrome` defined in `src/app/globals.css`.
-- Tokens introduced: `--surface-chrome`, `--surface-chrome-alpha`, `--surface-chrome-alpha-dark`, `--header-height`.
+- Tokens introduced: `--surface-chrome`, `--header-height` (alpha tokens kept in code but no longer used for blur background).
 - Scroll elevation handled by `useScrollElevation` hook (threshold 8px) and `data-scrolled` attribute.
 - Hairline separation uses `:after` gradient instead of `border-b`.
 
@@ -30,7 +30,7 @@ Current padding: `pt-20` on `<main id="main-content" />` inside `dashboard/layou
 ## Future Enhancements
 
 - Global loading/progress bar (2px top strip) inside `.app-chrome`.
-- Conditionally tighten background alpha when user scrolls more (dynamic alpha interpolation).
+- (Removed: dynamic alpha interpolation — replaced by purely solid style.)
 - Auto-hide behavior (slide up on scroll down, reveal on scroll up) if needed for dense data pages.
 
 ## Do / Avoid

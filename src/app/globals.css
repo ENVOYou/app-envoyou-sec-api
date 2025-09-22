@@ -207,11 +207,11 @@ body {
 
   /* Header / app-chrome utilities */
   @layer utilities {
-    .app-chrome { position: fixed; top: 0; inset-inline: 0; height: var(--header-height); z-index: 60; display: flex; align-items: center; backdrop-filter: blur(14px) saturate(1.15); -webkit-backdrop-filter: blur(14px) saturate(1.15); background: hsl(var(--surface-chrome)/var(--surface-chrome-alpha));
-      box-shadow: 0 1px 0 0 hsl(var(--border-base)/0.45); transition: box-shadow .35s, background-color .35s; }
-    .dark .app-chrome { background: hsl(var(--surface-chrome)/var(--surface-chrome-alpha-dark)); box-shadow: 0 1px 0 0 hsl(var(--border-base)/0.40); }
-    .app-chrome[data-scrolled="true"] { box-shadow: 0 4px 12px -4px hsl(var(--foreground)/0.18), 0 1px 0 0 hsl(var(--border-base)/0.55); }
-    .dark .app-chrome[data-scrolled="true"] { box-shadow: 0 4px 14px -4px hsl(var(--foreground)/0.55), 0 1px 0 0 hsl(var(--border-base)/0.55); }
+    .app-chrome { position: fixed; top: 0; inset-inline: 0; height: var(--header-height); z-index: 60; display: flex; align-items: center; background: hsl(var(--surface-chrome));
+      box-shadow: 0 1px 0 0 hsl(var(--border-base)/0.55); transition: box-shadow .35s, background-color .35s; }
+    .dark .app-chrome { background: hsl(var(--surface-chrome)); box-shadow: 0 1px 0 0 hsl(var(--border-base)/0.50); }
+    .app-chrome[data-scrolled="true"] { box-shadow: 0 2px 4px -2px hsl(var(--foreground)/0.15), 0 4px 12px -4px hsl(var(--foreground)/0.12), 0 1px 0 0 hsl(var(--border-base)/0.60); }
+    .dark .app-chrome[data-scrolled="true"] { box-shadow: 0 2px 4px -2px hsl(var(--foreground)/0.45), 0 4px 14px -4px hsl(var(--foreground)/0.40), 0 1px 0 0 hsl(var(--border-base)/0.60); }
     .app-chrome:after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: linear-gradient(to right, hsl(var(--foreground)/0.25), hsl(var(--foreground)/0.05), hsl(var(--foreground)/0.25)); opacity: 0.55; pointer-events: none; transition: opacity .35s; }
     .app-chrome[data-scrolled="true"]:after { opacity: 0.75; }
     .skip-link { position: fixed; left: 0; top: 0; transform: translateY(-100%); background: hsl(var(--foreground)); color: hsl(var(--background)); padding: 0.5rem 0.75rem; z-index: 100; border-radius: 0 0 .5rem 0; font-size: 0.85rem; font-weight: 600; transition: transform .3s; }
