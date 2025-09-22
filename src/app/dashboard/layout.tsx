@@ -71,7 +71,9 @@ export default function DashboardLayout({
       <Header className="with-sidebar" />
       <div className="flex h-full">
         <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} className="bg-surface/92 dark:bg-surface/85 sidebar-panel" />
-        <div className="flex-1 min-w-0 lg:pl-[var(--sidebar-w)] lg:ml-[-var(--sidebar-w)] h-full overflow-hidden">
+        <div className="flex-1 min-w-0 h-full overflow-hidden relative">
+          {/* Spacer to offset content under fixed sidebar on large screens without distorting inner horizontal padding */}
+          <div className="hidden lg:block absolute inset-y-0 left-0" style={{ width: 'var(--sidebar-w)' }} aria-hidden="true" />
           <div className="h-full overflow-y-auto overscroll-contain pt-[var(--header-height)]">
             <main id="main-content" className="p-6 lg:p-10 space-y-10 max-w-full">
               {children}
