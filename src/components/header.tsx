@@ -8,15 +8,17 @@ import { useScrollElevation } from '@/hooks/useScrollElevation'
 
 interface HeaderProps {
   title?: string
+  inline?: boolean
+  className?: string
 }
 
-export function Header({ title }: HeaderProps) {
+export function Header({ title, inline = false, className }: HeaderProps) {
   const { user } = useAuth()
   const elevated = useScrollElevation(8)
 
   return (
     <header
-      className="app-chrome select-none"
+      className={(inline ? 'app-chrome-inline' : 'app-chrome') + ' select-none ' + (className || '')}
       data-scrolled={elevated ? 'true' : 'false'}
       role="banner"
     >

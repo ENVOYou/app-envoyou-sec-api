@@ -63,9 +63,11 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar: Mobile off-canvas (fixed). Desktop: sticky column participant */}
       <aside className={cn(
-        "fixed top-0 left-0 z-40 h-screen bg-surface dark:bg-surface shadow-card dark:shadow-cardDark lg:translate-x-0 chrome-hairline-y overflow-hidden transition-[width,transform] duration-200 ease-in-out",
+        "h-screen bg-surface dark:bg-surface shadow-card dark:shadow-cardDark chrome-hairline-y overflow-hidden transition-[width,transform] duration-200 ease-in-out",
+        // Mobile: off-canvas fixed overlay
+  "fixed top-0 left-0 z-40 lg:translate-x-0 lg:sticky lg:top-0",
         collapsed ? 'w-16' : 'w-64',
         isOpen ? "translate-x-0" : "-translate-x-full",
         className
