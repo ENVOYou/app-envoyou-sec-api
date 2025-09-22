@@ -220,6 +220,13 @@ body {
     .dark .app-chrome[data-scrolled="true"] { box-shadow: var(--shadow-chrome-elevated); }
     .app-chrome:after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: linear-gradient(to right, hsl(var(--foreground)/0.25), hsl(var(--foreground)/0.05), hsl(var(--foreground)/0.25)); opacity: 0.55; pointer-events: none; transition: opacity .35s; }
     .app-chrome[data-scrolled="true"]:after { opacity: 0.75; }
+  /* Reusable hairline utilities */
+  .chrome-hairline-x { position: relative; }
+  .chrome-hairline-x:after { content:""; position:absolute; inset-inline:0; bottom:0; height:1px; background:linear-gradient(to right,hsl(var(--foreground)/0.25),hsl(var(--foreground)/0.05),hsl(var(--foreground)/0.25)); opacity:.55; pointer-events:none; }
+  .chrome-hairline-y { position: relative; }
+  .chrome-hairline-y:after { content:""; position:absolute; inset-block:0; right:0; width:1px; background:linear-gradient(to bottom,hsl(var(--foreground)/0.25),hsl(var(--foreground)/0.05),hsl(var(--foreground)/0.25)); opacity:.45; pointer-events:none; }
+  .dark .chrome-hairline-x:after { opacity:.7; }
+  .dark .chrome-hairline-y:after { opacity:.6; }
   /* Chrome navigation items (header or sidebar with chrome context) */
   .chrome-nav-item { position: relative; display: flex; align-items: center; gap: .625rem; font-size: .75rem; font-weight: 500; padding: .55rem .75rem; border-radius: .55rem; line-height: 1.2; color: hsl(var(--muted-foreground)); transition: background-color .25s, color .25s, box-shadow .35s; }
   .chrome-nav-item:hover { color: hsl(var(--foreground)); background: hsl(var(--foreground)/0.06); }
