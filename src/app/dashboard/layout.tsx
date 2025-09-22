@@ -66,12 +66,12 @@ export default function DashboardLayout({
   const layoutStyle: CSSProperties = { ['--sidebar-w' as string]: sidebarWidth }
 
   return (
-    <div className="min-h-screen bg-background text-foreground" style={layoutStyle}>
+  <div className="h-screen overflow-hidden bg-background text-foreground" style={layoutStyle}>
       <a href="#main-content" className="skip-link">Skip to content</a>
       <Header className="with-sidebar" />
-      <div className="flex pt-[var(--header-height)] h-screen">
+  <div className="flex pt-[var(--header-height)] h-full">
         <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} className="bg-surface/92 dark:bg-surface/85 sidebar-panel" />
-        <div className="flex-1 min-w-0 lg:pl-[var(--sidebar-w)] lg:ml-[-var(--sidebar-w)] h-[calc(100vh-var(--header-height))] overflow-y-auto">
+        <div className="flex-1 min-w-0 lg:pl-[var(--sidebar-w)] lg:ml-[-var(--sidebar-w)] h-[calc(100vh-var(--header-height))] overflow-y-auto overscroll-contain">
           <main id="main-content" className="p-6 lg:p-10 space-y-10 max-w-full">
             {children}
           </main>
