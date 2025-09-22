@@ -3,7 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { Sidebar } from '@/components/sidebar'
 import { Header } from '@/components/header'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState, useCallback, type CSSProperties } from 'react'
 
 export default function DashboardLayout({
@@ -13,6 +13,7 @@ export default function DashboardLayout({
 }) {
   const { user, loading } = useAuth()
   const router = useRouter()
+  const pathname = usePathname()
   const [collapsed, setCollapsed] = useState<boolean>(false)
 
   // Load persisted state
@@ -38,6 +39,13 @@ export default function DashboardLayout({
     }
   }, [user, loading, router])
 
+  // Reset scroll on route change inside dashboard
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'auto' })
+    }
+  }, [pathname])
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -58,15 +66,16 @@ export default function DashboardLayout({
   const layoutStyle: CSSProperties = { ['--sidebar-w' as string]: sidebarWidth }
 
   return (
-  <div className="min-h-screen bg-background text-foreground" style={layoutStyle}>
-      <div className="pointer-events-none absolute inset-0 hidden dark:block dark:opacity-[0.04] dark:bg-[radial-gradient(circle_at_25%_20%,hsl(var(--foreground)/0.15),transparent_55%),linear-gradient(to_right,hsl(var(--foreground)/0.18)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.12)_1px,transparent_1px)] dark:bg-[size:100%_100%,70px_70px,70px_70px]" aria-hidden="true" />
-      <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} className="bg-surface/92 dark:bg-surface/85" />
+    <div className="min-h-screen bg-background text-foreground" style={layoutStyle}>
       <a href="#main-content" className="skip-link">Skip to content</a>
       <Header className="with-sidebar" />
-      <div className="pt-[var(--header-height)] lg:pl-[var(--sidebar-w)]">
-        <main id="main-content" className="p-6 lg:p-10 space-y-10 max-w-full">
-          {children}
-        </main>
+      <div className="flex pt-[var(--header-height)] h-screen">
+        <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} className="bg-surface/92 dark:bg-surface/85 sidebar-panel" />
+        <div className="flex-1 min-w-0 lg:pl-[var(--sidebar-w)] lg:ml-[-var(--sidebar-w)] h-[calc(100vh-var(--header-height))] overflow-y-auto">
+          <main id="main-content" className="p-6 lg:p-10 space-y-10 max-w-full">
+            {children}
+          </main>
+        </div>
       </div>
     </div>
   )
