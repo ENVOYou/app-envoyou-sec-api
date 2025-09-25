@@ -249,10 +249,14 @@ body {
   .dark .sidebar-panel { box-shadow: inset -1px 0 0 hsl(var(--border-base)/0.40); }
   /* Mobile layout corrections for dashboard content to avoid clipping/stacking */
   @media (max-width: 640px) {
-    .dashboard-main > * { width: 100% !important; max-width: 100% !important; display: block !important; }
+    /* enforce symmetric horizontal padding and full-width stacking */
+    .dashboard-main { padding-inline: 1rem; box-sizing: border-box; }
+    .dashboard-main > * { width: 100% !important; max-width: 100% !important; display: block !important; margin-left: 0 !important; margin-right: 0 !important; box-sizing: border-box !important; }
     .dashboard-main .grid, .dashboard-main .grid-item { display: block !important; width: 100% !important; }
-    .dashboard-main .surface-section, .dashboard-main .surface-gradient { padding: 1rem !important; }
+    .dashboard-main .surface-section, .dashboard-main .surface-gradient { padding: 1rem !important; margin-inline: 0 !important; }
     .dashboard-main .ts-page-title { font-size: 1.5rem; }
+    /* ensure any left visual offset from pseudo elements doesn't shrink content */
+    .dashboard-main, .dashboard-main * { max-width: 100% !important; }
   }
     .skip-link { position: fixed; left: 0; top: 0; transform: translateY(-100%); background: hsl(var(--foreground)); color: hsl(var(--background)); padding: 0.5rem 0.75rem; z-index: 100; border-radius: 0 0 .5rem 0; font-size: 0.85rem; font-weight: 600; transition: transform .3s; }
     .skip-link:focus { transform: translateY(0); outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
