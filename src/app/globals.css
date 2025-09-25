@@ -257,6 +257,16 @@ body {
     .dashboard-main .ts-page-title { font-size: 1.5rem; }
     /* ensure any left visual offset from pseudo elements doesn't shrink content */
     .dashboard-main, .dashboard-main * { max-width: 100% !important; }
+    /* Remove compounded horizontal padding from nested page containers so cards can stretch edge-to-edge */
+    .dashboard-main > .p-6, .dashboard-main > .p-4, .dashboard-main .p-6, .dashboard-main .p-4 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    /* Also remove inline padding from components that commonly add horizontal padding */
+    .dashboard-main .px-4, .dashboard-main .px-6, .dashboard-main .sm\:p-6 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
   }
     .skip-link { position: fixed; left: 0; top: 0; transform: translateY(-100%); background: hsl(var(--foreground)); color: hsl(var(--background)); padding: 0.5rem 0.75rem; z-index: 100; border-radius: 0 0 .5rem 0; font-size: 0.85rem; font-weight: 600; transition: transform .3s; }
     .skip-link:focus { transform: translateY(0); outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
