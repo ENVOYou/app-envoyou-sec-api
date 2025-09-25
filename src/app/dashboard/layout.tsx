@@ -76,7 +76,7 @@ export default function DashboardLayout({
           <div className="hidden lg:block absolute inset-y-0 left-0" style={{ width: 'var(--sidebar-w)' }} aria-hidden="true" />
           <div className="h-full overflow-y-auto overscroll-contain pt-[var(--header-height)]">
             <main id="main-content" className="p-4 sm:p-6 lg:p-10 space-y-10 max-w-full">
-              <div className="w-full max-w-7xl mx-auto">
+              <div className="w-full max-w-7xl mx-auto dashboard-main">
                 {children}
               </div>
             </main>
