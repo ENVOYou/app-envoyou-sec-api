@@ -75,10 +75,12 @@ export default function DashboardLayout({
           {/* Spacer to offset content under fixed sidebar on large screens without distorting inner horizontal padding */}
           <div className="hidden lg:block absolute inset-y-0 left-0" style={{ width: 'var(--sidebar-w)' }} aria-hidden="true" />
           <div className="h-full overflow-y-auto overscroll-contain pt-[var(--header-height)]">
-            <main id="main-content" className="p-6 lg:p-10 space-y-10 max-w-full">
-              {children}
+            <main id="main-content" className="p-4 sm:p-6 lg:p-10 space-y-10 max-w-full">
+              <div className="w-full max-w-7xl mx-auto">
+                {children}
+              </div>
             </main>
-          </div>
+           </div>
         </div>
       </div>
     </div>

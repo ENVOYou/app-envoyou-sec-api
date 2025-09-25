@@ -67,9 +67,9 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
       <aside className={cn(
         // Mobile: fixed off-canvas; Desktop: sticky full-height
         "h-screen bg-surface dark:bg-surface shadow-card dark:shadow-cardDark chrome-hairline-y overflow-hidden transition-[width,transform] duration-200 ease-in-out",
-  "fixed top-0 left-0 z-40 lg:translate-x-0",
+        "fixed top-0 left-0 z-40 lg:translate-x-0",
         collapsed ? 'w-16' : 'w-64',
-  isOpen ? "translate-x-0 lg:translate-x-0" : "-translate-x-full lg:translate-x-0",
+        isOpen ? "translate-x-0 lg:translate-x-0 pointer-events-auto" : "-translate-x-full lg:translate-x-0 pointer-events-none lg:pointer-events-auto",
         className
       )} aria-label="Primary">
         <div className="flex h-full flex-col overflow-hidden min-w-0">
