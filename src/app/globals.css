@@ -267,6 +267,10 @@ body {
       padding-left: 0 !important;
       padding-right: 0 !important;
     }
+    /* Ensure the main content container itself has no extra inline padding (overrides p-4 on #main-content) */
+    #main-content { padding-left: 0 !important; padding-right: 0 !important; }
+    /* Ensure direct children of dashboard-main don't carry extra horizontal padding that compounds gutters */
+    .dashboard-main > * { padding-left: 0 !important; padding-right: 0 !important; }
   }
     .skip-link { position: fixed; left: 0; top: 0; transform: translateY(-100%); background: hsl(var(--foreground)); color: hsl(var(--background)); padding: 0.5rem 0.75rem; z-index: 100; border-radius: 0 0 .5rem 0; font-size: 0.85rem; font-weight: 600; transition: transform .3s; }
     .skip-link:focus { transform: translateY(0); outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
