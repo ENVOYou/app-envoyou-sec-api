@@ -1,0 +1,17 @@
+nohup: ignoring input
+
+> dash-envoyou@0.1.0 dev /home/husni/PROJECT-ENVOYOU-API/dash-envoyou
+> next dev --turbopack
+
+   ▲ Next.js 15.5.3 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://172.30.76.189:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ○ Compiling middleware ...
+ ✓ Compiled middleware in 2.4s
+ ✓ Ready in 5.2s
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 21.2s
+ HEAD /dashboard 200 in 26343ms

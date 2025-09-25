@@ -63,13 +63,11 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
         />
       )}
 
-      {/* Sidebar: Mobile off-canvas (fixed). Desktop: sticky column participant */}
+      {/* Desktop sidebar (hidden on small screens) */}
       <aside className={cn(
-        // Mobile: fixed off-canvas; Desktop: sticky full-height
-        "h-screen bg-surface dark:bg-surface shadow-card dark:shadow-cardDark chrome-hairline-y overflow-hidden transition-[width,transform] duration-200 ease-in-out",
-        "fixed top-0 left-0 z-40 lg:translate-x-0",
-        collapsed ? 'w-16' : 'w-64',
-        isOpen ? "translate-x-0 lg:translate-x-0 pointer-events-auto" : "-translate-x-full lg:translate-x-0 pointer-events-none lg:pointer-events-auto",
+        "hidden lg:flex h-screen bg-surface dark:bg-surface shadow-card dark:shadow-cardDark chrome-hairline-y overflow-hidden transition-[width,transform] duration-200 ease-in-out",
+        "lg:fixed lg:top-0 lg:left-0 lg:z-40",
+        collapsed ? 'lg:w-16 lg:block' : 'lg:w-64 lg:block',
         className
       )} aria-label="Primary">
         <div className="flex h-full flex-col overflow-hidden min-w-0">
@@ -153,6 +151,85 @@ export function Sidebar({ className, collapsed = false, onToggle }: SidebarProps
           </div>
         </div>
       </aside>
+
+      {/* Mobile off-canvas sidebar: only render when open to avoid blocking content */}
+      {isOpen && (
+        <aside className={cn(
+          "lg:hidden fixed inset-0 z-50 h-screen bg-surface dark:bg-surface shadow-card dark:shadow-cardDark chrome-hairline-y overflow-hidden transition-transform duration-200 ease-in-out",
+          collapsed ? 'w-16' : 'w-64',
+          className
+        )} aria-label="Primary mobile">
+          <div className="flex h-full flex-col overflow-hidden min-w-0">
+            {/* Chrome top bar inside sidebar */}
+            <div className="flex h-16 items-center px-4 chrome-hairline-x">
+              <Link href="/dashboard" className="flex items-center gap-2 min-w-0" onClick={() => setIsOpen(false)}>
+                <Logo size={collapsed ? 32 : 36} withWordmark={!collapsed} wordmarkClassName="text-base font-semibold" />
+                {collapsed && <span className="sr-only">Envoyou</span>}
+              </Link>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close menu"
+                className="ml-auto h-8 w-8 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+              >
+                <XIcon />
+              </button>
+            </div>
+
+            {/* Navigation (internally scrollable) */}
+            <nav className={cn(
+              "flex-1 min-h-0 overflow-x-hidden py-4 min-w-0",
+              collapsed ? 'px-1 space-y-1' : 'px-3 space-y-1'
+            )}>
+              <div aria-hidden="true" className="w-full pointer-events-none sticky -top-4 h-4 -mt-4 bg-gradient-to-b from-surface/95 dark:from-surface/90 to-transparent z-10" />
+              {navigation.map((item) => {
+                const isActive = pathname === item.href
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={cn(
+                      'chrome-nav-item group relative',
+                      isActive && 'data-[active=true]'
+                    )}
+                    data-active={isActive ? 'true' : undefined}
+                  >
+                    <item.icon className="chrome-nav-item-icon" />
+                    {collapsed ? <span className="sr-only">{item.name}</span> : <span className="truncate">{item.name}</span>}
+                  </Link>
+                )
+              })}
+              <div aria-hidden="true" className="w-full pointer-events-none sticky -bottom-4 h-4 -mb-4 bg-gradient-to-t from-surface/95 dark:from-surface/90 to-transparent z-10" />
+            </nav>
+
+            <div className="mt-auto chrome-hairline-x px-3 py-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                  <UserIcon className="h-4 w-4 text-primary-foreground" />
+                </div>
+                {!collapsed && (
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{user?.name || user?.email}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user?.plan || 'Free Plan'}</p>
+                  </div>
+                )}
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => { setIsOpen(false); signOut() }}
+                className={cn("w-full justify-start h-8", collapsed ? 'px-0 flex items-center justify-center' : 'px-3')}
+                aria-label="Sign out"
+              >
+                <LogOutIcon className="h-4 w-4" />
+                {!collapsed && <span className="ml-2">Sign out</span>}
+              </Button>
+            </div>
+          </div>
+        </aside>
+      )}
     </>
   )
 }
