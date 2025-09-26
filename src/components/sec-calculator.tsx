@@ -22,8 +22,8 @@ export function SECCalculator() {
     scope1: { fuel_type: 'natural_gas', amount: 0, unit: 'mmbtu' },
     scope2: { kwh: 0, grid_region: 'RFC' }
   })
-  const [result, setResult] = useState<Record<string, any> | null>(null)
-  const [validation, setValidation] = useState<Record<string, any> | null>(null)
+  const [result, setResult] = useState<Record<string, unknown> | null>(null)
+  const [validation, setValidation] = useState<Record<string, unknown> | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -39,11 +39,11 @@ export function SECCalculator() {
     try {
       // Calculate emissions
       const calcResult = await apiClient.emissions.calculate(formData)
-      setResult(calcResult as Record<string, any>)
+      setResult(calcResult as Record<string, unknown>)
 
       // Validate with EPA
       const validationResult = await apiClient.validation.epa(formData)
-      setValidation(validationResult as Record<string, any>)
+      setValidation(validationResult as Record<string, unknown>)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Calculation failed')
     } finally {
