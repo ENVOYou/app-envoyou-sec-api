@@ -8,7 +8,8 @@ import {
   Calculator,
   Settings,
   User,
-  CreditCard
+  CreditCard,
+  Menu
 } from 'lucide-react'
 
 const navigation = [
@@ -31,8 +32,14 @@ export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps
 
   return (
     <div className={`fixed inset-y-0 left-0 ${collapsed ? 'w-16' : 'w-64'} bg-card border-r border-border ${className || ''}`}>
-      <div className="flex h-16 items-center px-6 border-b border-border">
+      <div className="flex h-16 items-center justify-between px-6 border-b border-border">
         {!collapsed && <h1 className="text-xl font-semibold">Envoyou</h1>}
+        <button
+          onClick={onToggle}
+          className="p-2 rounded-lg hover:bg-accent transition-colors"
+        >
+          <Menu className="h-4 w-4" />
+        </button>
       </div>
       <nav className="p-4 space-y-1">
         {navigation.map((item) => {

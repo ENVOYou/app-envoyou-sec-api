@@ -111,25 +111,25 @@ class APIClient {
 
   // User endpoints
   user = {
-    getProfile: () => this.request('/v1/user/profile'),
+    getProfile: () => this.request('/user/profile'),
     updateProfile: (data: UserProfileUpdate) => 
-      this.request('/v1/user/profile', {
+      this.request('/user/profile', {
         method: 'PUT',
         body: JSON.stringify(data)
       }),
-    getAPIKeys: async () => adaptAPIKeys(await this.request('/v1/user/api-keys')),
+    getAPIKeys: async () => adaptAPIKeys(await this.request('/user/api-keys')),
     createAPIKey: (data: { name: string; permissions?: string[] }) => 
-      this.request('/v1/user/api-keys', {
+      this.request('/user/api-keys', {
         method: 'POST',
         body: JSON.stringify(data)
       }),
     deleteAPIKey: (keyId: string) => 
-      this.request(`/v1/user/api-keys/${keyId}`, {
+      this.request(`/user/api-keys/${keyId}`, {
         method: 'DELETE'
       }),
-    getStats: async () => adaptUserStats(await this.request('/v1/user/stats')),
-    getSessions: async () => adaptSessions(await this.request('/v1/user/sessions')),
-    getPlan: () => this.request('/v1/user/plan')
+    getStats: async () => adaptUserStats(await this.request('/user/stats')),
+    getSessions: async () => adaptSessions(await this.request('/user/sessions')),
+    getPlan: () => this.request('/user/plan')
   }
 
   // Global data endpoints (requires API key)
@@ -210,14 +210,14 @@ class APIClient {
 
   // Developer stats
   developer = {
-    getStats: async () => adaptDeveloperStats(await this.request('/v1/developer/stats')),
+    getStats: async () => adaptDeveloperStats(await this.request('/user/developer/stats')),
     getUsageAnalytics: async (hours?: number) => {
       const query = hours ? `?hours=${hours}` : ''
-      const raw = await this.request(`/v1/developer/usage-analytics${query}`)
+      const raw = await this.request(`/user/developer/usage-analytics${query}`)
       return adaptUsageAnalytics(raw)
     },
     getRateLimits: async () => {
-      const raw = await this.request('/v1/developer/rate-limits') as unknown
+      const raw = await this.request('/user/developer/rate-limits') as unknown
       const r = raw as { data?: { rate_limit?: string } }
       const info = parseRateLimitInfo(r.data?.rate_limit)
       return { ...(r as object), parsed: info }

@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { Sidebar } from '@/components/sidebar'
 import { Header } from '@/components/header'
 import { useRouter, usePathname } from 'next/navigation'
-import { useEffect, useState, useCallback, type CSSProperties } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 export default function DashboardLayout({
   children,
@@ -62,27 +62,15 @@ export default function DashboardLayout({
     )
   }
 
-  const sidebarWidth = collapsed ? '4rem' : '16rem'
-  const layoutStyle: CSSProperties = { ['--sidebar-w' as string]: sidebarWidth }
-
   return (
-  <div className="h-screen overflow-hidden bg-background text-foreground" style={layoutStyle}>
-      <a href="#main-content" className="skip-link">Skip to content</a>
+    <div className="min-h-screen bg-background">
+      <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} />
       <Header className="with-sidebar" />
-      <div className="flex h-full">
-        <Sidebar collapsed={collapsed} onToggle={toggleCollapsed} className="bg-surface/92 dark:bg-surface/85 sidebar-panel" />
-        <div className="flex-1 min-w-0 h-full overflow-hidden relative">
-          {/* Spacer to offset content under fixed sidebar on large screens without distorting inner horizontal padding */}
-          <div className="hidden lg:block absolute inset-y-0 left-0" style={{ width: 'var(--sidebar-w)' }} aria-hidden="true" />
-          <div className="h-full overflow-y-auto overscroll-contain pt-[var(--header-height)]">
-            <main id="main-content" className="p-4 sm:p-6 lg:p-10 space-y-10 max-w-full">
-              <div className="w-full max-w-7xl mx-auto dashboard-main">
-                {children}
-              </div>
-            </main>
-           </div>
+      <main className={`${collapsed ? 'ml-16' : 'ml-64'} pt-16 transition-all duration-300`}>
+        <div className="p-6">
+          {children}
         </div>
-      </div>
+      </main>
     </div>
   )
 }
