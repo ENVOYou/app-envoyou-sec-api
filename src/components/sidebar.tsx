@@ -25,21 +25,37 @@ interface SidebarProps {
   collapsed?: boolean
   onToggle?: () => void
   className?: string
+  mobileOpen?: boolean
+  onMobileClose?: () => void
 }
 
-export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps = {}) {
+export function Sidebar({ collapsed = false, onToggle, className, mobileOpen = false, onMobileClose }: SidebarProps = {}) {
   const pathname = usePathname()
 
   return (
-    <div 
-      className={`fixed inset-y-0 left-0 ${collapsed ? 'w-16' : 'w-64'} border-r border-border transition-all duration-300 ${className || ''}`}
-      style={{ backgroundColor: 'hsl(var(--secondary))' }}
-    >
+    <>
+      {/* Mobile backdrop */}
+      {mobileOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={onMobileClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div 
+        className={`fixed inset-y-0 left-0 z-50 lg:z-30 transform transition-transform duration-300 ease-in-out
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} 
+          lg:translate-x-0 
+          ${collapsed ? 'lg:w-16' : 'lg:w-64'} 
+          w-64 border-r border-border ${className || ''}`}
+        style={{ backgroundColor: 'hsl(var(--secondary))' }}
+      >
       <div className="flex h-16 items-center justify-between px-6 border-b border-border">
         {!collapsed && <h1 className="text-xl font-semibold">Envoyou</h1>}
         <button
           onClick={onToggle}
-          className="p-2 rounded-lg hover:bg-accent transition-colors"
+          className="hidden lg:block p-2 rounded-lg hover:bg-accent transition-colors"
         >
           <Menu className="h-4 w-4" />
         </button>

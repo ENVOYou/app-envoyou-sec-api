@@ -64,11 +64,11 @@ export function SECCalculator() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold">SEC Calculator</h1>
-          <p className="text-muted-foreground mt-1">Calculate Scope 1 & 2 emissions for SEC Climate Disclosure</p>
+        <div className="mb-6 lg:mb-8">
+          <h1 className="text-xl lg:text-2xl font-semibold">SEC Calculator</h1>
+          <p className="text-muted-foreground mt-1 text-sm lg:text-base">Calculate Scope 1 & 2 emissions for SEC Climate Disclosure</p>
         </div>
         
         <div className="bg-card border border-border rounded-lg p-6 mb-6">
@@ -88,7 +88,7 @@ export function SECCalculator() {
         {/* Scope 1 Emissions */}
           <div className="mb-6">
             <h3 className="text-lg font-medium mb-4">Scope 1 Emissions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Fuel Type</label>
                 <select
@@ -137,7 +137,7 @@ export function SECCalculator() {
         {/* Scope 2 Emissions */}
           <div className="mb-6">
             <h3 className="text-lg font-medium mb-4">Scope 2 Emissions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Electricity (kWh)</label>
                 <input
@@ -169,7 +169,7 @@ export function SECCalculator() {
           </div>
 
         {/* Actions */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={handleCalculate}
               disabled={loading}

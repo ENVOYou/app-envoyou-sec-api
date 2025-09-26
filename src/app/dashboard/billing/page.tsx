@@ -40,7 +40,7 @@ export default function BillingPage() {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
               <div className="text-center p-4 border rounded-lg">
                 <div className="text-2xl font-bold">0</div>
                 <div className="text-sm text-muted-foreground">Requests Used</div>
@@ -67,7 +67,7 @@ export default function BillingPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="border rounded-lg p-6">
               <div className="text-center">
                 <h3 className="text-xl font-bold">Pro Plan</h3>
