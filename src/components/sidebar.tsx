@@ -37,7 +37,7 @@ export function Sidebar({ collapsed = false, onToggle, className, mobileOpen = f
       {/* Mobile backdrop */}
       {mobileOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
           onClick={onMobileClose}
         />
       )}
@@ -81,5 +81,6 @@ export function Sidebar({ collapsed = false, onToggle, className, mobileOpen = f
         })}
       </nav>
     </div>
+    </>
   )
 }

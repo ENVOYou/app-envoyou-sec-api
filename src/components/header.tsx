@@ -5,12 +5,11 @@ import { useAuth } from '@/hooks/useAuth'
 
 interface HeaderProps {
   className?: string
-  title?: string
   sidebarCollapsed?: boolean
   onMobileMenuToggle?: () => void
 }
 
-export function Header({ className, title, sidebarCollapsed = false, onMobileMenuToggle }: HeaderProps = {}) {
+export function Header({ className, sidebarCollapsed = false, onMobileMenuToggle }: HeaderProps = {}) {
   const { user } = useAuth()
 
   return (

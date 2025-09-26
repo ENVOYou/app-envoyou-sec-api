@@ -121,7 +121,7 @@ export default function BillingPage() {
             <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">No Billing History</h3>
             <p className="text-muted-foreground mb-4">
-              You haven't been charged yet. Your free plan doesn't require payment.
+              You haven&apos;t been charged yet. Your free plan doesn&apos;t require payment.
             </p>
             <Button variant="outline" disabled>
               <Download className="h-4 w-4 mr-2" />
