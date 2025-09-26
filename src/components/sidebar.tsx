@@ -44,7 +44,7 @@ export function Sidebar({ collapsed = false, onToggle, className, mobileOpen = f
       
       {/* Sidebar */}
       <div 
-        className={`fixed inset-y-0 left-0 z-50 lg:z-30 transform transition-transform duration-300 ease-in-out
+        className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out
           ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} 
           lg:translate-x-0 
           ${collapsed ? 'lg:w-16' : 'lg:w-64'} 
@@ -57,7 +57,7 @@ export function Sidebar({ collapsed = false, onToggle, className, mobileOpen = f
           onClick={onToggle}
           className="hidden lg:block p-2 rounded-lg hover:bg-accent transition-colors"
         >
-          <Menu className="h-4 w-4" />
+          <Menu className="h-6 w-6" />
         </button>
       </div>
       <nav className="p-4 space-y-1">
