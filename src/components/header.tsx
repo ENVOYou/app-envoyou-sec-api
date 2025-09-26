@@ -12,7 +12,7 @@ export function Header({ className, title }: HeaderProps = {}) {
   const { user } = useAuth()
 
   return (
-    <header className={`fixed top-0 right-0 left-64 h-16 bg-card border-b-2 border-border z-40 shadow-md ${className || ''}`}>
+    <header className={`fixed top-0 right-0 left-64 h-16 bg-muted/50 border-b-2 border-border z-40 shadow-md ${className || ''}`}>
       <div className="flex items-center justify-between h-full px-6">
         <div className="flex items-center gap-4">
           <div className="relative">
