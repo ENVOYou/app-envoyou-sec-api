@@ -3,11 +3,16 @@
 import { Search, Bell, User } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 
-export function Header() {
+interface HeaderProps {
+  className?: string
+  title?: string
+}
+
+export function Header({ className, title }: HeaderProps = {}) {
   const { user } = useAuth()
 
   return (
-    <header className="fixed top-0 right-0 left-64 h-16 bg-background border-b border-border z-50">
+    <header className={`fixed top-0 right-0 left-64 h-16 bg-background border-b border-border z-50 ${className || ''}`}>
       <div className="flex items-center justify-between h-full px-6">
         <div className="flex items-center gap-4">
           <div className="relative">
