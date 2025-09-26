@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { apiClient } from '@/lib/api'
-import { Card } from '@/components/ui/card'
 import { UserStats, DeveloperStats } from '@/types'
-import { BarChartIcon, KeyIcon, GlobeIcon, BellIcon } from '@/components/icons'
+import { BarChart3, Key, Calculator, Activity } from 'lucide-react'
 
 export default function DashboardPage() {
   const { user } = useAuth()
@@ -54,99 +53,69 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Welcome section */}
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">
-          Welcome back, {user?.name || user?.email?.split('@')[0]}!
-        </h2>
-        <p className="text-muted-foreground mt-2">
-          Here&apos;s an overview of your account activity and API usage.
+    <div className="p-8">
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-foreground">
+          Welcome back, {user?.name || user?.email?.split('@')[0]}
+        </h1>
+        <p className="text-muted-foreground mt-1">
+          Monitor your SEC compliance and API usage
         </p>
       </div>
 
-  {/* Stats cards */}
-      <div className="relative">
-        <div className="surface-gradient rounded-3xl p-1.5 md:p-2">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <div className="grid-item">
-            <Card variant="strong" className="group p-4 layered-surface">
-              <div className="flex items-start justify-between mb-1.5">
-                <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Total Requests</span>
-                <BarChartIcon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" />
-              </div>
-              <div className="text-2xl font-semibold leading-tight">
-                {userStats?.total_requests?.toLocaleString() || 0}
-              </div>
-              <p className="text-[11px] mt-1 text-muted-foreground">
-                {userStats?.requests_today || 0} today
-              </p>
-            </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="bg-card border border-border rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Total Requests</p>
+              <p className="text-2xl font-semibold">{userStats?.total_requests?.toLocaleString() || 0}</p>
             </div>
-            <div className="grid-item">
-            <Card variant="raised" className="group p-4">
-              <div className="flex items-start justify-between mb-1.5">
-                <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">API Keys</span>
-                <KeyIcon className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
-              </div>
-              <div className="text-2xl font-semibold leading-tight">
-                {userStats?.api_keys_count || 0}
-              </div>
-              <p className="text-[11px] mt-1 text-muted-foreground">
-                Active keys
-              </p>
-            </Card>
+            <BarChart3 className="h-8 w-8 text-muted-foreground" />
+          </div>
+        </div>
+
+        <div className="bg-card border border-border rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">API Keys</p>
+              <p className="text-2xl font-semibold">{userStats?.api_keys_count || 0}</p>
             </div>
-            <div className="grid-item">
-            <Card variant="raised" className="group p-4">
-              <div className="flex items-start justify-between mb-1.5">
-                <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Rate Limit</span>
-                <GlobeIcon className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
-              </div>
-              <div className="text-2xl font-semibold leading-tight">
-                {developerStats?.rate_limit_remaining?.toLocaleString() || 0}
-              </div>
-              <p className="text-[11px] mt-1 text-muted-foreground">
-                Remaining this hour
-              </p>
-            </Card>
+            <Key className="h-8 w-8 text-muted-foreground" />
+          </div>
+        </div>
+
+        <div className="bg-card border border-border rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Rate Limit</p>
+              <p className="text-2xl font-semibold">{developerStats?.rate_limit_remaining?.toLocaleString() || 0}</p>
             </div>
-            <div className="grid-item">
-            <Card variant="base" className="group p-4">
-              <div className="flex items-start justify-between mb-1.5">
-                <span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Active Sessions</span>
-                <BellIcon className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
-              </div>
-              <div className="text-2xl font-semibold leading-tight">
-                {userStats?.active_sessions || 0}
-              </div>
-              <p className="text-[11px] mt-1 text-muted-foreground">
-                Current sessions
-              </p>
-            </Card>
+            <Activity className="h-8 w-8 text-muted-foreground" />
+          </div>
+        </div>
+
+        <div className="bg-card border border-border rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Sessions</p>
+              <p className="text-2xl font-semibold">{userStats?.active_sessions || 0}</p>
             </div>
+            <Calculator className="h-8 w-8 text-muted-foreground" />
           </div>
         </div>
       </div>
 
-      {/* Usage overview (depth + pattern) */}
-  <div className="surface-section"><div className="grid gap-6 md:grid-cols-2">
-        <div className="grid-item">
-  <Card variant="strong" className="relative overflow-hidden p-6">
-          <div className="mb-4">
-            <h3 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">API Usage This Month</h3>
-            <p className="text-sm text-muted-foreground mt-1">Track your monthly API consumption</p>
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-card border border-border rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4">API Usage</h3>
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Requests Used</span>
-              <span className="text-sm font-medium">
-                {userStats?.requests_this_month?.toLocaleString() || 0}
-              </span>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Requests this month</span>
+              <span className="font-medium">{userStats?.requests_this_month?.toLocaleString() || 0}</span>
             </div>
-            <div className="w-full h-2 rounded-full bg-muted/70 relative overflow-hidden">
-              <div
-                className="absolute left-0 top-0 h-full bg-gradient-to-r from-primary/80 via-primary to-primary/60 transition-all"
+            <div className="w-full bg-muted rounded-full h-2">
+              <div 
+                className="bg-primary h-2 rounded-full transition-all"
                 style={{
                   width: `${Math.min(
                     ((userStats?.requests_this_month || 0) / (developerStats?.requests_limit || 1000)) * 100,
@@ -154,56 +123,34 @@ export default function DashboardPage() {
                   )}%`
                 }}
               />
-              <div className="absolute inset-0 dot-grid-faint opacity-30 pointer-events-none" />
             </div>
-            <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+            <div className="flex justify-between text-xs text-muted-foreground">
               <span>0</span>
               <span>{developerStats?.requests_limit?.toLocaleString() || 1000} limit</span>
             </div>
           </div>
-  </Card>
-  </div>
-  <div className="grid-item">
-  <Card variant="raised" className="space-y-4 p-6">
-          <div>
-            <h3 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Quick Actions</h3>
-            <p className="text-sm text-muted-foreground mt-1">Manage your account and API settings</p>
-          </div>
-          <div className="space-y-2">
-            <a
-              href="/dashboard/api-keys"
-              className="action-tile group flex items-center space-x-3 p-3 rounded-xl transition-colors"
-            >
-              <KeyIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
-              <div>
-                <div className="font-medium leading-tight">Manage API Keys</div>
-                <div className="text-[11px] text-muted-foreground">Create and manage your API keys</div>
-              </div>
-            </a>
-            <a
-              href="/sec-calculator"
-              className="action-tile group flex items-center space-x-3 p-3 rounded-xl transition-colors"
-            >
-              <BarChartIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
-              <div>
-                <div className="font-medium leading-tight">SEC Calculator</div>
-                <div className="text-[11px] text-muted-foreground">Calculate Scope 1 & 2 emissions</div>
-              </div>
-            </a>
-            <a
-              href="/dashboard/analytics"
-              className="action-tile group flex items-center space-x-3 p-3 rounded-xl transition-colors"
-            >
-              <BarChartIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
-              <div>
-                <div className="font-medium leading-tight">View Analytics</div>
-                <div className="text-[11px] text-muted-foreground">Detailed usage statistics</div>
-              </div>
-            </a>
-          </div>
-    </Card>
         </div>
-  </div></div>
+
+        <div className="bg-card border border-border rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+          <div className="space-y-3">
+            <a href="/sec-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors">
+              <Calculator className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="font-medium">SEC Calculator</p>
+                <p className="text-sm text-muted-foreground">Calculate emissions</p>
+              </div>
+            </a>
+            <a href="/dashboard/api-keys" className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors">
+              <Key className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="font-medium">API Keys</p>
+                <p className="text-sm text-muted-foreground">Manage access</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

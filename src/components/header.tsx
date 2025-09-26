@@ -1,56 +1,38 @@
 'use client'
 
+import { Search, Bell, User } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
-import { BellIcon, UserIcon } from '@/components/icons'
-import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { useScrollElevation } from '@/hooks/useScrollElevation'
 
-interface HeaderProps {
-  title?: string
-  inline?: boolean
-  className?: string
-}
-
-export function Header({ title, inline = false, className }: HeaderProps) {
+export function Header() {
   const { user } = useAuth()
-  const elevated = useScrollElevation(8)
 
   return (
-    <header
-      className={(inline ? 'app-chrome-inline' : 'app-chrome') + ' select-none ' + (className || '')}
-      data-scrolled={elevated ? 'true' : 'false'}
-      role="banner"
-    >
-      <div className="flex w-full items-center justify-between px-6">
-        <div className="flex items-center gap-3 min-w-0">
-          <h1 className="ts-page-title bg-clip-text text-transparent bg-[linear-gradient(to_right,hsl(var(--foreground)/0.92),hsl(var(--primary)/0.9))] tracking-tight">
-            {title || 'Dashboard'}
-          </h1>
+    <header className="fixed top-0 right-0 left-64 h-16 bg-background border-b border-border z-50">
+      <div className="flex items-center justify-between h-full px-6">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="pl-10 pr-4 py-2 w-80 bg-muted border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="h-8 w-8 px-0" aria-label="Notifications">
-            <BellIcon className="h-4 w-4" />
-          </Button>
-          <ThemeToggle />
-          <button
-            type="button"
-            className="flex items-center gap-2 focus-ring-soft rounded-full pl-0.5 pr-2 py-0.5 hover:bg-accent/40 transition-colors"
-            aria-haspopup="menu"
-            aria-label="User menu"
-          >
-            <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-              <UserIcon className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <div className="hidden sm:flex flex-col items-start leading-tight">
-              <span className="text-xs font-medium truncate max-w-[120px]">
-                {user?.name || user?.email || 'Loading...'}
-              </span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
-                {user?.plan || 'Free Plan'}
-              </span>
-            </div>
+        
+        <div className="flex items-center gap-4">
+          <button className="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-accent">
+            <Bell className="h-5 w-5" />
           </button>
+          
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+              <User className="h-4 w-4 text-primary-foreground" />
+            </div>
+            <span className="text-sm font-medium">
+              {user?.name || user?.email?.split('@')[0] || 'User'}
+            </span>
+          </div>
         </div>
       </div>
     </header>
