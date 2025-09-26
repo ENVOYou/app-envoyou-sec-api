@@ -14,7 +14,7 @@ export function Header({ className, sidebarCollapsed = false, onMobileMenuToggle
 
   return (
     <header 
-      className={`fixed top-0 right-0 left-0 lg:${sidebarCollapsed ? 'left-16' : 'left-64'} h-16 border-b-2 border-border z-30 shadow-md transition-all duration-300 ${className || ''}`}
+      className={`fixed top-0 right-0 left-0 ${sidebarCollapsed ? 'lg:left-16' : 'lg:left-64'} h-16 border-b-2 border-border z-30 shadow-md transition-all duration-300 ${className || ''}`}
       style={{ backgroundColor: 'hsl(var(--secondary))' }}
     >
       <div className="flex items-center justify-between h-full px-4 lg:px-6">
