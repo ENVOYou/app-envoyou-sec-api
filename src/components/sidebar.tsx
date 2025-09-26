@@ -25,32 +25,16 @@ interface SidebarProps {
   collapsed?: boolean
   onToggle?: () => void
   className?: string
-  mobileOpen?: boolean
-  onMobileClose?: () => void
 }
 
-export function Sidebar({ collapsed = false, onToggle, className, mobileOpen = false, onMobileClose }: SidebarProps = {}) {
+export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps = {}) {
   const pathname = usePathname()
 
   return (
-    <>
-      {/* Mobile backdrop */}
-      {mobileOpen && (
-        <div 
-          className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
-          onClick={onMobileClose}
-        />
-      )}
-      
-      {/* Sidebar */}
-      <div 
-        className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out
-          ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} 
-          lg:translate-x-0 
-          ${collapsed ? 'lg:w-16' : 'lg:w-64'} 
-          w-64 border-r border-border ${className || ''}`}
-        style={{ backgroundColor: 'hsl(var(--secondary))' }}
-      >
+    <div 
+      className={`hidden lg:block fixed inset-y-0 left-0 z-30 ${collapsed ? 'w-16' : 'w-64'} border-r border-border transition-all duration-300 ${className || ''}`}
+      style={{ backgroundColor: 'hsl(var(--secondary))' }}
+    >
       <div className="flex h-16 items-center justify-between px-6 border-b border-border">
         {!collapsed && <h1 className="text-xl font-semibold">Envoyou</h1>}
         <button
@@ -81,6 +65,5 @@ export function Sidebar({ collapsed = false, onToggle, className, mobileOpen = f
         })}
       </nav>
     </div>
-    </>
   )
 }

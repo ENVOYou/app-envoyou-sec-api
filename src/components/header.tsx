@@ -1,7 +1,26 @@
 'use client'
 
-import { Search, Bell, User, Menu } from 'lucide-react'
+import { Search, Bell, User, Menu, X } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
+import { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { 
+  BarChart3, 
+  Key, 
+  Calculator,
+  Settings,
+  CreditCard
+} from 'lucide-react'
+
+const navigation = [
+  { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
+  { name: 'SEC Calculator', href: '/dashboard/sec-calculator', icon: Calculator },
+  { name: 'API Keys', href: '/dashboard/api-keys', icon: Key },
+  { name: 'Profile', href: '/dashboard/profile', icon: User },
+  { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
+  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+]
 
 interface HeaderProps {
   className?: string
@@ -9,8 +28,10 @@ interface HeaderProps {
   onMobileMenuToggle?: () => void
 }
 
-export function Header({ className, sidebarCollapsed = false, onMobileMenuToggle }: HeaderProps = {}) {
+export function Header({ className, sidebarCollapsed = false }: HeaderProps = {}) {
   const { user } = useAuth()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   return (
     <header 
@@ -20,10 +41,10 @@ export function Header({ className, sidebarCollapsed = false, onMobileMenuToggle
       <div className="flex items-center justify-between h-full px-4 lg:px-6">
         {/* Mobile menu button */}
         <button 
-          onClick={onMobileMenuToggle}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="lg:hidden p-3 text-muted-foreground hover:text-foreground rounded-lg hover:bg-accent"
         >
-          <Menu className="h-6 w-6" />
+          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
 
         {/* Search - hidden on mobile, visible on desktop */}
@@ -59,6 +80,34 @@ export function Header({ className, sidebarCollapsed = false, onMobileMenuToggle
           </div>
         </div>
       </div>
+      
+      {/* Mobile dropdown menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden absolute top-16 left-0 right-0 z-40" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+          <div className="border-b border-border">
+            <nav className="px-4 py-2 space-y-1">
+              {navigation.map((item) => {
+                const isActive = pathname === item.href
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-3 py-3 text-sm font-medium rounded-lg transition-colors ${
+                      isActive
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                    }`}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                  </Link>
+                )
+              })}
+            </nav>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

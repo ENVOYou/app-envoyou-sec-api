@@ -15,7 +15,6 @@ export default function DashboardLayout({
   const router = useRouter()
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState<boolean>(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
 
   // Load persisted state
   useEffect(() => {
@@ -68,13 +67,10 @@ export default function DashboardLayout({
       <Sidebar 
         collapsed={collapsed} 
         onToggle={toggleCollapsed}
-        mobileOpen={mobileMenuOpen}
-        onMobileClose={() => setMobileMenuOpen(false)}
       />
       <Header 
         className="with-sidebar" 
         sidebarCollapsed={collapsed}
-        onMobileMenuToggle={() => setMobileMenuOpen(true)}
       />
       <main className={`lg:${collapsed ? 'ml-16' : 'ml-64'} pt-16 transition-all duration-300`}>
         <div className="p-4 lg:p-6">
