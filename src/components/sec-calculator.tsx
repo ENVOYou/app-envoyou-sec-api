@@ -39,11 +39,11 @@ export function SECCalculator() {
     try {
       // Calculate emissions
       const calcResult = await apiClient.emissions.calculate(formData)
-      setResult(calcResult)
+      setResult(calcResult as Record<string, any>)
 
       // Validate with EPA
       const validationResult = await apiClient.validation.epa(formData)
-      setValidation(validationResult)
+      setValidation(validationResult as Record<string, any>)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Calculation failed')
     } finally {
