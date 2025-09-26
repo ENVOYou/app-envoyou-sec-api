@@ -58,7 +58,7 @@ export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps
               }`}
               title={collapsed ? item.name : undefined}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon className={`${collapsed ? 'h-5 w-5' : 'h-4 w-4'}`} />
               {!collapsed && item.name}
             </Link>
           )
