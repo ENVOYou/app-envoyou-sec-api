@@ -22,8 +22,8 @@ export function SECCalculator() {
     scope1: { fuel_type: 'natural_gas', amount: 0, unit: 'mmbtu' },
     scope2: { kwh: 0, grid_region: 'RFC' }
   })
-  const [result, setResult] = useState<any>(null)
-  const [validation, setValidation] = useState<any>(null)
+  const [result, setResult] = useState<unknown>(null)
+  const [validation, setValidation] = useState<unknown>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
