@@ -272,7 +272,7 @@ export default function SettingsPage() {
                   <select
                     value={timezone}
                     onChange={(e) => setTimezone(e.target.value)}
-                    className="h-9 w-full rounded-md border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                    className="h-9 w-full rounded-md border bg-background text-foreground px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 [&>option]:bg-background [&>option]:text-foreground [&>optgroup]:bg-background [&>optgroup]:text-foreground"
                   >
                     <option value="" disabled>Select timezone</option>
                     {timezoneGroups.map(group => (

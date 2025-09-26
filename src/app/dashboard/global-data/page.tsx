@@ -152,7 +152,7 @@ export default function GlobalDataPage() {
               <select
                 value={filters.state}
                 onChange={(e) => handleFilterChange('state', e.target.value)}
-                className="w-full h-10 px-3 py-2 border border-input rounded-md bg-background text-sm"
+                className="w-full h-10 px-3 py-2 border border-input rounded-md bg-background text-foreground text-sm [&>option]:bg-background [&>option]:text-foreground"
               >
                 <option value="">All States</option>
                 <option value="CA">California</option>
@@ -180,7 +180,7 @@ export default function GlobalDataPage() {
               <select
                 value={filters.pollutant}
                 onChange={(e) => handleFilterChange('pollutant', e.target.value)}
-                className="w-full h-10 px-3 py-2 border border-input rounded-md bg-background text-sm"
+                className="w-full h-10 px-3 py-2 border border-input rounded-md bg-background text-foreground text-sm [&>option]:bg-background [&>option]:text-foreground"
               >
                 <option value="">All Pollutants</option>
                 <option value="CO2">Carbon Dioxide</option>

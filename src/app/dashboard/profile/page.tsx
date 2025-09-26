@@ -150,7 +150,7 @@ export default function ProfilePage() {
                 <select 
                   value={formData.timezone || ''}
                   onChange={(e) => handleChange('timezone', e.target.value)}
-                  className="w-full h-10 px-3 py-2 border border-input rounded-md bg-background text-sm"
+                  className="w-full h-10 px-3 py-2 border border-input rounded-md bg-background text-foreground text-sm [&>option]:bg-background [&>option]:text-foreground"
                 >
                   <option value="">Select timezone...</option>
                   <option value="America/New_York">Eastern Time (EST/EDT)</option>
