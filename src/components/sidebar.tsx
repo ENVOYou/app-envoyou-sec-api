@@ -13,7 +13,7 @@ import {
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-  { name: 'SEC Calculator', href: '/sec-calculator', icon: Calculator },
+  { name: 'SEC Calculator', href: '/dashboard/sec-calculator', icon: Calculator },
   { name: 'API Keys', href: '/dashboard/api-keys', icon: Key },
   { name: 'Profile', href: '/dashboard/profile', icon: User },
   { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
