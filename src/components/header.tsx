@@ -6,14 +6,15 @@ import { useAuth } from '@/hooks/useAuth'
 interface HeaderProps {
   className?: string
   title?: string
+  sidebarCollapsed?: boolean
 }
 
-export function Header({ className, title }: HeaderProps = {}) {
+export function Header({ className, title, sidebarCollapsed = false }: HeaderProps = {}) {
   const { user } = useAuth()
 
   return (
     <header 
-      className={`fixed top-0 right-0 left-64 h-16 border-b-2 border-border z-40 shadow-md ${className || ''}`}
+      className={`fixed top-0 right-0 ${sidebarCollapsed ? 'left-16' : 'left-64'} h-16 border-b-2 border-border z-40 shadow-md transition-all duration-300 ${className || ''}`}
       style={{ backgroundColor: 'hsl(var(--secondary))' }}
     >
       <div className="flex items-center justify-between h-full px-6">

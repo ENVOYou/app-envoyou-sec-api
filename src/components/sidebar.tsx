@@ -31,7 +31,10 @@ export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps
   const pathname = usePathname()
 
   return (
-    <div className={`fixed inset-y-0 left-0 ${collapsed ? 'w-16' : 'w-64'} bg-card border-r border-border ${className || ''}`}>
+    <div 
+      className={`fixed inset-y-0 left-0 ${collapsed ? 'w-16' : 'w-64'} border-r border-border transition-all duration-300 ${className || ''}`}
+      style={{ backgroundColor: 'hsl(var(--secondary))' }}
+    >
       <div className="flex h-16 items-center justify-between px-6 border-b border-border">
         {!collapsed && <h1 className="text-xl font-semibold">Envoyou</h1>}
         <button
