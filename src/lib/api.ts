@@ -24,7 +24,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 })
 
 // API Client for backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.envoyou.com'
 
 class APIClient {
   private baseUrl: string
@@ -169,6 +169,43 @@ class APIClient {
       this.request(`/v1/notifications/read-all?user_id=${userId}`, {
         method: 'PUT'
       })
+  }
+
+  // SEC API endpoints
+  emissions = {
+    getFactors: () => this.request('/v1/emissions/factors'),
+    getUnits: () => this.request('/v1/emissions/units'),
+    calculate: (data: {
+      company: string
+      scope1?: { fuel_type: string; amount: number; unit: string }
+      scope2?: { kwh: number; grid_region: string }
+    }) => this.request('/v1/emissions/calculate', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+  }
+
+  validation = {
+    epa: (data: {
+      company: string
+      scope1?: { fuel_type: string; amount: number; unit: string }
+      scope2?: { kwh: number; grid_region: string }
+    }) => this.request('/v1/validation/epa', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+  }
+
+  export = {
+    secCevs: (company: string) => this.request(`/v1/export/sec/cevs/${company}`),
+    secPackage: (data: {
+      company: string
+      scope1?: { fuel_type: string; amount: number; unit: string }
+      scope2?: { kwh: number; grid_region: string }
+    }) => this.request('/v1/export/sec/package', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
   }
 
   // Developer stats

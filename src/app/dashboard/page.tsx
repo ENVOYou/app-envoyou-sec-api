@@ -181,13 +181,13 @@ export default function DashboardPage() {
               </div>
             </a>
             <a
-              href="/dashboard/global-data"
+              href="/sec-calculator"
               className="action-tile group flex items-center space-x-3 p-3 rounded-xl transition-colors"
             >
-              <GlobeIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
+              <BarChartIcon className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
               <div>
-                <div className="font-medium leading-tight">Explore Global Data</div>
-                <div className="text-[11px] text-muted-foreground">Access environmental datasets</div>
+                <div className="font-medium leading-tight">SEC Calculator</div>
+                <div className="text-[11px] text-muted-foreground">Calculate Scope 1 & 2 emissions</div>
               </div>
             </a>
             <a
