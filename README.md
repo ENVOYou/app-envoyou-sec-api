@@ -1,6 +1,6 @@
-# Envoyou Dashboard
+# Envoyou SEC API Frontend
 
-A modern SaaS dashboard for environmental data management built with Next.js 15, TypeScript, and Tailwind CSS.
+A modern SaaS frontend for SEC Climate Disclosure compliance built with Next.js 15, TypeScript, and Tailwind CSS. This frontend connects to the Envoyou SEC API backend for greenhouse gas emissions calculation, EPA validation, and SEC filing export.
 
 ## Theme & Design System
 
@@ -14,14 +14,14 @@ To propose new tokens or patterns, follow the extension workflow in the guide be
 
 ## Features
 
-- **Modern UI/UX**: Clean, professional interface with dark/light theme support
-- **Authentication**: Supabase integration with Google OAuth
-- **API Management**: Create and manage API keys for backend integration
-- **Data Visualization**: Interactive charts and analytics for usage tracking
-- **Global Environmental Data**: Access to EPA/EIA emissions, EEA indicators, and more
-- **Real-time Notifications**: Stay updated with account activities
+- **SEC Calculator**: Interactive form for Scope 1 & 2 emissions calculation
+- **EPA Validation**: Cross-validation against EPA data with deviation detection
+- **SEC Export**: Generate complete SEC filing packages (JSON/CSV)
+- **Audit Trail**: Forensic-grade traceability for all calculations
+- **Modern UI/UX**: Clean, minimal corporate design inspired by modern SaaS platforms
+- **Authentication**: Supabase integration with role-based access control
+- **API Integration**: Full integration with production Envoyou SEC API backend
 - **Responsive Design**: Works seamlessly across desktop and mobile devices
-- **Consistent Icons**: SVG-based icon system with unified color scheme
 
 ## Tech Stack
 
@@ -55,7 +55,7 @@ cp .env.local.example .env.local
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_API_BASE_URL=https://api.envoyou.com
 ```
 
 ### Installation
@@ -72,7 +72,7 @@ npm install
 npm run dev
 ```
 
-1. Open [http://localhost:3000](http://localhost:3000) in your browser.
+1. Open [http://localhost:3001](http://localhost:3001) in your browser.
 
 ## Project Structure
 
@@ -80,11 +80,13 @@ npm run dev
 src/
 ├── app/                    # Next.js App Router pages
 │   ├── dashboard/         # Dashboard pages
+│   ├── sec-calculator/    # SEC Calculator page
 │   ├── globals.css        # Global styles
 │   └── layout.tsx         # Root layout
 ├── components/            # Reusable components
 │   ├── ui/               # Base UI components
 │   ├── icons/            # SVG icon components
+│   ├── sec-calculator.tsx # SEC Calculator component
 │   ├── sidebar.tsx       # Navigation sidebar
 │   ├── header.tsx        # Page header
 │   └── theme-provider.tsx # Theme management
@@ -99,15 +101,17 @@ src/
 
 ## Backend Integration
 
-This dashboard works with the Envoyou API backend located at `/home/husni/PROJECT-ENVOYOU-API/api-envoyou`.
+This frontend integrates with the Envoyou SEC API backend deployed at `https://api.envoyou.com`.
 
 ### Key Endpoints Used
 
-- `/v1/auth/supabase/verify` - Supabase token verification
-- `/v1/user/*` - User profile and settings
-- `/v1/global/*` - Environmental data access
-- `/v1/developer/*` - Usage statistics
-- `/v1/notifications/*` - Notification management
+- `POST /v1/emissions/calculate` - Calculate Scope 1 & 2 emissions with audit trail
+- `POST /v1/validation/epa` - Cross-validate against EPA data
+- `POST /v1/export/sec/package` - Generate complete SEC filing package
+- `GET /v1/export/sec/cevs` - Export CEVS data (JSON/CSV)
+- `GET /v1/export/sec/audit` - Export audit trail (CSV)
+- `POST /v1/admin/mappings` - Company-facility mapping (admin)
+- `GET /v1/audit` - Audit trail access (premium)
 
 ## Development Guidelines
 
@@ -119,12 +123,12 @@ This dashboard works with the Envoyou API backend located at `/home/husni/PROJEC
 - Implement proper error handling
 - Add loading states for async operations
 
-### Icon System
+### SEC Calculator Integration
 
-- Use SVG components from `@/components/icons`
-- Maintain consistent stroke width (2px)
-- Use `currentColor` for stroke
-- Follow the single-color theme approach
+- Use TypeScript interfaces for emission data
+- Implement proper error handling for API calls
+- Maintain audit trail for all calculations
+- Follow SEC compliance requirements for data handling
 
 ## License
 
