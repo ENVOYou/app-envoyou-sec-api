@@ -19,20 +19,20 @@
 }
 
 .dark {
-  --background: 0 0% 3%;
+  --background: 0 0% 2%;
   --foreground: 0 0% 98%;
-  --card: 0 0% 6%;
+  --card: 0 0% 8%;
   --card-foreground: 0 0% 98%;
   --primary: 0 0% 98%;
   --primary-foreground: 0 0% 9%;
-  --secondary: 0 0% 15%;
+  --secondary: 0 0% 12%;
   --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 15%;
+  --muted: 0 0% 18%;
   --muted-foreground: 0 0% 64%;
-  --accent: 0 0% 15%;
+  --accent: 0 0% 18%;
   --accent-foreground: 0 0% 98%;
-  --border: 0 0% 15%;
-  --input: 0 0% 15%;
+  --border: 0 0% 20%;
+  --input: 0 0% 18%;
   --ring: 0 0% 83%;
 }
 
@@ -61,4 +61,22 @@ body {
 .dark select optgroup {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+}
+
+/* Enhanced depth and shadows for dark mode */
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.dark .shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+.dark .border {
+  border-color: hsl(var(--border));
+}
+
+/* Card depth enhancement */
+.dark [class*="bg-card"] {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
 }
