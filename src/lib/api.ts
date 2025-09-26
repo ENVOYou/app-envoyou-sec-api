@@ -96,7 +96,7 @@ class APIClient {
   auth = {
     supabaseVerify: async (token: string) => {
   const res = await this.request<{ access_token: string; refresh_token: string; user: { id: string; email: string; name?: string; email_verified?: boolean; auth_provider?: string }; token_type: string; message: string }>(
-        '/v1/auth/supabase/verify',
+        '/auth/supabase/verify',
         {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
@@ -106,7 +106,7 @@ class APIClient {
       this.setToken(res.access_token, res.refresh_token)
       return res
     },
-    getMe: () => this.request('/v1/auth/supabase/me')
+    getMe: () => this.request('/auth/supabase/me')
   }
 
   // User endpoints
