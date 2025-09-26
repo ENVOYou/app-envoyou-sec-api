@@ -72,7 +72,7 @@ export default function DashboardLayout({
         className="with-sidebar" 
         sidebarCollapsed={collapsed}
       />
-      <main className={`lg:${collapsed ? 'ml-16' : 'ml-64'} pt-16 transition-all duration-300`}>
+      <main className={`${collapsed ? 'lg:ml-16' : 'lg:ml-64'} pt-16 transition-all duration-300`}>
         <div className="p-4 lg:p-6">
           {children}
         </div>
