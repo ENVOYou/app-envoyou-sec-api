@@ -97,7 +97,7 @@ export function SECCalculator() {
                     ...formData,
                     scope1: { ...formData.scope1!, fuel_type: e.target.value }
                   })}
-                  className="w-full p-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring [&>option]:bg-background [&>option]:text-foreground"
                 >
                   <option value="natural_gas">Natural Gas</option>
                   <option value="diesel">Diesel</option>
@@ -124,7 +124,7 @@ export function SECCalculator() {
                     ...formData,
                     scope1: { ...formData.scope1!, unit: e.target.value }
                   })}
-                  className="w-full p-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring [&>option]:bg-background [&>option]:text-foreground"
                 >
                   <option value="mmbtu">MMBtu</option>
                   <option value="gallons">Gallons</option>
@@ -158,7 +158,7 @@ export function SECCalculator() {
                     ...formData,
                     scope2: { ...formData.scope2!, grid_region: e.target.value }
                   })}
-                  className="w-full p-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring [&>option]:bg-background [&>option]:text-foreground"
                 >
                   <option value="RFC">RFC</option>
                   <option value="WECC">WECC</option>

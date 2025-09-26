@@ -137,16 +137,19 @@ This frontend integrates with the Envoyou SEC API backend deployed at `https://a
 Playwright is configured to capture light + dark snapshots of the design system showcase.
 
 ### Install Browsers (first time)
+
 ```bash
 npx playwright install --with-deps
 ```
 
 ### Run Visual Tests
+
 ```bash
 pnpm run test:visual
 ```
 
 ### Update Baselines
+
 ```bash
 pnpm run test:visual:update
 ```
@@ -207,4 +210,3 @@ DRY_RUN=1 RETENTION_DAYS=60 npm run daily:cleanup
 
 - Files are only committed when content changes
 - Filenames must match `DAILY_SUMMARY_YYYY-MM-DD.md` pattern for cleanup
-
