@@ -68,6 +68,38 @@ export default function RegisterPage() {
     }
 
     try {
+      // Obtain reCAPTCHA token and verify with backend before registering
+      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+      if (!siteKey) throw new Error('reCAPTCHA site key not configured')
+
+      const grecaptchaAny = (typeof window !== 'undefined' && (window as any).grecaptcha) ? (window as any).grecaptcha : null
+      if (!grecaptchaAny || !grecaptchaAny.enterprise) {
+        throw new Error('reCAPTCHA not loaded')
+      }
+
+      const token = await new Promise<string>((resolve, reject) => {
+        grecaptchaAny.enterprise.ready(() => {
+          grecaptchaAny.enterprise.execute(siteKey, { action: 'register' }).then((t: string) => resolve(t)).catch(reject)
+        })
+      })
+
+      const verifyUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || ''}/verify-recaptcha`
+      const verifyResp = await fetch(verifyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recaptchaToken: token })
+      })
+
+      if (!verifyResp.ok) {
+        const text = await verifyResp.text()
+        throw new Error(`reCAPTCHA verification failed: ${text}`)
+      }
+
+      const verifyJson = await verifyResp.json()
+      if (!verifyJson.success) {
+        throw new Error('reCAPTCHA verification failed')
+      }
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
