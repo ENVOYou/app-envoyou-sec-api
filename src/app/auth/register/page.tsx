@@ -72,14 +72,23 @@ export default function RegisterPage() {
       const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
       if (!siteKey) throw new Error('reCAPTCHA site key not configured')
 
-      const grecaptchaAny = (typeof window !== 'undefined' && (window as any).grecaptcha) ? (window as any).grecaptcha : null
+      type GrecaptchaWindow = {
+        grecaptcha?: {
+          enterprise?: {
+            ready: (cb: () => void) => void
+            execute: (siteKey: string, options: { action: string }) => Promise<string>
+          }
+        }
+      }
+
+      const grecaptchaAny = (typeof window !== 'undefined') ? (window as unknown as GrecaptchaWindow).grecaptcha ?? null : null
       if (!grecaptchaAny || !grecaptchaAny.enterprise) {
         throw new Error('reCAPTCHA not loaded')
       }
 
       const token = await new Promise<string>((resolve, reject) => {
-        grecaptchaAny.enterprise.ready(() => {
-          grecaptchaAny.enterprise.execute(siteKey, { action: 'register' }).then((t: string) => resolve(t)).catch(reject)
+        grecaptchaAny.enterprise!.ready(() => {
+          grecaptchaAny.enterprise!.execute(siteKey, { action: 'register' }).then((t: string) => resolve(t)).catch(reject)
         })
       })
 
