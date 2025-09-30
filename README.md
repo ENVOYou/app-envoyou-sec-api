@@ -63,13 +63,13 @@ NEXT_PUBLIC_API_BASE_URL=https://api.envoyou.com
 1. Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 1. Run the development server:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 1. Open [http://localhost:3001](http://localhost:3001) in your browser.
@@ -165,7 +165,7 @@ Automated daily development summaries are generated via a GitHub Action (`.githu
 ### Manual Generation
 
 ```bash
-npm run daily:summary
+pnpm run daily:summary
 ```
 
 ### Scheduled Generation
@@ -210,3 +210,5 @@ DRY_RUN=1 RETENTION_DAYS=60 npm run daily:cleanup
 
 - Files are only committed when content changes
 - Filenames must match `DAILY_SUMMARY_YYYY-MM-DD.md` pattern for cleanup
+
+>
