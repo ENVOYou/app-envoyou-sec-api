@@ -60,15 +60,21 @@ export function SECCalculator() {
 
     ;(async () => {
       try {
-        const [f, u, h] = await Promise.all([
+        const [f, u] = await Promise.all([
           apiClient.emissions.getFactors().catch(() => null),
-          apiClient.emissions.getUnits().catch(() => null),
-          apiClient.user.getCalculations().catch(() => null)
+          apiClient.emissions.getUnits().catch(() => null)
         ])
         if (!mounted) return
         setFactors(f as Record<string, unknown> | null)
         setUnits(u as Record<string, unknown> | null)
-        setHistory(Array.isArray(h) ? (h as Array<Record<string, unknown>>) : null)
+        // Load history from localStorage (server-side save endpoint not available in API client)
+        try {
+          const key = 'sec_calc_history'
+          const raw = typeof window !== 'undefined' ? localStorage.getItem(key) : null
+          setHistory(raw ? JSON.parse(raw) : null)
+        } catch {
+          setHistory(null)
+        }
       } catch (err) {
         // ignore load errors for now
         console.debug('SEC calc: load metadata failed', err)
@@ -87,6 +93,24 @@ export function SECCalculator() {
       console.log('SEC Package:', packageData)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Export failed')
+    }
+  }
+
+  const handleSaveCalculation = async () => {
+    if (!result) return
+    setLoading(true)
+    setError(null)
+    try {
+      // Persist locally (fallback). Server-side save endpoint not available in apiClient currently.
+      const key = 'sec_calc_history'
+      const cur = JSON.parse(localStorage.getItem(key) || '[]')
+      cur.unshift({ input: formData, result, ts: new Date().toISOString() })
+      localStorage.setItem(key, JSON.stringify(cur.slice(0, 50)))
+      setHistory(cur)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Save failed')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -228,6 +252,14 @@ export function SECCalculator() {
                 className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors"
               >
                 Export SEC Package
+              </button>
+            )}
+            {result && (
+              <button
+                onClick={handleSaveCalculation}
+                className="px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors"
+              >
+                Save Calculation
               </button>
             )}
           </div>
