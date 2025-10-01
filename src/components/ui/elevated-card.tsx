@@ -9,7 +9,7 @@ interface ElevatedCardProps extends React.HTMLAttributes<HTMLDivElement> {
 // Combines gradient glow wrapper + card styling used on auth pages
 export const ElevatedCard = ({ className, children, hoverGlow = true, ...props }: ElevatedCardProps) => {
   return (
-    <div className={cn('relative group', className)} {...props}>
+    <div className={`w-6 h-6 ${className}`} {...props}>
       {/* Light mode: remove colored glow; Dark mode: keep subtle gradient accent */}
       <div
         aria-hidden="true"
