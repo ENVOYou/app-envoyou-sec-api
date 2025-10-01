@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import useEventSource from '@/hooks/useEventSource'
 import { apiClient } from '@/lib/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -13,6 +14,8 @@ export default function AnalyticsPage() {
   const [usageAnalytics, setUsageAnalytics] = useState<UsageAnalytics | null>(null)
   const [loading, setLoading] = useState(true)
   const [timeRange, setTimeRange] = useState<number>(24)
+
+  const { data: liveData, connected: liveConnected } = useEventSource('/api/realtime')
 
   const fetchAnalytics = useCallback(async () => {
     setLoading(true)
@@ -92,6 +95,20 @@ export default function AnalyticsPage() {
               {hours === 24 ? '24h' : hours === 168 ? '7d' : '30d'}
             </Button>
           ))}
+        </div>
+      </div>
+
+      <div className="flex items-center space-x-3">
+        <div className="text-sm text-muted-foreground">Live</div>
+        <div className={`text-sm font-medium ${liveConnected ? 'text-green-600' : 'text-red-500'}`}>
+          {
+            (() => {
+              const asRecord = (liveData && typeof liveData === 'object') ? (liveData as Record<string, unknown>) : null
+              const val = asRecord ? asRecord['live_requests'] : undefined
+              if (typeof val === 'number') return val.toLocaleString()
+              return liveConnected ? '—' : 'disconnected'
+            })()
+          }
         </div>
       </div>
 
