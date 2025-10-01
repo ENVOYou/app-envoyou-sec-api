@@ -4,6 +4,11 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
+    if (process.env.NODE_ENV === 'development') {
+  // jangan redirect login, langsung izinkan
+  return NextResponse.next();
+}
+
   // Skip middleware for static files and API routes
   if (
     pathname.startsWith('/_next') ||
