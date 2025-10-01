@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { apiClient } from '@/lib/api'
 
 interface EmissionData {
@@ -22,6 +22,9 @@ export function SECCalculator() {
     scope1: { fuel_type: 'natural_gas', amount: 0, unit: 'mmbtu' },
     scope2: { kwh: 0, grid_region: 'RFC' }
   })
+  const [factors, setFactors] = useState<Record<string, unknown> | null>(null)
+  const [units, setUnits] = useState<Record<string, unknown> | null>(null)
+  const [history, setHistory] = useState<Array<Record<string, unknown>> | null>(null)
   const [result, setResult] = useState<Record<string, unknown> | null>(null)
   const [validation, setValidation] = useState<Record<string, unknown> | null>(null)
   const [loading, setLoading] = useState(false)
@@ -51,6 +54,30 @@ export function SECCalculator() {
     }
   }
 
+  // Load factors, units and user calculation history on mount
+  useEffect(() => {
+    let mounted = true
+
+    ;(async () => {
+      try {
+        const [f, u, h] = await Promise.all([
+          apiClient.emissions.getFactors().catch(() => null),
+          apiClient.emissions.getUnits().catch(() => null),
+          apiClient.user.getCalculations().catch(() => null)
+        ])
+        if (!mounted) return
+        setFactors(f as Record<string, unknown> | null)
+        setUnits(u as Record<string, unknown> | null)
+        setHistory(Array.isArray(h) ? (h as Array<Record<string, unknown>>) : null)
+      } catch (err) {
+        // ignore load errors for now
+        console.debug('SEC calc: load metadata failed', err)
+      }
+    })()
+
+    return () => { mounted = false }
+  }, [])
+
   const handleExportPackage = async () => {
     if (!result) return
     
@@ -70,6 +97,23 @@ export function SECCalculator() {
           <h1 className="text-xl lg:text-2xl font-semibold">SEC Calculator</h1>
           <p className="text-muted-foreground mt-1 text-sm lg:text-base">Calculate Scope 1 & 2 emissions for SEC Climate Disclosure</p>
         </div>
+        {/* Factors/Units quick info */}
+        {(factors || units) && (
+          <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {factors && (
+              <div className="p-3 border border-border rounded-md bg-background text-sm">
+                <strong>Emission Factors</strong>
+                <div className="mt-2 text-xs text-muted-foreground">{Object.keys(factors).slice(0, 8).join(', ')}{Object.keys(factors).length > 8 ? '…' : ''}</div>
+              </div>
+            )}
+            {units && (
+              <div className="p-3 border border-border rounded-md bg-background text-sm">
+                <strong>Supported Units</strong>
+                <div className="mt-2 text-xs text-muted-foreground">{Object.keys(units).slice(0, 8).join(', ')}{Object.keys(units).length > 8 ? '…' : ''}</div>
+              </div>
+            )}
+          </div>
+        )}
         
         <div className="bg-card border border-border rounded-lg p-6 mb-6">
         
@@ -212,6 +256,18 @@ export function SECCalculator() {
             <pre className="bg-muted p-4 rounded-lg overflow-auto text-sm">
               {JSON.stringify(validation, null, 2)}
             </pre>
+          </div>
+        )}
+
+        {/* User Calculation History */}
+        {history && Array.isArray(history) && history.length > 0 && (
+          <div className="bg-card border border-border rounded-lg p-6 mt-6">
+            <h3 className="text-lg font-medium mb-4">Recent Calculations</h3>
+            <ul className="space-y-3 text-sm">
+              {history.slice(0, 5).map((h, idx) => (
+                <li key={idx} className="p-3 bg-muted rounded-md">{JSON.stringify(h)}</li>
+              ))}
+            </ul>
           </div>
         )}
       </div>

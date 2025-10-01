@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
-// Using `as any` to allow `safelist` (supported by Tailwind runtime but missing in current type version)
-const config: any = {
+// Tailwind's `safelist` typing may not always be present in older @types; cast via unknown then to Config
+const config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -56,6 +56,6 @@ const config: any = {
       }
     },
   },
-};
+} as unknown as Config;
 
-export default config as Config;
+export default config;

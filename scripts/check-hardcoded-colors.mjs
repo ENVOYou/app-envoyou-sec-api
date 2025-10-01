@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { readdirSync, readFileSync } from 'fs';
 import { join, extname } from 'path';
 
