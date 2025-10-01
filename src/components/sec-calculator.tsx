@@ -42,6 +42,13 @@ export function SECCalculator() {
   const [calcName, setCalcName] = useState<string>('')
   const [exportType, setExportType] = useState<'package' | 'cevs'>('package')
   const { push: pushToast } = useToast()
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(false)
+
+  const SAMPLE_EMISSION: EmissionData = {
+    company: 'Example Co',
+    scope1: { fuel_type: 'natural_gas', amount: 120, unit: 'mmbtu' },
+    scope2: { kwh: 5000, grid_region: 'RFC' }
+  }
 
   const handleCalculate = async () => {
     if (!formData.company) {
@@ -98,6 +105,10 @@ export function SECCalculator() {
         } catch {
           setHistory(null)
         }
+        try {
+          const shown = typeof window !== 'undefined' ? window.localStorage.getItem('sec_calc_onboard_shown') : null
+          if (!shown && mounted) setShowOnboarding(true)
+        } catch { /* ignore */ }
       } catch (err) {
         // ignore load errors for now
         console.debug('SEC calc: load metadata failed', err)
@@ -436,7 +447,23 @@ export function SECCalculator() {
         {/* User Calculation History */}
         {!history || (Array.isArray(history) && history.length === 0) ? (
           <div className="bg-card border border-border rounded-lg p-6 mt-6 text-center text-sm text-muted-foreground">
-            No saved calculations yet — calculate and click &quot;Save Calculation&quot;. Your saves are kept in your account when signed in or locally when offline.
+            {showOnboarding ? (
+              <div>
+                <h4 className="text-base font-medium mb-2">Get started with the SEC Calculator</h4>
+                <p className="mb-4">Try a sample calculation to see how results and exports work. You can edit the values after loading.</p>
+                <div className="flex items-center justify-center gap-3">
+                  <button onClick={() => { setFormData(SAMPLE_EMISSION); setShowOnboarding(false); try { window.localStorage.setItem('sec_calc_onboard_shown', '1') } catch {} }} className="btn btn-primary">Get started</button>
+                  <button onClick={() => { setShowOnboarding(false); try { window.localStorage.setItem('sec_calc_onboard_shown', '1') } catch {} }} className="btn">Dismiss</button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                No saved calculations yet — calculate and click &quot;Save Calculation&quot;. Your saves are kept in your account when signed in or locally when offline.
+                <div className="mt-3">
+                  <button onClick={() => setShowOnboarding(true)} className="text-sm underline">Show quick start</button>
+                </div>
+              </div>
+            )}
           </div>
         ) : null}
 
