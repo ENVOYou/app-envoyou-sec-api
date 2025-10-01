@@ -134,7 +134,7 @@ export default function DashboardPage() {
         <div className="bg-card border border-border rounded-lg p-6">
           <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
           <div className="space-y-3">
-            <a href="/sec-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors">
+            <a href="/dashboard/sec-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors">
               <Calculator className="h-5 w-5 text-muted-foreground" />
               <div>
                 <p className="font-medium">SEC Calculator</p>
