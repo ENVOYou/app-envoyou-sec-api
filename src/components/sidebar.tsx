@@ -10,7 +10,8 @@ import {
   Settings,
   User,
   CreditCard,
-  Menu
+  SidebarOpen,
+  SidebarClose
 } from 'lucide-react'
 
 const navigation = [
@@ -43,7 +44,7 @@ export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps
           onClick={onToggle}
           className="hidden lg:block p-2 rounded-lg hover:bg-accent transition-colors"
         >
-          <Menu className="h-6 w-6" />
+          {collapsed ? <SidebarOpen className="h-6 w-6" /> : <SidebarClose className="h-6 w-6" />}
         </button>
       </div>
       <nav className="p-4 space-y-1">
@@ -60,7 +61,7 @@ export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps
               }`}
               title={collapsed ? item.name : undefined}
             >
-              <item.icon className="h-6 w-6" />
+              <item.icon className={`${collapsed ? 'h-7 w-7' : 'h-5 w-5'}`} />
               {!collapsed && item.name}
             </Link>
           )
