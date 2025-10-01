@@ -68,7 +68,7 @@ export default function DashboardLayout({
         collapsed={collapsed} 
         onToggle={toggleCollapsed}
       />
-      <Header 
+      <Header
         className="with-sidebar" 
         sidebarCollapsed={collapsed}
       />
