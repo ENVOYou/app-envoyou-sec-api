@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { apiClient, type CalculationResponse } from '@/lib/api'
+import { apiClient, type CalculationResponse, type CalculationListResponse } from '@/lib/api'
 import { useToast } from '@/components/ui/toast'
 
 interface EmissionData {
@@ -25,7 +25,16 @@ export function SECCalculator() {
   })
   const [factors, setFactors] = useState<Record<string, unknown> | null>(null)
   const [units, setUnits] = useState<Record<string, unknown> | null>(null)
-  const [history, setHistory] = useState<Array<Record<string, unknown>> | null>(null)
+  type HistoryItem = {
+    id?: string
+    input?: EmissionData
+    result?: Record<string, unknown>
+    ts?: string
+    name?: string
+    company?: string
+  }
+
+  const [history, setHistory] = useState<HistoryItem[] | null>(null)
   const [result, setResult] = useState<Record<string, unknown> | null>(null)
   const [validation, setValidation] = useState<Record<string, unknown> | null>(null)
   const [loading, setLoading] = useState(false)
@@ -73,10 +82,10 @@ export function SECCalculator() {
         setUnits(u as Record<string, unknown> | null)
         // Try to load history from server, fall back to localStorage
         try {
-          const server = await apiClient.user.getCalculations().catch(() => null)
-          if (server && (server as any).calculations) {
-            const list = (server as any).calculations as CalculationResponse[]
-            setHistory(list.map(c => ({ id: c.id, input: c.calculation_data, result: c.result, ts: c.created_at })))
+          const server = await apiClient.user.getCalculations().catch(() => null) as CalculationListResponse | null
+          if (server && Array.isArray(server.calculations)) {
+            const list = server.calculations as CalculationResponse[]
+            setHistory(list.map(c => ({ id: c.id, input: c.calculation_data as unknown as EmissionData, result: c.result, ts: c.created_at, name: c.name || undefined })))
             return
           }
         } catch {
@@ -123,29 +132,33 @@ export function SECCalculator() {
     if (!result) return
     setLoading(true)
     setError(null)
-    try {
-      // Try server save first; fall back to localStorage
-      const payload = { name: calcName || undefined, company: formData.company, calculation_data: formData, result, version: 'v0.1.0' }
       try {
-        await apiClient.user.saveCalculation(payload as any)
-        // Refresh server-side list
-        const server = await apiClient.user.getCalculations().catch(() => null)
-        if (server && (server as any).calculations) {
-          const list = (server as any).calculations as CalculationResponse[]
-          setHistory(list.map(c => ({ id: c.id, input: c.calculation_data, result: c.result, ts: c.created_at })))
-          pushToast({ variant: 'success', title: 'Saved', message: 'Calculation saved to your account' })
-          setLoading(false)
-          return
+        // Try server save first; fall back to localStorage
+        const payload = { name: calcName || undefined, company: formData.company, calculation_data: formData, result, version: 'v0.1.0' }
+        try {
+          // `saveCalculation` accepts an object with company, calculation_data, result, version.
+          // Passing a variable with an extra `name` property is structurally compatible.
+          await apiClient.user.saveCalculation(payload as unknown as Parameters<typeof apiClient.user.saveCalculation>[0])
+          // Refresh server-side list
+          const server = await apiClient.user.getCalculations().catch(() => null) as CalculationListResponse | null
+          if (server && Array.isArray(server.calculations)) {
+            const list = server.calculations as CalculationResponse[]
+            setHistory(list.map(c => ({ id: c.id, input: c.calculation_data as unknown as EmissionData, result: c.result, ts: c.created_at, name: c.name || undefined })))
+            pushToast({ variant: 'success', title: 'Saved', message: 'Calculation saved to your account' })
+            setLoading(false)
+            return
+          }
+        } catch {
+          // fallback to local
         }
-      } catch {
-        // fallback to local
-      }
 
-      const key = 'sec_calc_history'
-      const cur = JSON.parse(localStorage.getItem(key) || '[]')
-      cur.unshift({ input: formData, result, ts: new Date().toISOString(), name: calcName || undefined })
-      localStorage.setItem(key, JSON.stringify(cur.slice(0, 50)))
-      setHistory(cur)
+  const key = 'sec_calc_history'
+  const curRaw = JSON.parse(localStorage.getItem(key) || '[]') as HistoryItem[]
+  const cur = Array.isArray(curRaw) ? curRaw : []
+  const entry: HistoryItem = { input: formData, result: result || undefined, ts: new Date().toISOString(), name: calcName || undefined }
+  cur.unshift(entry)
+  localStorage.setItem(key, JSON.stringify(cur.slice(0, 50)))
+  setHistory(cur)
       pushToast({ variant: 'warning', title: 'Saved locally', message: 'Offline — saved to local storage. Use "Retry Sync" to sync later.' })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Save failed')
@@ -155,22 +168,26 @@ export function SECCalculator() {
     }
   }
 
-  const handleDeleteHistory = async (item: any) => {
+  const handleDeleteHistory = async (item: HistoryItem) => {
     try {
       if (item?.id) {
         await apiClient.user.deleteCalculation(item.id)
         pushToast({ variant: 'success', message: 'Deleted from server' })
         const server = await apiClient.user.getCalculations().catch(() => null)
-        if (server && (server as any).calculations) {
-          const list = (server as any).calculations as CalculationResponse[]
-          setHistory(list.map(c => ({ id: c.id, input: c.calculation_data, result: c.result, ts: c.created_at })))
-          return
+        if (server) {
+          // apiClient.user.getCalculations() should return CalculationListResponse
+          const typed = server as unknown as import('@/lib/api').CalculationListResponse
+          if (typed && Array.isArray(typed.calculations)) {
+            const list = typed.calculations as import('@/lib/api').CalculationResponse[]
+            setHistory(list.map(c => ({ id: c.id, input: c.calculation_data as unknown as EmissionData, result: c.result, ts: c.created_at, name: c.name })))
+            return
+          }
         }
       } else {
         // local-only entry: remove from localStorage
         const key = 'sec_calc_history'
-        const cur = JSON.parse(localStorage.getItem(key) || '[]') as any[]
-        const filtered = cur.filter(h => h.ts !== item.ts)
+        const cur = JSON.parse(localStorage.getItem(key) || '[]') as HistoryItem[]
+        const filtered = (Array.isArray(cur) ? cur : []).filter(h => h.ts !== item.ts)
         localStorage.setItem(key, JSON.stringify(filtered))
         setHistory(filtered)
         pushToast({ variant: 'success', message: 'Removed local entry' })
@@ -183,26 +200,28 @@ export function SECCalculator() {
   const retrySyncLocal = async () => {
     try {
       const key = 'sec_calc_history'
-      const cur = JSON.parse(localStorage.getItem(key) || '[]') as any[]
-      const pending = cur.filter(c => !c.id)
+      const cur = JSON.parse(localStorage.getItem(key) || '[]') as HistoryItem[]
+      const pending = (Array.isArray(cur) ? cur : []).filter(c => !c.id)
       if (!pending.length) {
         pushToast({ variant: 'default', message: 'No local items to sync' })
         return
       }
       for (const p of pending) {
         try {
-          await apiClient.user.saveCalculation({ company: p.input.company, calculation_data: p.input, result: p.result, version: 'v0.1.0' } as any)
+            if (p.input) {
+            await apiClient.user.saveCalculation({ company: p.input.company, calculation_data: p.input as unknown as Record<string, unknown>, result: p.result, version: 'v0.1.0' })
+          }
         } catch (e) {
           console.debug('sync failed for item', p, e)
         }
       }
       // refresh server list
-      const server = await apiClient.user.getCalculations().catch(() => null)
-      if (server && (server as any).calculations) {
-        const list = (server as any).calculations as CalculationResponse[]
-        setHistory(list.map(c => ({ id: c.id, input: c.calculation_data, result: c.result, ts: c.created_at })))
+      const server = await apiClient.user.getCalculations().catch(() => null) as CalculationListResponse | null
+      if (server && Array.isArray(server.calculations)) {
+        const list = server.calculations as CalculationResponse[]
+          setHistory(list.map(c => ({ id: c.id, input: c.calculation_data as unknown as EmissionData, result: c.result, ts: c.created_at, name: c.name || undefined })))
         // clear local-only entries
-        const rem = cur.filter(c => c.id)
+        const rem = (Array.isArray(cur) ? cur : []).filter(c => c.id)
         localStorage.setItem(key, JSON.stringify(rem))
         pushToast({ variant: 'success', message: 'Sync complete' })
       } else {
@@ -266,7 +285,7 @@ export function SECCalculator() {
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Export Type</label>
-              <select value={exportType} onChange={(e) => setExportType(e.target.value as any)} className="w-full p-3 border border-border rounded-lg bg-background">
+              <select value={exportType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setExportType(e.target.value as 'package' | 'cevs')} className="w-full p-3 border border-border rounded-lg bg-background">
                 <option value="package">SEC Package</option>
                 <option value="cevs">CEVS (raw)</option>
               </select>
@@ -417,7 +436,7 @@ export function SECCalculator() {
         {/* User Calculation History */}
         {!history || (Array.isArray(history) && history.length === 0) ? (
           <div className="bg-card border border-border rounded-lg p-6 mt-6 text-center text-sm text-muted-foreground">
-            No saved calculations yet — calculate and click "Save Calculation". Your saves are kept in your account when signed in or locally when offline.
+            No saved calculations yet — calculate and click &quot;Save Calculation&quot;. Your saves are kept in your account when signed in or locally when offline.
           </div>
         ) : null}
 
@@ -428,16 +447,16 @@ export function SECCalculator() {
               {history.slice(0, 5).map((h, idx) => (
                 <li key={idx} className="p-3 bg-muted rounded-md">
                   <div className="flex items-start justify-between">
-                    <div className="cursor-pointer" onClick={() => {
-                      try {
-                        if (h && (h as any).input) {
-                          setFormData((h as any).input as any)
-                          setResult((h as any).result as any)
-                        }
-                      } catch { /* ignore */ }
-                    }}>
-                      <div className="text-xs text-muted-foreground">{(h as any).ts || ''}</div>
-                      <div className="mt-1">{(h as any).name || (h as any).input?.company || (h as any).company || 'Saved calculation'}</div>
+                          <div className="cursor-pointer" onClick={() => {
+                            try {
+                              if (h && h.input) {
+                                setFormData(h.input)
+                                setResult(h.result ?? null)
+                              }
+                            } catch { /* ignore */ }
+                          }}>
+                            <div className="text-xs text-muted-foreground">{h.ts ?? ''}</div>
+                            <div className="mt-1">{h.name ?? h.input?.company ?? h.company ?? 'Saved calculation'}</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <button onClick={() => handleDeleteHistory(h)} className="text-sm text-destructive">Delete</button>

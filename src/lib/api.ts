@@ -16,6 +16,7 @@ import {
 export interface CalculationResponse {
   id: string
   company: string
+  name?: string
   calculation_data: Record<string, unknown>
   result: Record<string, unknown>
   version: string
