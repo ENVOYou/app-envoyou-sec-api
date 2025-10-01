@@ -10,8 +10,8 @@ import {
   Settings,
   User,
   CreditCard,
-  SidebarOpen,
-  SidebarClose
+  ChevronRight,
+  ChevronLeft
 } from 'lucide-react'
 
 const navigation = [
@@ -44,7 +44,7 @@ export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps
           onClick={onToggle}
           className="hidden lg:block p-2 rounded-lg hover:bg-accent transition-colors"
         >
-          {collapsed ? <SidebarOpen className="h-6 w-6" /> : <SidebarClose className="h-6 w-6" />}
+          {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
         </button>
       </div>
       <nav className="p-4 space-y-1">
@@ -62,7 +62,7 @@ export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps
               title={collapsed ? item.name : undefined}
             >
               <item.icon 
-                className={`${collapsed ? 'h-7 w-7' : 'h-5 w-5'} flex-shrink-0`} 
+                className={`${collapsed ? 'h-5.5 w-5.5' : 'h-5 w-5'} flex-shrink-0`} 
                 width={collapsed ? 28 : 20}
                 height={collapsed ? 28 : 20}
                 strokeWidth={1.75}
