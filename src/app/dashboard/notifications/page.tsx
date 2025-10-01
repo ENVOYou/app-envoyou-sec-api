@@ -1,14 +1,16 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
 import { apiClient } from '@/lib/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { BellIcon, CheckIcon, XIcon } from '@/components/icons'
+import { BellIcon, CheckIcon, XIcon, SettingsIcon } from '@/components/icons'
 import { Notification } from '@/types'
 
 export default function NotificationsPage() {
+  const router = useRouter()
   const { user } = useAuth()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
@@ -152,11 +154,17 @@ export default function NotificationsPage() {
             Stay updated with important account activities and system alerts.
           </p>
         </div>
-        {unreadCount > 0 && (
-          <Button onClick={markAllAsRead}>
-            Mark All as Read
+        <div className="flex items-center space-x-2">
+          {unreadCount > 0 && (
+            <Button onClick={markAllAsRead}>
+              Mark All as Read
+            </Button>
+          )}
+          <Button variant="outline" onClick={() => router.push('/dashboard/settings')}>
+            <SettingsIcon className="h-4 w-4 mr-2" />
+            Settings
           </Button>
-        )}
+        </div>
       </div>
 
       {/* Filter tabs */}
@@ -268,63 +276,7 @@ export default function NotificationsPage() {
         </CardContent>
   </Card></div></div>
 
-      {/* Notification Settings Preview */}
-  <div className="surface-section"><div className="grid-item"><Card>
-        <CardHeader>
-          <CardTitle>Notification Preferences</CardTitle>
-          <CardDescription>
-            Manage which notifications you receive and how you receive them.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between py-2">
-              <div>
-                <div className="font-medium">Security Alerts</div>
-                <div className="text-sm text-muted-foreground">
-                  Important security events and login notifications
-                </div>
-              </div>
-              <Button variant="outline" size="sm">
-                Configure
-              </Button>
-            </div>
-            <div className="flex items-center justify-between py-2">
-              <div>
-                <div className="font-medium">API Usage</div>
-                <div className="text-sm text-muted-foreground">
-                  Rate limit warnings and usage milestones
-                </div>
-              </div>
-              <Button variant="outline" size="sm">
-                Configure
-              </Button>
-            </div>
-            <div className="flex items-center justify-between py-2">
-              <div>
-                <div className="font-medium">System Updates</div>
-                <div className="text-sm text-muted-foreground">
-                  Maintenance schedules and system announcements
-                </div>
-              </div>
-              <Button variant="outline" size="sm">
-                Configure
-              </Button>
-            </div>
-            <div className="flex items-center justify-between py-2">
-              <div>
-                <div className="font-medium">Billing & Account</div>
-                <div className="text-sm text-muted-foreground">
-                  Payment confirmations and plan changes
-                </div>
-              </div>
-              <Button variant="outline" size="sm">
-                Configure
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-  </Card></div></div>
+
     </div>
   )
 }

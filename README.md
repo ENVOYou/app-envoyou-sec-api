@@ -108,7 +108,7 @@ This frontend integrates with the Envoyou SEC API backend deployed at `https://a
 - `POST /v1/emissions/calculate` - Calculate Scope 1 & 2 emissions with audit trail
 - `POST /v1/validation/epa` - Cross-validate against EPA data
 - `POST /v1/export/sec/package` - Generate complete SEC filing package
-- `GET /v1/export/sec/cevs` - Export CEVS data (JSON/CSV)
+- `GET /v1/export/sec/ghg` - Export GHG data (JSON/CSV)
 - `GET /v1/export/sec/audit` - Export audit trail (CSV)
 - `POST /v1/admin/mappings` - Company-facility mapping (admin)
 - `GET /v1/audit` - Audit trail access (premium)

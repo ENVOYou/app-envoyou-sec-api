@@ -49,11 +49,11 @@ export default function AnalyticsPage() {
   ]
 
   const mockEndpointData = usageAnalytics?.endpoints_usage || [
-    { endpoint: '/v1/global/emissions', count: 150 },
-    { endpoint: '/v1/global/eea', count: 89 },
-    { endpoint: '/v1/user/profile', count: 45 },
-    { endpoint: '/v1/global/iso', count: 32 },
-    { endpoint: '/v1/notifications', count: 28 }
+    { endpoint: '/v1/emissions/calculate', count: 150 },
+    { endpoint: '/v1/export/sec/package', count: 89 },
+    { endpoint: '/v1/user/calculations', count: 45 },
+    { endpoint: '/v1/user/profile', count: 32 },
+    { endpoint: '/v1/developer/usage-analytics', count: 28 }
   ]
 
   if (loading) {
@@ -201,9 +201,9 @@ export default function AnalyticsPage() {
         {/* Top Endpoints */}
   <div className="grid-item"><Card variant="strong">
           <CardHeader>
-            <CardTitle>Top Endpoints</CardTitle>
+            <CardTitle>Top Endpoints (SEC-focused)</CardTitle>
             <CardDescription>
-              Most frequently accessed endpoints
+              Most frequently accessed endpoints related to SEC calculations, validations, audit logging and exports
             </CardDescription>
           </CardHeader>
           <CardContent>

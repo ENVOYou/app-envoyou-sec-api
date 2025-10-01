@@ -40,7 +40,7 @@ export function SECCalculator() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [calcName, setCalcName] = useState<string>('')
-  const [exportType, setExportType] = useState<'package' | 'cevs'>('package')
+  const [exportType, setExportType] = useState<'package' | 'ghg'>('package')
   const { push: pushToast } = useToast()
   const [showOnboarding, setShowOnboarding] = useState<boolean>(false)
 
@@ -127,10 +127,10 @@ export function SECCalculator() {
         pushToast({ variant: 'success', title: 'Export started', message: 'SEC package generation started' })
       } else {
         const company = formData.company
-        if (!company) throw new Error('Company required for CEVS export')
-        const cevs = await apiClient.export.secCevs(company)
-        console.log('CEVS export:', cevs)
-        pushToast({ variant: 'success', title: 'Export ready', message: 'CEVS data retrieved' })
+        if (!company) throw new Error('Company required for GHG export')
+        const ghg = await apiClient.export.secGhg(company)
+        console.log('GHG export:', ghg)
+        pushToast({ variant: 'success', title: 'Export ready', message: 'GHG data retrieved' })
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Export failed'
@@ -296,9 +296,9 @@ export function SECCalculator() {
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Export Type</label>
-              <select value={exportType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setExportType(e.target.value as 'package' | 'cevs')} className="w-full p-3 border border-border rounded-lg bg-background">
+              <select value={exportType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setExportType(e.target.value as 'package' | 'ghg')} className="w-full p-3 border border-border rounded-lg bg-background">
                 <option value="package">SEC Package</option>
-                <option value="cevs">CEVS (raw)</option>
+                <option value="ghg">GHG (raw)</option>
               </select>
             </div>
           </div>

@@ -114,7 +114,7 @@ class APIClient {
   auth = {
     supabaseVerify: async (token: string) => {
   const res = await this.request<{ access_token: string; refresh_token: string; user: { id: string; email: string; name?: string; email_verified?: boolean; auth_provider?: string }; token_type: string; message: string }>(
-        '/auth/supabase/verify',
+        '/v1/auth/supabase/verify',
         {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
@@ -124,41 +124,41 @@ class APIClient {
       this.setToken(res.access_token, res.refresh_token)
       return res
     },
-    getMe: () => this.request('/auth/supabase/me')
+    getMe: () => this.request('/v1/auth/supabase/me')
   }
 
   // User endpoints
   user = {
-    getProfile: () => this.request('/user/profile'),
+    getProfile: () => this.request('/v1/user/profile'),
     updateProfile: (data: UserProfileUpdate) => 
-      this.request('/user/profile', {
+      this.request('/v1/user/profile', {
         method: 'PUT',
         body: JSON.stringify(data)
       }),
-    getAPIKeys: async () => adaptAPIKeys(await this.request('/user/api-keys')),
+    getAPIKeys: async () => adaptAPIKeys(await this.request('/v1/user/api-keys')),
     createAPIKey: (data: { name: string; permissions?: string[] }) => 
-      this.request('/user/api-keys', {
+      this.request('/v1/user/api-keys', {
         method: 'POST',
         body: JSON.stringify(data)
       }),
     deleteAPIKey: (keyId: string) => 
-      this.request(`/user/api-keys/${keyId}`, {
+      this.request(`/v1/user/api-keys/${keyId}`, {
         method: 'DELETE'
       }),
-    getStats: async () => adaptUserStats(await this.request('/user/stats')),
-    getSessions: async () => adaptSessions(await this.request('/user/sessions')),
-    getPlan: () => this.request('/user/plan'),
+    getStats: async () => adaptUserStats(await this.request('/v1/user/stats')),
+    getSessions: async () => adaptSessions(await this.request('/v1/user/sessions')),
+    getPlan: () => this.request('/v1/user/plan'),
     // Fetch user's calculation history (emissions calculations)
-    getCalculations: (page = 1, limit = 20) => this.request<CalculationListResponse>(`/user/calculations?page=${page}&limit=${limit}`),
+    getCalculations: (page = 1, limit = 20) => this.request<CalculationListResponse>(`/v1/user/calculations?page=${page}&limit=${limit}`),
     // Save a calculation (backend supports POST to /user/calculations)
     saveCalculation: (payload: { company: string; calculation_data: Record<string, unknown>; result?: Record<string, unknown>; version?: string }) =>
-      this.request('/user/calculations', {
+      this.request('/v1/user/calculations', {
         method: 'POST',
         body: JSON.stringify(payload)
       }),
     // Delete a saved calculation
     deleteCalculation: (calculationId: string) =>
-      this.request(`/user/calculations/${calculationId}`, {
+      this.request(`/v1/user/calculations/${calculationId}`, {
         method: 'DELETE'
       })
   }
@@ -228,7 +228,7 @@ class APIClient {
   }
 
   export = {
-    secCevs: (company: string) => this.request(`/v1/export/sec/cevs/${company}`),
+    secGhg: (company: string) => this.request(`/v1/export/sec/ghg/${company}`),
     secPackage: (data: {
       company: string
       scope1?: { fuel_type: string; amount: number; unit: string }
@@ -241,14 +241,14 @@ class APIClient {
 
   // Developer stats
   developer = {
-    getStats: async () => adaptDeveloperStats(await this.request('/user/developer/stats')),
+    getStats: async () => adaptDeveloperStats(await this.request('/v1/developer/stats')),
     getUsageAnalytics: async (hours?: number) => {
       const query = hours ? `?hours=${hours}` : ''
-      const raw = await this.request(`/user/developer/usage-analytics${query}`)
+      const raw = await this.request(`/v1/developer/usage-analytics${query}`)
       return adaptUsageAnalytics(raw)
     },
     getRateLimits: async () => {
-      const raw = await this.request('/user/developer/rate-limits') as unknown
+      const raw = await this.request('/v1/developer/rate-limits') as unknown
       const r = raw as { data?: { rate_limit?: string } }
       const info = parseRateLimitInfo(r.data?.rate_limit)
       return { ...(r as object), parsed: info }

@@ -6,6 +6,7 @@ import {
   BarChart3, 
   Key, 
   Calculator,
+  TrendingUp,
   Settings,
   User,
   CreditCard,
@@ -14,6 +15,7 @@ import {
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
+  { name: 'Analytics', href: '/dashboard/analytics', icon: TrendingUp },
   { name: 'SEC Calculator', href: '/dashboard/sec-calculator', icon: Calculator },
   { name: 'API Keys', href: '/dashboard/api-keys', icon: Key },
   { name: 'Profile', href: '/dashboard/profile', icon: User },
@@ -58,7 +60,7 @@ export function Sidebar({ collapsed = false, onToggle, className }: SidebarProps
               }`}
               title={collapsed ? item.name : undefined}
             >
-              <item.icon className={`${collapsed ? 'h-6 w-6' : 'h-4 w-4'}`} />
+              <item.icon className="h-6 w-6" />
               {!collapsed && item.name}
             </Link>
           )
