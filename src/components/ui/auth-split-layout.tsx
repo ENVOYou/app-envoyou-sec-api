@@ -43,7 +43,9 @@ export function AuthSplitLayout({
     window.__ENV_DARK_CHECK__ = rootHasDark
   }
   return (
-  <div className={cn('min-h-screen grid lg:grid-cols-2 bg-background text-foreground relative dark:bg-background', className)}>
+  <div className={cn('h-screen overflow-hidden grid lg:grid-cols-2 bg-background text-foreground relative dark:bg-background', className)}>
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgba(255,255,255,0.15)_1px,_transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,_rgba(255,255,255,0.05)_1px,_transparent_0)] bg-[size:20px_20px]" />
       {/* Dark mode subtle radial accent using primary token */}
       <div className="pointer-events-none absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_70%_20%,hsl(var(--primary)/0.15),transparent_60%)]" />
       {/* Left / Branding Panel */}
@@ -97,7 +99,7 @@ export function AuthSplitLayout({
       </div>
 
       {/* Right / Form Area */}
-      <div className="flex items-center justify-center px-4 py-16 sm:px-8 lg:px-14 relative">
+      <div className="flex items-start justify-center px-4 py-16 sm:px-8 lg:px-14 relative overflow-y-auto overflow-x-hidden bg-[hsl(var(--surface)/0.8)] dark:bg-[hsl(var(--surface)/0.6)]">
         {/* Light mode subtle radial using surface token; dark stays transparent (accent handled globally) */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,hsl(var(--surface)/0.9),hsl(var(--surface)/0.92)_45%,hsl(var(--surface)/0.86))] dark:bg-transparent pointer-events-none" aria-hidden="true" />
         {/* Grid overlay: token-based so it adapts to theme */}

@@ -129,36 +129,36 @@ class APIClient {
 
   // User endpoints
   user = {
-    getProfile: () => this.request('/v1/user/profile'),
+    getProfile: () => this.request('/user/profile'),
     updateProfile: (data: UserProfileUpdate) => 
-      this.request('/v1/user/profile', {
+      this.request('/user/profile', {
         method: 'PUT',
         body: JSON.stringify(data)
       }),
-    getAPIKeys: async () => adaptAPIKeys(await this.request('/v1/user/api-keys')),
+    getAPIKeys: async () => adaptAPIKeys(await this.request('/user/api-keys')),
     createAPIKey: (data: { name: string; permissions?: string[] }) => 
-      this.request('/v1/user/api-keys', {
+      this.request('/user/api-keys', {
         method: 'POST',
         body: JSON.stringify(data)
       }),
     deleteAPIKey: (keyId: string) => 
-      this.request(`/v1/user/api-keys/${keyId}`, {
+      this.request(`/user/api-keys/${keyId}`, {
         method: 'DELETE'
       }),
-    getStats: async () => adaptUserStats(await this.request('/v1/user/stats')),
-    getSessions: async () => adaptSessions(await this.request('/v1/user/sessions')),
-    getPlan: () => this.request('/v1/user/plan'),
+    getStats: async () => adaptUserStats(await this.request('/user/stats')),
+    getSessions: async () => adaptSessions(await this.request('/user/sessions')),
+    getPlan: () => this.request('/user/plan'),
     // Fetch user's calculation history (emissions calculations)
-    getCalculations: (page = 1, limit = 20) => this.request<CalculationListResponse>(`/v1/user/calculations?page=${page}&limit=${limit}`),
+    getCalculations: (page = 1, limit = 20) => this.request<CalculationListResponse>(`/user/calculations?page=${page}&limit=${limit}`),
     // Save a calculation (backend supports POST to /user/calculations)
     saveCalculation: (payload: { company: string; calculation_data: Record<string, unknown>; result?: Record<string, unknown>; version?: string }) =>
-      this.request('/v1/user/calculations', {
+      this.request('/user/calculations', {
         method: 'POST',
         body: JSON.stringify(payload)
       }),
     // Delete a saved calculation
     deleteCalculation: (calculationId: string) =>
-      this.request(`/v1/user/calculations/${calculationId}`, {
+      this.request(`/user/calculations/${calculationId}`, {
         method: 'DELETE'
       })
   }
@@ -167,17 +167,17 @@ class APIClient {
   global = {
     getEmissions: async (params?: Record<string, string>) => {
       const query = params ? `?${new URLSearchParams(params).toString()}` : ''
-      const raw = await this.request(`/v1/global/emissions${query}`)
+      const raw = await this.request(`/global/emissions${query}`)
       return adaptEmissions(raw)
     },
-    getEmissionsStats: async () => adaptEmissionStats(await this.request('/v1/global/emissions/stats')),
+    getEmissionsStats: async () => adaptEmissionStats(await this.request('/global/emissions/stats')),
     getISO: (params?: Record<string, string>) => {
       const query = params ? `?${new URLSearchParams(params).toString()}` : ''
-      return this.request(`/v1/global/iso${query}`)
+      return this.request(`/global/iso${query}`)
     },
     getEEA: (params?: Record<string, string>) => {
       const query = params ? `?${new URLSearchParams(params).toString()}` : ''
-      return this.request(`/v1/global/eea${query}`)
+      return this.request(`/global/eea${query}`)
     }
   }
 
@@ -185,32 +185,32 @@ class APIClient {
   notifications = {
     getNotifications: async (params?: Record<string, string>) => {
       const query = params ? `?${new URLSearchParams(params).toString()}` : ''
-      const raw = await this.request(`/v1/notifications/${query}`)
+      const raw = await this.request(`/notifications/${query}`)
       return adaptNotifications(raw)
     },
     getCount: async (params?: Record<string, string>) => {
       const query = params ? `?${new URLSearchParams(params).toString()}` : ''
-      return this.request(`/v1/notifications/count${query}`)
+      return this.request(`/notifications/count${query}`)
     },
     markAsRead: (notificationId: string) => 
-      this.request(`/v1/notifications/${notificationId}/read`, {
+      this.request(`/notifications/${notificationId}/read`, {
         method: 'PUT'
       }),
     markAllAsRead: (userId: string) => 
-      this.request(`/v1/notifications/read-all?user_id=${userId}`, {
+      this.request(`/notifications/read-all?user_id=${userId}`, {
         method: 'PUT'
       })
   }
 
   // SEC API endpoints
   emissions = {
-    getFactors: () => this.request('/v1/emissions/factors'),
-    getUnits: () => this.request('/v1/emissions/units'),
+    getFactors: () => this.request('/emissions/factors'),
+    getUnits: () => this.request('/emissions/units'),
     calculate: (data: {
       company: string
       scope1?: { fuel_type: string; amount: number; unit: string }
       scope2?: { kwh: number; grid_region: string }
-    }) => this.request('/v1/emissions/calculate', {
+    }) => this.request('/emissions/calculate', {
       method: 'POST',
       body: JSON.stringify(data)
     })
@@ -221,19 +221,19 @@ class APIClient {
       company: string
       scope1?: { fuel_type: string; amount: number; unit: string }
       scope2?: { kwh: number; grid_region: string }
-    }) => this.request('/v1/validation/epa', {
+    }) => this.request('/validation/epa', {
       method: 'POST',
       body: JSON.stringify(data)
     })
   }
 
   export = {
-    secGhg: (company: string) => this.request(`/v1/export/sec/ghg/${company}`),
+    secGhg: (company: string) => this.request(`/export/sec/ghg/${company}`),
     secPackage: (data: {
       company: string
       scope1?: { fuel_type: string; amount: number; unit: string }
       scope2?: { kwh: number; grid_region: string }
-    }) => this.request('/v1/export/sec/package', {
+    }) => this.request('/export/sec/package', {
       method: 'POST',
       body: JSON.stringify(data)
     })
@@ -241,14 +241,14 @@ class APIClient {
 
   // Developer stats
   developer = {
-    getStats: async () => adaptDeveloperStats(await this.request('/v1/developer/stats')),
+    getStats: async () => adaptDeveloperStats(await this.request('/developer/stats')),
     getUsageAnalytics: async (hours?: number) => {
       const query = hours ? `?hours=${hours}` : ''
-      const raw = await this.request(`/v1/developer/usage-analytics${query}`)
+      const raw = await this.request(`/developer/usage-analytics${query}`)
       return adaptUsageAnalytics(raw)
     },
     getRateLimits: async () => {
-      const raw = await this.request('/v1/developer/rate-limits') as unknown
+      const raw = await this.request('/developer/rate-limits') as unknown
       const r = raw as { data?: { rate_limit?: string } }
       const info = parseRateLimitInfo(r.data?.rate_limit)
       return { ...(r as object), parsed: info }
