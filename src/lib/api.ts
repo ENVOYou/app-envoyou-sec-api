@@ -12,6 +12,23 @@ import {
   parseRateLimitInfo
 } from './adapters'
 
+// Types for user calculations (mirror backend /user/calculations response)
+export interface CalculationResponse {
+  id: string
+  company: string
+  calculation_data: Record<string, unknown>
+  result: Record<string, unknown>
+  version: string
+  created_at: string
+}
+
+export interface CalculationListResponse {
+  calculations: CalculationResponse[]
+  total: number
+  page: number
+  limit: number
+}
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
@@ -129,7 +146,20 @@ class APIClient {
       }),
     getStats: async () => adaptUserStats(await this.request('/user/stats')),
     getSessions: async () => adaptSessions(await this.request('/user/sessions')),
-    getPlan: () => this.request('/user/plan')
+    getPlan: () => this.request('/user/plan'),
+    // Fetch user's calculation history (emissions calculations)
+    getCalculations: (page = 1, limit = 20) => this.request<CalculationListResponse>(`/user/calculations?page=${page}&limit=${limit}`),
+    // Save a calculation (backend supports POST to /user/calculations)
+    saveCalculation: (payload: { company: string; calculation_data: Record<string, unknown>; result?: Record<string, unknown>; version?: string }) =>
+      this.request('/user/calculations', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      }),
+    // Delete a saved calculation
+    deleteCalculation: (calculationId: string) =>
+      this.request(`/user/calculations/${calculationId}`, {
+        method: 'DELETE'
+      })
   }
 
   // Global data endpoints (requires API key)
