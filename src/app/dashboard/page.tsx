@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const [userStats, setUserStats] = useState<UserStats | null>(null)
   const [developerStats, setDeveloperStats] = useState<DeveloperStats | null>(null)
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -36,6 +37,24 @@ export default function DashboardPage() {
     }
   }, [user])
 
+  const handleRefresh = async () => {
+    setRefreshing(true)
+    try {
+      const [userStatsRes, devStatsRes] = await Promise.all([
+        apiClient.user.getStats(),
+        apiClient.developer.getStats()
+      ])
+      
+      console.log('Manual refresh - userStats:', userStatsRes)
+      setUserStats(userStatsRes as UserStats)
+      setDeveloperStats(devStatsRes as DeveloperStats)
+    } catch (error) {
+      console.error('Error refreshing stats:', error)
+    } finally {
+      setRefreshing(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="p-6">
@@ -56,13 +75,22 @@ export default function DashboardPage() {
 
   return (
     <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-foreground">
-          Welcome back, {user?.name || user?.email?.split('@')[0]}
-        </h1>
-        <p className="text-muted-foreground mt-1">
-          Monitor your SEC compliance and API usage
-        </p>
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-2xl font-semibold text-foreground">
+            Welcome back, {user?.name || user?.email?.split('@')[0]}
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Monitor your SEC compliance and API usage
+          </p>
+        </div>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50"
+        >
+          {refreshing ? 'Refreshing...' : 'Refresh Stats'}
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
