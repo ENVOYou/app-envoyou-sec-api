@@ -28,10 +28,15 @@ export function adaptUserStats(raw: unknown): UserStats {
 
 // API Keys list adapter
 export function adaptAPIKeys(raw: unknown): APIKey[] {
+  console.log('adaptAPIKeys raw response:', raw) // Debug log
   if (!raw) return []
   if (Array.isArray(raw)) return raw as APIKey[]
   const r = raw as Dict
-  if (Array.isArray(r.api_keys)) return r.api_keys as APIKey[]
+  if (Array.isArray(r.api_keys)) {
+    console.log('Found api_keys array:', r.api_keys) // Debug log
+    return r.api_keys as APIKey[]
+  }
+  console.log('No api_keys found in response') // Debug log
   return []
 }
 

@@ -23,6 +23,7 @@ export default function APIKeysPage() {
   const fetchAPIKeys = async () => {
     try {
       const keys = await apiClient.user.getAPIKeys() as APIKey[]
+      console.log('Fetched API keys:', keys) // Debug log
       setApiKeys(keys)
     } catch (error) {
       console.error('Error fetching API keys:', error)
@@ -36,10 +37,11 @@ export default function APIKeysPage() {
 
     setCreating(true)
     try {
-  const response = await apiClient.user.createAPIKey({ name: newKeyName }) as { key: string }
-  setNewKeyData({ key: response.key, name: newKeyName })
+      const response = await apiClient.user.createAPIKey({ name: newKeyName }) as { key: string }
+      console.log('API key created:', response) // Debug log
+      setNewKeyData({ key: response.key, name: newKeyName })
       setNewKeyName('')
-      await fetchAPIKeys()
+      // Don't fetch immediately, wait for modal to close
     } catch (error) {
       console.error('Error creating API key:', error)
       alert('Error creating API key. Please try again.')
@@ -137,7 +139,10 @@ export default function APIKeysPage() {
                 </div>
               </div>
               <div className="flex justify-end mt-6">
-                <Button onClick={() => setNewKeyData(null)}>
+                <Button onClick={() => {
+                  setNewKeyData(null)
+                  fetchAPIKeys() // Refresh the list when modal is closed
+                }}>
                   Done
                 </Button>
               </div>
