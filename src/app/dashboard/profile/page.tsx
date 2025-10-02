@@ -10,7 +10,7 @@ import { UserIcon } from '@/components/icons'
 import { User, UserProfileUpdate } from '@/types'
 
 export default function ProfilePage() {
-  const { user, refreshUser } = useAuth()
+  const { user, refreshUser, updateUserLocal } = useAuth()
   const [profile, setProfile] = useState<User | null>(null)
   const [formData, setFormData] = useState<UserProfileUpdate>({})
   const [loading, setLoading] = useState(true)
@@ -85,16 +85,20 @@ export default function ProfilePage() {
     setUploading(true)
     try {
       const response = await apiClient.user.uploadAvatar(file) as { avatar_url: string }
-      // Update profile with new avatar URL
+      console.log('Avatar upload response:', response) // Debug log
+      
+      // Update local profile state immediately
       setProfile(prev => prev ? { ...prev, avatar_url: response.avatar_url } : prev)
-      await refreshUser()
+      
+      // Update user context immediately for header
+      updateUserLocal({ avatar_url: response.avatar_url })
+      
       alert('Avatar updated successfully!')
     } catch (error) {
       console.error('Error uploading avatar:', error)
       alert('Error uploading avatar. Please try again.')
     } finally {
       setUploading(false)
-      // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = ''
       }
