@@ -71,9 +71,17 @@ export function Header({ className, sidebarCollapsed = false }: HeaderProps = {}
           </button>
           
           <div className="flex items-center gap-2 lg:gap-3">
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <User className="h-4 w-4 text-primary-foreground" />
-            </div>
+            {user?.avatar_url ? (
+              <img
+                src={user.avatar_url}
+                alt="Profile"
+                className="w-8 h-8 rounded-full object-cover border border-border"
+              />
+            ) : (
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <User className="h-4 w-4 text-primary-foreground" />
+              </div>
+            )}
             <span className="hidden sm:block text-sm font-medium">
               {user?.name || user?.email?.split('@')[0] || 'User'}
             </span>

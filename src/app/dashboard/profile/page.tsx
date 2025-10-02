@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { apiClient } from '@/lib/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,6 +15,8 @@ export default function ProfilePage() {
   const [formData, setFormData] = useState<UserProfileUpdate>({})
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -59,6 +61,46 @@ export default function ProfilePage() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      alert('Please select a valid image file (JPEG, PNG, GIF, or WebP)')
+      return
+    }
+
+    // Validate file size (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size must be less than 5MB')
+      return
+    }
+
+    setUploading(true)
+    try {
+      const response = await apiClient.user.uploadAvatar(file) as { avatar_url: string }
+      // Update profile with new avatar URL
+      setProfile(prev => prev ? { ...prev, avatar_url: response.avatar_url } : prev)
+      await refreshUser()
+      alert('Avatar updated successfully!')
+    } catch (error) {
+      console.error('Error uploading avatar:', error)
+      alert('Error uploading avatar. Please try again.')
+    } finally {
+      setUploading(false)
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
   if (loading) {
     return (
       <div className="p-6">
@@ -79,7 +121,58 @@ export default function ProfilePage() {
         </p>
       </div>
 
-  <div className="surface-section"><div className="grid-item"><Card>
+      {/* Avatar Section */}
+      <div className="surface-section mb-6"><div className="grid-item"><Card className="mb-0">
+        <CardHeader>
+          <CardTitle>Profile Picture</CardTitle>
+          <CardDescription>
+            Upload a profile picture to personalize your account.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center space-x-6">
+            <div className="relative">
+              {profile?.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  alt="Profile"
+                  className="w-20 h-20 rounded-full object-cover border-2 border-border"
+                />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center border-2 border-border">
+                  <UserIcon className="w-10 h-10 text-muted-foreground" />
+                </div>
+              )}
+              {uploading && (
+                <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+            </div>
+            <div className="flex-1">
+              <Button 
+                onClick={handleAvatarClick} 
+                disabled={uploading}
+                variant="outline"
+              >
+                {uploading ? 'Uploading...' : 'Change Picture'}
+              </Button>
+              <p className="text-xs text-muted-foreground mt-2">
+                JPG, PNG, GIF or WebP. Max size 5MB.
+              </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarUpload}
+                className="hidden"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card></div></div>
+
+  <div className="surface-section"><div className="grid-item"><Card className="mb-0">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <UserIcon className="h-5 w-5" />

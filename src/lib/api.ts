@@ -135,6 +135,27 @@ class APIClient {
         method: 'PUT',
         body: JSON.stringify(data)
       }),
+    uploadAvatar: async (file: File) => {
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      const url = `${this.baseUrl}/v1/user/avatar`
+      const headers: Record<string, string> = {}
+      if (this.token) headers.Authorization = `Bearer ${this.token}`
+      
+      const response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: formData
+      })
+      
+      if (!response.ok) {
+        const error = await response.text()
+        throw new Error(error || `${response.status} ${response.statusText}`)
+      }
+      
+      return response.json()
+    },
     getAPIKeys: async () => adaptAPIKeys(await this.request('/v1/user/api-keys')),
     createAPIKey: (data: { name: string; permissions?: string[] }) => 
       this.request('/v1/user/api-keys', {
