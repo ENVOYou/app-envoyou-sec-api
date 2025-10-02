@@ -49,7 +49,12 @@ export default function APIKeysPage() {
       // Don't fetch immediately, wait for modal to close
     } catch (error) {
       console.error('Error creating API key:', error)
-      alert('Error creating API key. Please try again.')
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      if (errorMessage.includes('Maximum of 2 API keys')) {
+        alert('You have reached the maximum limit of 2 API keys. Please delete an existing key first.')
+      } else {
+        alert(`Error creating API key: ${errorMessage}`)
+      }
     } finally {
       setCreating(false)
     }
@@ -62,7 +67,8 @@ export default function APIKeysPage() {
 
     try {
       await apiClient.user.deleteAPIKey(keyId)
-      await fetchAPIKeys()
+      console.log('API key deleted, refreshing list...') // Debug log
+      await fetchAPIKeys(true) // Force refresh
     } catch (error) {
       console.error('Error deleting API key:', error)
       alert('Error deleting API key. Please try again.')
