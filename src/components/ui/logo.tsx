@@ -1,7 +1,6 @@
 "use client";
 import { EnvoyouIcon } from '@/components/icons/EnvoyouIcon';
-import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
+
 import { cn } from '@/lib/utils'
 
 interface LogoProps {

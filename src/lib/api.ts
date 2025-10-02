@@ -160,7 +160,9 @@ class APIClient {
     deleteCalculation: (calculationId: string) =>
       this.request(`/v1/user/calculations/${calculationId}`, {
         method: 'DELETE'
-      })
+      }),
+    // Get user activity log
+    getActivity: (limit = 20) => this.request(`/v1/user/activity?limit=${limit}`)
   }
 
   // Global data endpoints (requires API key)

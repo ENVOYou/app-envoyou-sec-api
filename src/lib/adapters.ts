@@ -19,10 +19,10 @@ export function adaptUserStats(raw: unknown): UserStats {
   const r = raw as Dict
   return {
     total_requests: (r.total_calls as number) ?? 0,
-    requests_today: 0, // backend belum sediakan
+    requests_today: 0,
     requests_this_month: (r.monthly_calls as number) ?? (r.total_calls as number) ?? 0,
     api_keys_count: (r.active_keys as number) ?? 0,
-    active_sessions: 0 // tidak ada data langsung, bisa diisi dari sessions length di tempat lain
+    active_sessions: (r.active_sessions as number) ?? 0
   }
 }
 
@@ -106,26 +106,23 @@ export function adaptEmissionStats(raw: unknown): EmissionStats | null {
 // Developer stats adapter
 export function adaptDeveloperStats(raw: unknown): DeveloperStats {
   const r = (raw as Dict) || {}
-  const data = (r.data as Dict) || r
   return {
-    requests_count: (data.total_calls as number) ?? 0,
-    requests_limit: 0, // tidak disediakan backend
-    rate_limit_remaining: 0, // perlu endpoint rate limit detail jika tersedia
-    rate_limit_reset: 0 // placeholder
+    requests_count: (r.requests_count as number) ?? 0,
+    requests_limit: (r.requests_limit as number) ?? 10000,
+    rate_limit_remaining: (r.rate_limit_remaining as number) ?? 0,
+    rate_limit_reset: (r.rate_limit_reset as number) ?? 0
   }
 }
 
 // Usage analytics adapter
 export function adaptUsageAnalytics(raw: unknown): UsageAnalytics {
   const r = (raw as Dict) || {}
-  const data = (r.data as Dict) || r
-  const activity = Array.isArray(data.activity) ? (data.activity as Dict[]) : []
   return {
-    period: `${(data.window_hours as number) || 24}h`,
-    total_requests: activity.reduce((acc, k) => acc + (Number(k.usage_count) || 0), 0),
-    successful_requests: 0,
-    error_requests: 0,
-    endpoints_usage: activity.map(k => ({ endpoint: (k.prefix as string) || (k.key_id as string) || 'unknown', count: (k.usage_count as number) || 0 }))
+    period: (r.period as string) ?? '24h',
+    total_requests: (r.total_requests as number) ?? 0,
+    successful_requests: (r.successful_requests as number) ?? 0,
+    error_requests: (r.error_requests as number) ?? 0,
+    endpoints_usage: Array.isArray(r.endpoints_usage) ? (r.endpoints_usage as Array<{endpoint: string; count: number}>) : []
   }
 }
 
