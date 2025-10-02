@@ -20,13 +20,18 @@ export default function APIKeysPage() {
     fetchAPIKeys()
   }, [])
 
-  const fetchAPIKeys = async () => {
+  const fetchAPIKeys = async (forceRefresh = false) => {
     try {
+      if (forceRefresh) {
+        console.log('Force refreshing API keys...') // Debug log
+      }
       const keys = await apiClient.user.getAPIKeys() as APIKey[]
       console.log('Fetched API keys:', keys) // Debug log
-      setApiKeys(keys)
+      console.log('Number of keys:', keys?.length || 0) // Debug log
+      setApiKeys(keys || [])
     } catch (error) {
       console.error('Error fetching API keys:', error)
+      // Don't clear existing keys on error, just log it
     } finally {
       setLoading(false)
     }
@@ -139,9 +144,12 @@ export default function APIKeysPage() {
                 </div>
               </div>
               <div className="flex justify-end mt-6">
-                <Button onClick={() => {
+                <Button onClick={async () => {
                   setNewKeyData(null)
-                  fetchAPIKeys() // Refresh the list when modal is closed
+                  // Add small delay to ensure backend has processed the creation
+                  setTimeout(() => {
+                    fetchAPIKeys(true) // Force refresh
+                  }, 500)
                 }}>
                   Done
                 </Button>
@@ -180,9 +188,19 @@ export default function APIKeysPage() {
       {/* API Keys List */}
   <div className="surface-section"><div className="grid-item"><Card>
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <KeyIcon className="h-5 w-5" />
-            <span>Your API Keys</span>
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <KeyIcon className="h-5 w-5" />
+              <span>Your API Keys</span>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => fetchAPIKeys(true)}
+              disabled={loading}
+            >
+              {loading ? 'Loading...' : 'Refresh'}
+            </Button>
           </CardTitle>
           <CardDescription>
             Manage your existing API keys. Keep them secure and don&apos;t share them publicly.
