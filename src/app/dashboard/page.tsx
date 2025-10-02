@@ -16,17 +16,21 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        console.log('[Dashboard] Fetching stats for user:', user?.email)
+        console.log('[Dashboard] API token set:', apiClient['token'] ? 'YES' : 'NO')
+        
         const [userStatsRes, devStatsRes] = await Promise.all([
           apiClient.user.getStats(),
           apiClient.developer.getStats()
         ])
         
-        console.log('Dashboard userStats:', userStatsRes) // Debug log
-        console.log('Dashboard developerStats:', devStatsRes) // Debug log
+        console.log('[Dashboard] userStats response:', userStatsRes)
+        console.log('[Dashboard] developerStats response:', devStatsRes)
         setUserStats(userStatsRes as UserStats)
         setDeveloperStats(devStatsRes as DeveloperStats)
       } catch (error) {
-        console.error('Error fetching stats:', error)
+        console.error('[Dashboard] Error fetching stats:', error)
+        console.error('[Dashboard] Error details:', error instanceof Error ? error.message : error)
       } finally {
         setLoading(false)
       }
