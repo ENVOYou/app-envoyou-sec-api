@@ -7,6 +7,7 @@ type Dict = Record<string, unknown>
 
 // User Stats adapter (backend -> frontend)
 export function adaptUserStats(raw: unknown): UserStats {
+  console.log('adaptUserStats raw response:', raw) // Debug log
   if (!raw || typeof raw !== 'object') {
     return {
       total_requests: 0,
@@ -17,13 +18,15 @@ export function adaptUserStats(raw: unknown): UserStats {
     }
   }
   const r = raw as Dict
-  return {
+  const adapted = {
     total_requests: (r.total_calls as number) ?? 0,
     requests_today: 0,
     requests_this_month: (r.monthly_calls as number) ?? (r.total_calls as number) ?? 0,
     api_keys_count: (r.active_keys as number) ?? 0,
     active_sessions: (r.active_sessions as number) ?? 0
   }
+  console.log('adaptUserStats result:', adapted) // Debug log
+  return adapted
 }
 
 // API Keys list adapter

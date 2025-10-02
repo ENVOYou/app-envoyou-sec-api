@@ -20,6 +20,8 @@ export default function DashboardPage() {
           apiClient.developer.getStats()
         ])
         
+        console.log('Dashboard userStats:', userStatsRes) // Debug log
+        console.log('Dashboard developerStats:', devStatsRes) // Debug log
         setUserStats(userStatsRes as UserStats)
         setDeveloperStats(devStatsRes as DeveloperStats)
       } catch (error) {
